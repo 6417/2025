@@ -14,7 +14,7 @@ import frc.robot.swerve.SwerveDrive2024;
 
 public class RobotContainer {
     public static class Container2024 {
-        public static final RobotData robotData = new RobotData(
+        public final RobotData data = new RobotData(
                 new HardwareData(
                         Double.NaN,
                         0.12 * Math.PI,
@@ -34,20 +34,14 @@ public class RobotContainer {
                         Double.NaN),
                 new PidData(null, null, null));
 
-        public RobotData data() {
-            return robotData;
-        }
+        public final SwerveDrive2024 swerve = new SwerveDrive2024();
     }
 
     public static final Container2024 active = new Container2024();
 
     // Drive should always exist
     public static BDrive drive() {
-        return new SwerveDrive2024();
-        // assert active.getDrive().isPresent() : "No drive found for preset " +
-        // active.getClass().getSimpleName();
-        //
-        // return active.getDrive().get();
+        return active.swerve;
     }
 
     public static IJoystick joystick() {
@@ -55,6 +49,6 @@ public class RobotContainer {
     }
 
     public static RobotData data() {
-        return active.data();
+        return active.data;
     }
 }
