@@ -2,14 +2,11 @@ package frc.robot;
 
 import java.util.List;
 
-import frc.fridowpi.joystick.IJoystick;
-import frc.robot.abstraction.baseClasses.BDrive;
 import frc.robot.abstraction.RobotData;
 import frc.robot.abstraction.RobotData.AutoData;
 import frc.robot.abstraction.RobotData.DriveData;
 import frc.robot.abstraction.RobotData.HardwareData;
 import frc.robot.abstraction.RobotData.PidData;
-import frc.robot.joystick.Joystick2024;
 import frc.robot.swerve.SwerveDrive2024;
 
 public class RobotContainer {
@@ -37,18 +34,10 @@ public class RobotContainer {
         public final SwerveDrive2024 swerve = new SwerveDrive2024();
     }
 
-    public static final Container2024 active = new Container2024();
-
-    // Drive should always exist
-    public static BDrive drive() {
-        return active.swerve;
-    }
-
-    public static IJoystick joystick() {
-        return Joystick2024.getInstance().getPrimaryJoystick();
-    }
+    public static final Container2024 mechanisms = new Container2024();
+    public static final Controls controls = new Controls();
 
     public static RobotData data() {
-        return active.data;
+        return mechanisms.data;
     }
 }

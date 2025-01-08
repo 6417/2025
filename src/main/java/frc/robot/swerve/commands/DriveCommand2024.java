@@ -10,18 +10,17 @@ import static java.lang.Math.signum;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.fridowpi.command.FridoCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.fridowpi.sensors.FridoNavx;
 import frc.fridowpi.utils.Vector2;
 import frc.robot.Constants;
 import frc.robot.Controls;
 import frc.robot.RobotContainer;
-import frc.robot.joystick.Joystick2024;
 
 /**
  * DriveCommand
  */
-public class DriveCommand2024 extends FridoCommand {
+public class DriveCommand2024 extends Command {
 
     private SlewRateLimiter xLimiter = new SlewRateLimiter(Controls.getSlewRateLimit(), -1000, 0);
     private SlewRateLimiter yLimiter = new SlewRateLimiter(Controls.getSlewRateLimit(), -1000, 0);

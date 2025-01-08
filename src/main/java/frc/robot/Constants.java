@@ -14,7 +14,6 @@ import frc.fridowpi.motors.utils.FeedForwardValues;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import frc.fridowpi.joystick.IJoystickId;
 import frc.fridowpi.motors.FridoFalcon500v6;
 import frc.fridowpi.motors.FridoTalonSRX;
 import frc.fridowpi.motors.FridolinsMotor;
@@ -23,7 +22,6 @@ import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.abstraction.baseClasses.BDrive.MountingLocations;
-import frc.robot.abstraction.baseClasses.BSwerveDrive.MotorType;
 import frc.robot.swerve.SwerveModule;
 
 /**
@@ -40,8 +38,8 @@ import frc.robot.swerve.SwerveModule;
  */
 public final class Constants {
     public static final class Joystick {
-        public static final IJoystickId primaryJoystickId = () -> 0;
-        public static final IJoystickId secondaryJoystickId = () -> 1;
+        public static final int driveJoystickId = 0;
+        public static final int operatorJoystickId = 1;
         public static final int idCounterStart = 1000;
         public static final double lt_rt_reshold = 0.2;
     }
