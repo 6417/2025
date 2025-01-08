@@ -11,15 +11,12 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 
-import frc.fridowpi.module.IModule;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
-import frc.robot.abstraction.RobotData.MotorRole;
 
 public class FridoSparkMax implements FridolinsMotor {
     private SparkMax motorProxy;
     private SparkMaxConfig config;
-    private Optional<Double> closedLoopTolerance;
     private PidValues currentPidConfiguration;
     private PidType currentPidType;
     private double pidSetpoint;
@@ -121,7 +118,7 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public void setPID(PidValues pidValues) {
-        closedLoopTolerance = pidValues.tolerance;
+        currentPidConfiguration = pidValues;
         config.closedLoop.p(pidValues.kP).i(pidValues.kI).d(pidValues.kD).outputRange(pidValues.peakOutputReverse,
                 pidValues.peakOutputForward);
         motorProxy.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
@@ -129,6 +126,7 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public void setPID(PidValues pidValues, FeedForwardValues feedForwardValues) {
+        currentPidConfiguration = pidValues;
         config.closedLoop.p(pidValues.kP).i(pidValues.kI).d(pidValues.kD).outputRange(pidValues.peakOutputReverse,
                 pidValues.peakOutputForward).velocityFF(pidValues.kF.get());
         motorProxy.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);

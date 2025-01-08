@@ -1,11 +1,10 @@
 package frc.fridowpi.motors;
 
-import frc.fridowpi.module.IModule;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
-public interface FridolinsMotor extends MotorController, IModule {
+public interface FridolinsMotor extends MotorController {
     public enum IdleMode {
         kBrake, kCoast
     }
@@ -21,12 +20,6 @@ public interface FridolinsMotor extends MotorController, IModule {
         smartMotion,
         smartVelocity;
     }
-
-	/*
-	 * May be necessary to call this periodically
-	 * if using a software PID (by the time of writing only FridoCanSparkMax with velocity PIDs)
-	 */
-    public void runPid();
 
     public void setIdleMode(IdleMode type);
 
@@ -48,7 +41,6 @@ public interface FridolinsMotor extends MotorController, IModule {
 
     public void selectPidSlot(int slotIndex);
 
-
     public enum LimitSwitchPolarity {
         kNormallyOpen, kNormallyClosed, kDisabled
     }
@@ -67,7 +59,7 @@ public interface FridolinsMotor extends MotorController, IModule {
 
     public void configEncoder(FridoFeedBackDevice device, int countsPerRev);
 
-	public void setAccelerationLimit(double maxAcceleration);
+    public void setAccelerationLimit(double maxAcceleration);
 
     public void setEncoderDirection(boolean inverted);
 
