@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 public class UltrasonicSensor extends Ultrasonic implements IUltrasonic {
     private LinearFilter filter;
     private Timer timer;
-    private double prevTime;
 
     public UltrasonicSensor(int pingChannel, int echoChannel) {
         super(pingChannel, echoChannel);

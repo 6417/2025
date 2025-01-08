@@ -1,12 +1,12 @@
 package frc.fridowpi.sensors.base;
 
-import frc.fridowpi.initializer.Initialisable;
 import com.kauailabs.navx.frc.AHRS;
 import com.kauailabs.navx.frc.ITimestampedDataSubscriber;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 
-public interface INavx extends Initialisable {
+public interface INavx {
+    void init();
 
     float getPitch();
 

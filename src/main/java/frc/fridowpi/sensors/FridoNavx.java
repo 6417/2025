@@ -1,7 +1,6 @@
 package frc.fridowpi.sensors;
 
 
-import frc.fridowpi.initializer.Initializer;
 import frc.fridowpi.sensors.base.INavx;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -95,7 +94,6 @@ public class FridoNavx extends AHRS implements INavx {
 
     private FridoNavx(SPI.Port port) {
         super(port);
-        Initializer.getInstance().addInitialisable(this);
     }
 
     private static INavx instance;
@@ -135,19 +133,11 @@ public class FridoNavx extends AHRS implements INavx {
     }
 
     private static Logger logger = LogManager.getLogger(FridoNavx.class);
-    private boolean initialized = false;
 
     @Override
     public void init() {
         logger.info("DONE Navix initialized");
         logger.info("resetting Navx.");
         reset();
-
-        initialized = true;
-    }
-
-    @Override
-    public boolean isInitialized() {
-        return initialized;
     }
 }
