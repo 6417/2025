@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import frc.fridowpi.module.IModule;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 
@@ -24,10 +23,6 @@ public class FridoTalonSRX extends WPI_TalonSRX implements FridolinsMotor {
 
     public FridoTalonSRX(int deviceID) {
         super(deviceID);
-    }
-
-    @Override
-    public void init() {
     }
 
     @Override
@@ -200,20 +195,6 @@ public class FridoTalonSRX extends WPI_TalonSRX implements FridolinsMotor {
     }
 
     @Override
-    public Collection<IModule> getAllSubModules() {
-        return List.of();
-    }
-
-    @Override
-    public void registerSubmodule(IModule... subModule) {
-    }
-
-    @Override
-    public boolean isInitialized() {
-        return true;
-    }
-
-    @Override
     public boolean pidAtTarget() {
         return super.isMotionProfileFinished();
     }
@@ -248,16 +229,6 @@ public class FridoTalonSRX extends WPI_TalonSRX implements FridolinsMotor {
     public double getPidTarget() {
         return target;
     }
-
-    @Override
-    public Collection<IModule> getSubModules() {
-        return List.of();
-    }
-
-	@Override
-	public void runPid() {
-		/* Software pid calculations here */
-	}
 
 	@Override
 	public void setAccelerationLimit(double maxAcceleration) {

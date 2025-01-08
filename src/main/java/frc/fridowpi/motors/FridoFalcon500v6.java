@@ -23,8 +23,6 @@ import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.units.Measure;
-import frc.fridowpi.module.IModule;
-import frc.fridowpi.module.Module;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 
@@ -34,7 +32,6 @@ import frc.fridowpi.motors.utils.PidValues;
 public class FridoFalcon500v6 implements FridolinsMotor {
 	TalonFX motorProxy;
 	MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
-	Module moduleProxy = new Module();
 	Optional<Integer> pidSlotIdx = Optional.empty();
 	TalonFXConfiguration config = new TalonFXConfiguration();
 	Optional<FeedForwardValues> feedForwardValues;
@@ -273,38 +270,5 @@ public class FridoFalcon500v6 implements FridolinsMotor {
 
 	@Override
 	public void factoryDefault() {
-	}
-
-	@Override
-	public Collection<IModule> getAllSubModules() {
-		return moduleProxy.getAllSubModules();
-	}
-
-	@Override
-	public Collection<IModule> getSubModules() {
-		return moduleProxy.getSubModules();
-	}
-
-	@Override
-	public void registerSubmodule(IModule... subModule) {
-		moduleProxy.registerSubmodule(subModule);
-	}
-
-	private boolean initialized = false;
-
-	@Override
-	public void init() {
-		initialized = true;
-
-	}
-
-	@Override
-	public boolean isInitialized() {
-		return initialized;
-	}
-
-	@Override
-	public void runPid() {
-		/* Software pid calculations here */
 	}
 }
