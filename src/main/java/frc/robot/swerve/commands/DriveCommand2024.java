@@ -22,19 +22,19 @@ import frc.robot.RobotContainer;
  */
 public class DriveCommand2024 extends Command {
 
-    private SlewRateLimiter xLimiter = new SlewRateLimiter(Controls.getSlewRateLimit(), -1000, 0);
-    private SlewRateLimiter yLimiter = new SlewRateLimiter(Controls.getSlewRateLimit(), -1000, 0);
-    private SlewRateLimiter rotLimiter = new SlewRateLimiter(Controls.getSlewRateLimit(), -1000, 0);
+    private SlewRateLimiter xLimiter = new SlewRateLimiter(RobotContainer.controls.slewRateLimit, -1000, 0);
+    private SlewRateLimiter yLimiter = new SlewRateLimiter(RobotContainer.controls.slewRateLimit, -1000, 0);
+    private SlewRateLimiter rotLimiter = new SlewRateLimiter(RobotContainer.controls.slewRateLimit, -1000, 0);
 
     private double maxSpeed = 0;
 
     public DriveCommand2024() {
-        addRequirements(RobotContainer.drive());
+        addRequirements(RobotContainer.drive);
     }
 
     @Override
     public void execute() {
-        var speed = abs(RobotContainer.drive().getSwerveWheelSpeeds());
+        var speed = abs(RobotContainer.drive.getSwerveWheelSpeeds());
         if (speed > Constants.SwerveDrive.Swerve2024.maxVelocity && speed > maxSpeed) {
             maxSpeed = speed;
             System.out.println("MaxSpeed: " + speed);
@@ -42,30 +42,30 @@ public class DriveCommand2024 extends Command {
 
         var pitchOffsetRadians = Radians.convertFrom(Constants.SwerveDrive.navxPitchOffset, Degrees);
 
-        var joystick = Joystick2024.getInstance().getPrimaryJoystick();
+        var joystick = RobotContainer.controls.driveJoystick;
         var xy = new Vector2(joystick.getX(), joystick.getY());
         xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
         var rot = -joystick.getTwist();
 
-        if (Controls.getControlMode() == Controls.ControlMode.SEPARATE_ACCELERATION) {
+        if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
             xy = xy.normalized().scaled(joystick.getZ());
         }
 
         // Brake if input is 0
-        if (xy.magnitude() < Controls.getDeadBandDrive()
-                && abs(rot) < Controls.getDeadBandTurn()) {
-            RobotContainer.drive().stopAllMotors();
+        if (xy.magnitude() < RobotContainer.controls.deadBandDrive
+                && abs(rot) < RobotContainer.controls.deadBandDrive) {
+            RobotContainer.drive.stopAllMotors();
             return;
         }
 
         // Apply deadband
-        xy = applyDeadband(xy, Controls.getDeadBandDrive())
-                .scaled(Controls.getAccelerationSensitivity());
-        rot = applyDeadband(rot, Controls.getDeadBandTurn())
-                * Controls.getTurnSensitivity();
+        xy = applyDeadband(xy, RobotContainer.controls.deadBandDrive)
+                .scaled(RobotContainer.controls.getAccelerationSensitivity());
+        rot = applyDeadband(rot, RobotContainer.controls.deadBandTurn)
+                * RobotContainer.controls.turnSensitivity;
 
         // Apply slew rate
-        if (Controls.isSlewRateLimited()) {
+        if (RobotContainer.controls.slewRateLimited) {
             var xLimited = xLimiter.calculate(abs(xy.x)) * signum(xy.x);
             var yLimited = yLimiter.calculate(abs(xy.y)) * signum(xy.y);
             // rot = rotLimiter.calculate(abs(rot)) * signum(rot);
@@ -78,9 +78,9 @@ public class DriveCommand2024 extends Command {
         }
 
         // Convert to velocity
-        xy.x = RobotContainer.drive().percent2driveVelocity(xy.x);
-        xy.y = RobotContainer.drive().percent2driveVelocity(xy.y);
-        rot = RobotContainer.drive().percent2rotationVelocityDouble(rot);
+        xy.x = RobotContainer.drive.percent2driveVelocity(xy.x);
+        xy.y = RobotContainer.drive.percent2driveVelocity(xy.y);
+        rot = RobotContainer.drive.percent2rotationVelocityDouble(rot);
 
         setChassisSpeeds(xy, rot);
         // System.out.println(xy.toString() + rot);
@@ -95,17 +95,17 @@ public class DriveCommand2024 extends Command {
     }
 
     private void setChassisSpeeds(Vector2 vxy, double vRot) {
-        switch (RobotContainer.drive().getOrientation()) {
+        switch (RobotContainer.controls.driveOrientation) {
             case Forwards:
-                RobotContainer.drive().drive(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
+                RobotContainer.drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
                         vRot, new Rotation2d(0.0)));
                 break;
             case Backwards:
-                RobotContainer.drive().drive(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
+                RobotContainer.drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
                         vRot, Rotation2d.fromRadians(Math.PI)));
                 break;
             case FieldOriented:
-                RobotContainer.drive().drive(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
+                RobotContainer.drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
                         vRot, Rotation2d.fromDegrees(FridoNavx.getInstance().getAngle())));
                 break;
         }

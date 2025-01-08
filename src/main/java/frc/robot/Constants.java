@@ -21,7 +21,7 @@ import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
-import frc.robot.abstraction.baseClasses.BDrive.MountingLocations;
+import frc.robot.swerve.SwerveDrive2024.MountingLocations;
 import frc.robot.swerve.SwerveModule;
 
 /**
@@ -78,9 +78,9 @@ public final class Constants {
                     1, 2, 3, 4,
                     11, 12, 13, 14);
 
-            public static final Map<MountingLocations, frc.robot.swerve.SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
+            public static final Map<MountingLocations, SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
 
-            public static frc.robot.swerve.SwerveModule.Config commonConfigurations = new frc.robot.swerve.SwerveModule.Config();
+            public static SwerveModule.Config commonConfigurations = new frc.robot.swerve.SwerveModule.Config();
 
             static {
                 addCommonModuleConfigurarions();

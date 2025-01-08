@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,7 +29,7 @@ import frc.fridowpi.motors.utils.PidValues;
 import frc.fridowpi.utils.Vector2;
 import frc.robot.Constants;
 
-public class SwerveModule extends Sendable {
+public class SwerveModule implements Sendable {
     // Set variables (TODO: Intergrate into RobotData)
     public static class Config implements Cloneable {
         public int absoluteEncoderChannel;

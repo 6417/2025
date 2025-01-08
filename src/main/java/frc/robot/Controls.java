@@ -44,6 +44,7 @@ public class Controls {
 
     public double turnSensitivity = 0.08;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
+	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
         activeSpeedFactor = speedFactor;

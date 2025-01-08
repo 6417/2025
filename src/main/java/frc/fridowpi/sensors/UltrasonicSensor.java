@@ -18,7 +18,6 @@ public class UltrasonicSensor extends Ultrasonic implements IUltrasonic {
 
         timer = new Timer();
         timer.start();
-        prevTime = timer.get();
     }
 
     /***

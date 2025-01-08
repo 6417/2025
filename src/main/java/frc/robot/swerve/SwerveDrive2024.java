@@ -36,16 +36,20 @@ public class SwerveDrive2024 extends SubsystemBase {
 
     private Map<MountingLocations, SwerveModule> modules = new HashMap<>();
     private ChassisSpeeds currentChassisSpeeds = new ChassisSpeeds();
+    private SwerveKinematics<MountingLocations> kinematics;
 
     public SwerveDrive2024() {
-    }
-
-    public void init() {
         setUpSwerveModules();
         zeroRelativeEncoders();
         setDefaultCommand(new DriveCommand2024());
+
+        Map<MountingLocations, Translation2d> mountingPoints = Constants.SwerveDrive.Swerve2024.swerveModuleConfigs
+                .entrySet().stream().map(Algorithms.mapEntryFunction(config -> config.mountingPoint))
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        kinematics = new SwerveKinematics<MountingLocations>(mountingPoints);
     }
 
+    @Override
     public void periodic() {
         // if (Config.drive() == this) {
         // poseEstimator.update();
@@ -61,13 +65,8 @@ public class SwerveDrive2024 extends SubsystemBase {
     }
 
     private void setUpSwerveModules() {
-        // modules = Constants.SwerveDrive.Swerve2024.swerveModuleConfigs.entrySet().stream()
-        //         .map(Algorithms.mapEntryFunction(SwerveModule::new))
-        //         .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-        //
-        for (var locationConfigPair : Constants.SwerveDrive.Swerve2024.swerveModuleConfigs.entrySet())
-        {
-            modules.locationConfigPair.getKey()] = new SwerveModule(locationConfigPair.getValue());
+        for (var locationConfigPair : Constants.SwerveDrive.Swerve2024.swerveModuleConfigs.entrySet()) {
+            modules.put(locationConfigPair.getKey(), new SwerveModule(locationConfigPair.getValue()));
         }
         forEachModuleEntry(moduleEntry -> Shuffleboard.getTab("Drive")
                 .add("SwerveModule" + moduleEntry.getKey().toString(), moduleEntry.getValue()));
@@ -112,8 +111,7 @@ public class SwerveDrive2024 extends SubsystemBase {
 
     public void drive(ChassisSpeeds requestedMovement) {
         currentChassisSpeeds = requestedMovement;
-        Map<MountingLocations, SwerveModuleState> states = kinematics
-                .toLabledSwerveModuleStates(currentChassisSpeeds);
+        Map<MountingLocations, SwerveModuleState> states = kinematics.toLabledSwerveModuleStates(currentChassisSpeeds);
         // states = normalizeStates(states);
 
         states.entrySet().forEach(
@@ -151,24 +149,6 @@ public class SwerveDrive2024 extends SubsystemBase {
     public void setIdleMode(IdleMode mode) {
         forEachModule(m -> m.setIdleMode(mode));
     }
-
-    public Command sysIdQuasistatic(Direction direction) {
-        throw new UnsupportedOperationException("Unimplemented method 'sysIdQuasistatic'");
-    }
-
-    public Command sysIdDynamic(Direction direction) {
-        throw new UnsupportedOperationException("Unimplemented method 'sysIdDynamic'");
-    }
-
-    // // TODO: abstraction over motorrole
-    // public <T> FridolinsMotor getMotor(T motor) {
-    // assert motor instanceof BSwerveDrive.SwerveMotor;
-    // var swerveMotor = (BSwerveDrive.SwerveMotor) motor;
-    // return switch (swerveMotor.getMotorType()) {
-    // case DRIVE -> modules.get(swerveMotor.getLocation()).getDriveMotor();
-    // case ROTATE -> modules.get(swerveMotor.getLocation()).getRotationMotor();
-    // };
-    // }
 
     public SwerveModulePosition[] getModulePositions() {
         return modules.values().stream().map(SwerveModule::getOdometryPos).toArray(SwerveModulePosition[]::new);
