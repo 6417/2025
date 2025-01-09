@@ -10,11 +10,16 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import frc.fridowpi.motors.utils.FeedForwardValues;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import frc.fridowpi.motors.FridoFalcon500v6;
+import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridoTalonSRX;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
@@ -116,10 +121,16 @@ public final class Constants {
             }
 
             private static FridolinsMotor angleMotorInitializer(int id) {
-                var motor = new FridoCanSparkMax(id, MotorType.kBrushless);
+                var motor = new FridoSparkMax(id);
                 motor.factoryDefault();
-                motor.setSmartCurrentLimit(20, 20);
-                motor.getPIDController().setIZone(1.5);
+
+                SparkMaxConfig config = new SparkMaxConfig();
+                config.closedLoop.iZone(1.5);
+                config.smartCurrentLimit(20, 20);
+
+                motor.asSparkMax()
+                     .configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
                 return motor;
             }
 
@@ -245,7 +256,7 @@ public final class Constants {
                 }
 
                 private static FridolinsMotor driveMotorInitializer(int id) {
-                    FridoTalonSRX motor = angleMotorInitializer(id, MotorType.kBrushless);
+                    FridoTalonSRX motor = angleMotorInitializer(id);
                     motor.enableForwardLimitSwitch(LimitSwitchPolarity.kDisabled, false);
                     motor.enableReverseLimitSwitch(LimitSwitchPolarity.kDisabled, false);
                     return motor;
