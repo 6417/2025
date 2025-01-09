@@ -102,6 +102,14 @@ public class SwerveDrive2024 extends SubsystemBase {
     // return states;
     // }
 
+    public double percent2rotationVelocity(double val) {
+        return RobotContainer.controls.maxTurnSpeed * val;
+    }
+
+    public double percent2driveVelocity(double x) {
+        return RobotContainer.controls.maxVelocity * x;
+    }
+
     public void drive(double vxPercent, double vyPercent, double rotPercent) {
         var requestedMovement = new ChassisSpeeds(
                 percent2driveVelocity(vxPercent), percent2driveVelocity(vyPercent),

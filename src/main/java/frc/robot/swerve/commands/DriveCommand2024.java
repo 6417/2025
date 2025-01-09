@@ -80,7 +80,7 @@ public class DriveCommand2024 extends Command {
         // Convert to velocity
         xy.x = RobotContainer.drive.percent2driveVelocity(xy.x);
         xy.y = RobotContainer.drive.percent2driveVelocity(xy.y);
-        rot = RobotContainer.drive.percent2rotationVelocityDouble(rot);
+        rot = RobotContainer.drive.percent2rotationVelocity(rot);
 
         setChassisSpeeds(xy, rot);
         // System.out.println(xy.toString() + rot);
