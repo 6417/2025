@@ -35,6 +35,7 @@ public class FridoFalcon500v6 implements FridolinsMotor {
 	Optional<Integer> pidSlotIdx = Optional.empty();
 	TalonFXConfiguration config = new TalonFXConfiguration();
 	Optional<FeedForwardValues> feedForwardValues;
+	Optional<Double> iZone= Optional.empty();
 	double pidF = 0;
 
 	public FridoFalcon500v6(int deviceNumber) {

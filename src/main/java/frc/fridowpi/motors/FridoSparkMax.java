@@ -20,6 +20,7 @@ public class FridoSparkMax implements FridolinsMotor {
     private PidValues currentPidConfiguration;
     private PidType currentPidType;
     private double pidSetpoint;
+    Optional<Double> iZone = Optional.empty();
 
     public FridoSparkMax(int deviceID) {
         motorProxy = new SparkMax(deviceID, MotorType.kBrushless);
