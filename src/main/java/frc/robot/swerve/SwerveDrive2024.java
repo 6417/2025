@@ -54,6 +54,7 @@ public class SwerveDrive2024 extends SubsystemBase {
         // if (Config.drive() == this) {
         // poseEstimator.update();
         // }
+        System.out.println(getModulePositions()[0]);
     }
 
     public void zeroRelativeEncoders() {
