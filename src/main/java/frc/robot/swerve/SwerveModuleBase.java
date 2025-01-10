@@ -15,7 +15,9 @@ import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.sensors.AnalogEncoder;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.swerve.SwerveUtils.CTREModuleState;
+import frc.robot.swerve.SwerveUtils.SwerveDriveConstants;
 import frc.robot.swerve.SwerveUtils.SwerveModuleConstants;
 
 public class SwerveModuleBase {
@@ -34,14 +36,14 @@ public class SwerveModuleBase {
     private double driveGearboxRatio = Constants.SwerveDrive.Swerve2024.driveGearRatio;
     private double angleGearboxRatio = Constants.SwerveDrive.Swerve2024.angleGearRatio;
 
-    private double mWheelCircumference = Units.inchesToMeters(4) * Math.PI;
+    private double mWheelCircumference = DriveConstants.wheelCircumference;
 
     private double maxSpeed = 5;
 
     private final double kAngleOffset;
     private double lastAngle;
 
-    public SwerveModuleBase(int moduleNum, String name, SwerveModuleConstants constants) {
+    public SwerveModuleBase(int moduleNum, String name, SwerveModuleConstants constants, SwerveDriveConstants swerveConstants) {
 
         mId = name;
 

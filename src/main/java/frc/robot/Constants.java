@@ -49,6 +49,43 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
+    public static final class SwerveModuleFrontLeft {
+        public static final int angleMotorID = 50;
+        public static final int driveMotorID = 51;
+        public static final int cancoderID = 01;
+        public static final double angleOffset = -84.37 + 0.2;
+        public static final double modulekS = 0;
+        public static final double modulekV = 0;
+}
+
+public static final class SwerveModuleFrontRight {
+        public static final int angleMotorID = 56;
+        public static final int driveMotorID = 57;
+        public static final int cancoderID = 02;
+        public static final double angleOffset = 14.5;
+        public static final double modulekS = 0;
+        public static final double modulekV = 0;
+}
+
+public static final class SwerveModuleRearLeft {
+        public static final int angleMotorID = 54;
+        public static final int driveMotorID = 55;
+        public static final int cancoderID = 03;
+        public static final double angleOffset = -136.93 - 3;
+        public static final double modulekS = 0;
+        public static final double modulekV = 0;
+}
+
+public static final class SwerveModuleRearRight {
+        public static final int angleMotorID = 52;
+        public static final int driveMotorID = 53;
+        public static final int cancoderID = 04;
+        public static final double angleOffset = -73.47 - 0.26;
+        public static final double modulekS = 0;
+        public static final double modulekV = 0;
+}
+
+
     public static final class SwerveDrive {
 
         public static double navxPitchOffset = 90;
@@ -56,6 +93,10 @@ public final class Constants {
         public static final class Swerve2024 {
 
             public static final double gearRatio = 1 / 5.192308;
+
+            public static final double angleGearRatio = 1 / 5.192308;
+            public static final double driveGearRatio = 1 / 5.192308;
+
 
             public static final boolean enabled = true;
             public static final double absoluteEncoderZeroPositionTolerance = 0.01;
