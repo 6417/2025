@@ -169,6 +169,7 @@ public class FridoTalonSRX extends WPI_TalonSRX implements FridolinsMotor {
             super.config_kD(pidValues.slotIdX.get(), pidValues.kD);
             super.configPeakOutputForward(pidValues.peakOutputForward);
             super.configPeakOutputReverse(pidValues.peakOutputReverse);
+            pidValues.iZone.ifPresent(iZone -> super.config_IntegralZone(pidValues.slotIdX.get(), iZone));
             pidValues.cruiseVelocity.ifPresent((cruiseVelocity) -> super.configMotionCruiseVelocity((int) cruiseVelocity.doubleValue()));
             pidValues.acceleration.ifPresent((acceleration) -> super.configMotionAcceleration((int) acceleration.doubleValue()));
             pidValues.kF.ifPresent((kF) -> super.config_kF(pidValues.slotIdX.get(), kF));

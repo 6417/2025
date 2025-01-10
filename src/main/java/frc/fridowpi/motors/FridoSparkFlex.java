@@ -3,28 +3,29 @@ package frc.fridowpi.motors;
 import java.util.Collection;
 import java.util.Optional;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 
-public class FridoSparkMax implements FridolinsMotor {
-    private SparkMax motorProxy;
-    private SparkMaxConfig config;
+public class FridoSparkFlex implements FridolinsMotor {
+    private SparkFlex motorProxy;
+    private SparkFlexConfig config;
     private PidValues currentPidConfiguration;
     private PidType currentPidType;
     private double pidSetpoint;
-    Optional<Double> iZone = Optional.empty();
 
-    public FridoSparkMax(int deviceID) {
-        config = new SparkMaxConfig();
-        motorProxy = new SparkMax(deviceID, MotorType.kBrushless);
+    public FridoSparkFlex(int deviceID) {
+        config = new SparkFlexConfig();
+        motorProxy = new SparkFlex(deviceID, MotorType.kBrushless);
     }
 
     private com.revrobotics.spark.config.SparkBaseConfig.IdleMode convertFromFridoIdleMode(IdleMode mode) {
@@ -60,7 +61,7 @@ public class FridoSparkMax implements FridolinsMotor {
         }
     }
 
-    public SparkMax asSparkMax() {
+    public SparkFlex asSparkFlex() {
         return motorProxy;
     }
 
@@ -103,10 +104,10 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public void follow(FridolinsMotor master, DirectionType direction) {
-        if (master instanceof FridoSparkMax) {
-            config.follow(((FridoSparkMax) master).asSparkMax(), convertToInvertFromFridoDirectionType(direction));
-        } else if (master instanceof FridoSparkFlex) {
+        if (master instanceof FridoSparkFlex) {
             config.follow(((FridoSparkFlex) master).asSparkFlex(), convertToInvertFromFridoDirectionType(direction));
+        } else if (master instanceof FridoSparkMax) {
+            config.follow(((FridoSparkMax) master).asSparkMax(), convertToInvertFromFridoDirectionType(direction));
         } else {
             throw new UnsupportedOperationException("Unimplemented method 'follow other controller type'");
         }
@@ -124,16 +125,18 @@ public class FridoSparkMax implements FridolinsMotor {
     public void setPID(PidValues pidValues) {
         currentPidConfiguration = pidValues;
         config.closedLoop.p(pidValues.kP).i(pidValues.kI).d(pidValues.kD).outputRange(pidValues.peakOutputReverse,
-                pidValues.peakOutputForward).velocityFF(pidValues.kF.orElse(0.0));
+                pidValues.peakOutputForward);
         pidValues.iZone.ifPresent(iZone -> config.closedLoop.iZone(iZone));
         motorProxy.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     @Override
     public void setPID(PidValues pidValues, FeedForwardValues feedForwardValues) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-                "Unimplemented method 'setPid', not necessary anymore it is done automatically while configuring");
+        currentPidConfiguration = pidValues;
+        config.closedLoop.p(pidValues.kP).i(pidValues.kI).d(pidValues.kD).outputRange(pidValues.peakOutputReverse,
+                pidValues.peakOutputForward).velocityFF(pidValues.kF.get());
+        pidValues.iZone.ifPresent(iZone -> config.closedLoop.iZone(iZone));
+        motorProxy.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     @Override

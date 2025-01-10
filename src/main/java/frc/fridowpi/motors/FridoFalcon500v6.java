@@ -208,11 +208,12 @@ public class FridoFalcon500v6 implements FridolinsMotor {
 	public Optional<Double> tolerance;
 
 	public void setPID(PidValues pidValues, FeedForwardValues feedForwardValues) {
+		// The IZONE parameter was removed in Phoenix 6 and replaced by a feature
+		// Phoenix 6 has code in place to prevent integral windup
 
 		var pid = new SlotConfigs().withKP(pidValues.kP).withKI(pidValues.kI).withKD(pidValues.kD)
 				.withKS(feedForwardValues.kS).withKV(feedForwardValues.kV).withKA(feedForwardValues.kA);
 		pidValues.kF.ifPresent(kF -> pidF = kF);
-
 		pid.SlotNumber = pidSlotIdx.orElse(0);
 		tolerance = pidValues.tolerance;
 		this.feedForwardValues = Optional.of(feedForwardValues);
