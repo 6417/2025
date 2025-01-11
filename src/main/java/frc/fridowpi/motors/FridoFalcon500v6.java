@@ -177,12 +177,12 @@ public class FridoFalcon500v6 implements FridolinsMotor {
 
 	@Override
 	public void setInverted(boolean isInverted) {
-		motorProxy.setInverted(isInverted);
+		motorProxy.setInverted(isInverted); // must be fixed
 	}
 
 	@Override
 	public boolean getInverted() {
-		return motorProxy.getInverted();
+		return motorProxy.getInverted(); // must be fixed
 	}
 
 	@Override

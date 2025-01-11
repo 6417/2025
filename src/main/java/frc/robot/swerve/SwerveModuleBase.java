@@ -58,6 +58,14 @@ public class SwerveModuleBase {
         mDriveMotor = new FridoFalcon500v6(constants.driveMotorID);
         mAngleMotor = new FridoSparkMax(constants.angleMotorID);
 
+        //motor configs will be add
+
+        mRotEncoder.setPositionOffset(constants.encoderAngleOffset);
+
+        resetToAbsolute();
+
+        lastAngle = getEncoderRotation().getDegrees();
+
 
     }
 

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -18,6 +19,8 @@ import frc.fridowpi.motors.utils.FeedForwardValues;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import frc.fridowpi.motors.FridoFalcon500v6;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridoTalonSRX;
@@ -28,6 +31,7 @@ import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.SwerveDrive2024.MountingLocations;
 import frc.robot.swerve.SwerveModule;
+import frc.robot.swerve.SwerveUtils.SwerveDriveConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -49,40 +53,108 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
+    public static final class DriveConstants {
+                public static final boolean isFieldOriented = true;
+                public static final boolean invertGyro = true; // !! CCW+
+
+                public static final int angleContinuousCurrentLimit = 20;
+                public static final int anglePeakCurrentLimit = 35;
+                public static final double anglePeakCurrentDuration = 0.1;
+                public static final boolean angleEnableCurrentLimit = true;
+
+                public static final int driveContinuousCurrentLimit = 30;
+                public static final int drivePeakCurrentLimit = 55;
+                public static final double drivePeakCurrentDuration = 0.2;
+                public static final boolean driveEnableCurrentLimit = true;
+
+                public static final NeutralMode angleMotorNeutralMode = NeutralMode.Coast;
+                public static final NeutralMode driveMotorNeutralMode = NeutralMode.Brake;
+
+                public static final double openLoopRamp = 0;
+                public static final double closedLoopRamp = 0;
+
+                public static final double drivePowerScalar = 0.95;
+                public static final double driveSlewRateLimitX = 7;
+                public static final double driveSlewRateLimitY = 7;
+                public static final double driveSlewRateLimitRot = 12;
+
+                public static final double angleGearboxRatio = 47.62;
+                public static final double driveGearboxRatio = 5.192;
+                public static final double wheelCircumference = Units.inchesToMeters(4) * Math.PI;
+
+                // PID and Feedforward
+                public static final double drivekP = 0.1;
+                public static final double drivekI = 0;
+                public static final double drivekD = 0;
+                public static final double drivekS = 0.016;
+                public static final double drivekV = 0.19;
+                public static final double drivekA = 0.05;
+
+                public static final double anglekP = 0.27;
+                public static final double anglekI = 0;
+                public static final double anglekD = 0.0;
+
+                // snap PID is not used currently
+                public static final double snapkP = 2.0;
+                public static final double snapkI = 0.0;
+                public static final double snapkD = 0.0;
+
+                public static final double maxSpeed = 5;
+
+                public static final double maxTransSpeedMetersPerSecond = 3.3;
+                public static final double maxAngularSpeedRadPerSec = 2 * Math.PI;
+                public static final double maxAngularAccelRadPerSecSq = Math.pow(maxAngularSpeedRadPerSec, 2);
+
+                public static final TrapezoidProfile.Constraints rotPIDconstraints = new TrapezoidProfile.Constraints(
+                                maxAngularSpeedRadPerSec, maxAngularAccelRadPerSecSq);
+
+                private static final double maxTransAccelMetersPerSecSq = 2.5;
+                public static final TrapezoidProfile.Constraints transPIDconstraints = new TrapezoidProfile.Constraints(
+                                maxTransSpeedMetersPerSecond, maxTransAccelMetersPerSecSq);
+
+                public static SwerveDriveConstants swerveConstants = SwerveDriveConstants.generateSwerveConstants(
+                                angleContinuousCurrentLimit,
+                                anglePeakCurrentLimit, anglePeakCurrentDuration, angleEnableCurrentLimit,
+                                driveContinuousCurrentLimit,
+                                drivePeakCurrentLimit, drivePeakCurrentDuration, driveEnableCurrentLimit, openLoopRamp,
+                                closedLoopRamp);
+        }
+
+
     public static final class SwerveModuleFrontLeft {
-        public static final int angleMotorID = 50;
-        public static final int driveMotorID = 51;
+        public static final int angleMotorID = 0;
+        public static final int driveMotorID = 1;
         public static final int cancoderID = 01;
-        public static final double angleOffset = -84.37 + 0.2;
-        public static final double modulekS = 0;
-        public static final double modulekV = 0;
+        public static final double angleOffset = 0;
+        public static final double modulekS = DriveConstants.drivekS;
+        public static final double modulekV = DriveConstants.drivekV;
 }
 
 public static final class SwerveModuleFrontRight {
-        public static final int angleMotorID = 56;
-        public static final int driveMotorID = 57;
+        public static final int angleMotorID = 2;
+        public static final int driveMotorID = 3;
         public static final int cancoderID = 02;
-        public static final double angleOffset = 14.5;
-        public static final double modulekS = 0;
-        public static final double modulekV = 0;
+        public static final double angleOffset = 0;
+        public static final double modulekS = DriveConstants.drivekS;
+        public static final double modulekV = DriveConstants.drivekV;
 }
 
 public static final class SwerveModuleRearLeft {
-        public static final int angleMotorID = 54;
-        public static final int driveMotorID = 55;
+        public static final int angleMotorID = 4;
+        public static final int driveMotorID = 5;
         public static final int cancoderID = 03;
-        public static final double angleOffset = -136.93 - 3;
-        public static final double modulekS = 0;
-        public static final double modulekV = 0;
+        public static final double angleOffset = 0;
+        public static final double modulekS = DriveConstants.drivekS;
+        public static final double modulekV = DriveConstants.drivekV;
 }
 
 public static final class SwerveModuleRearRight {
-        public static final int angleMotorID = 52;
-        public static final int driveMotorID = 53;
+        public static final int angleMotorID = 6;
+        public static final int driveMotorID = 7;
         public static final int cancoderID = 04;
-        public static final double angleOffset = -73.47 - 0.26;
-        public static final double modulekS = 0;
-        public static final double modulekV = 0;
+        public static final double angleOffset = 0;
+        public static final double modulekS = DriveConstants.drivekS;
+        public static final double modulekV = DriveConstants.drivekV;
 }
 
 
