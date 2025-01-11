@@ -44,9 +44,6 @@ public class Controls {
 
     public double turnSensitivity = 0.08;
 
-    public double maxTurnSpeed = Constants.SwerveDrive.Swerve2024.maxTurnSpeed;
-    public double maxVelocity = Constants.SwerveDrive.Swerve2024.maxVelocity;
-
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
 
