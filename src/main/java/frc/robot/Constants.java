@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.pathplanner.lib.config.PIDConstants;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -18,6 +19,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -73,7 +75,7 @@ public final class Constants {
                 public static final double openLoopRamp = 0;
                 public static final double closedLoopRamp = 0;
 
-                public static final double drivePowerScalar = 0.95;
+                public static final double drivePowerScalar = 0.9;
                 public static final double driveSlewRateLimitX = 7;
                 public static final double driveSlewRateLimitY = 7;
                 public static final double driveSlewRateLimitRot = 12;
@@ -82,7 +84,7 @@ public final class Constants {
                 public static final double driveGearboxRatio = 5.192;
                 public static final double wheelCircumference = Units.inchesToMeters(4) * Math.PI;
 
-                // PID and Feedforward
+                // PID and Feedforward -> The values are not tuned
                 public static final double drivekP = 0.1;
                 public static final double drivekI = 0;
                 public static final double drivekD = 0;
@@ -99,8 +101,9 @@ public final class Constants {
                 public static final double snapkI = 0.0;
                 public static final double snapkD = 0.0;
 
-                public static final double maxSpeed = 5;
+                public static final double maxSpeed = 6.5;
 
+                //The values are not tuned
                 public static final double maxTransSpeedMetersPerSecond = 3.3;
                 public static final double maxAngularSpeedRadPerSec = 2 * Math.PI;
                 public static final double maxAngularAccelRadPerSecSq = Math.pow(maxAngularSpeedRadPerSec, 2);
@@ -118,6 +121,43 @@ public final class Constants {
                                 driveContinuousCurrentLimit,
                                 drivePeakCurrentLimit, drivePeakCurrentDuration, driveEnableCurrentLimit, openLoopRamp,
                                 closedLoopRamp);
+
+        public static int Pigeon2CanID = 60;
+
+        public static final double wheelBaseLength = 0.55; 
+        private static final double wheelBaseWidth = 0.55;
+
+        public static final double drivebaseRadius = Math.hypot(wheelBaseWidth / 2.0, wheelBaseLength / 2.0);
+
+        /*public static final HolonomicPathFollowerConfig holonomicPoseConfig = new HolonomicPathFollowerConfig(
+                        new PIDConstants(4.7, 0, 0),
+                        new PIDConstants(4.5, 0, 0),
+                        maxModuleSpeed,
+                        drivebaseRadius,
+                        new ReplanningConfig(),
+                        0.02);
+*/
+        // Module coordinates according to the chassis
+        public static final Translation2d swerveModuleLocations[] = {
+                        new Translation2d(wheelBaseLength / 2, wheelBaseWidth / 2), // FL
+                        new Translation2d(wheelBaseLength / 2, -wheelBaseWidth / 2), // FR
+                        new Translation2d(-wheelBaseLength / 2, wheelBaseWidth / 2), // RL
+                        new Translation2d(-wheelBaseLength / 2, -wheelBaseWidth / 2) // RR
+        };
+        public static final Translation2d FRONTLEFTMODULE_TRANSLATION2D = new Translation2d(wheelBaseLength / 2,
+                        wheelBaseWidth / 2);
+        public static final Translation2d FRONTRIGHTMODULE_TRANSLATION2D = new Translation2d(wheelBaseLength / 2,
+                        -wheelBaseWidth / 2);
+        public static final Translation2d REARLEFTMODULE_TRANSLATION2D = new Translation2d(-wheelBaseLength / 2,
+                        wheelBaseWidth / 2);
+        public static final Translation2d REARRIGHTMODULE_TRANSLATION2D = new Translation2d(-wheelBaseLength / 2,
+                        -wheelBaseWidth / 2);
+
+        public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
+                        FRONTLEFTMODULE_TRANSLATION2D, // FL
+                        FRONTRIGHTMODULE_TRANSLATION2D, // FR
+                        REARLEFTMODULE_TRANSLATION2D, // RL
+                        REARRIGHTMODULE_TRANSLATION2D); // RR
         }
 
 
