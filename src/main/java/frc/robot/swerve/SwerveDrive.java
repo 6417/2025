@@ -23,6 +23,7 @@ public class SwerveDrive extends SubsystemBase {
         moduleNames[LOC_RR] = "Rear Right";
         moduleNames[LOC_RL] = "Rear Left";
 
+        modules = new SwerveModule[4];
         for (int i = 0; i < 4; i++) {
             configs[i].name = moduleNames[i];
             modules[i] = new SwerveModule(configs[i]);
@@ -34,6 +35,8 @@ public class SwerveDrive extends SubsystemBase {
                 configs[1].moduleOffset,
                 configs[2].moduleOffset,
                 configs[3].moduleOffset);
+
+        setDefaultCommand(new DriveCommand(this));
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {

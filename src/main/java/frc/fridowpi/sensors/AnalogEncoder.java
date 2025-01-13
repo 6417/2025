@@ -39,6 +39,8 @@ public class AnalogEncoder implements Sendable, AutoCloseable {
    * @param channel the analog input channel to attach to
    */
   public AnalogEncoder(int channel) {
+    System.out.print("channel: ");
+    System.out.println(channel);
     m_analogInput = new AnalogInput(channel);
     init();
   }

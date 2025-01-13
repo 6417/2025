@@ -14,7 +14,7 @@ import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.fridowpi.sensors.AnalogEncoder;
 
-public class ModuleConfig {
+public class ModuleConfig implements Cloneable {
     public String name;
     public double maxSpeed;
     public double wheelCircumference;
@@ -93,13 +93,12 @@ public class ModuleConfig {
 
     public FridolinsMotor makeAngleMotor() {
         FridoSparkMax angleMotor = new FridoSparkMax(angleMotorID);
-        angleMotor.factoryDefault();
+        //angleMotor.factoryDefault();
         SparkMaxConfig config = new SparkMaxConfig();
         config.smartCurrentLimit(angleMotorStallCurrentLimit, angleMotorFreeCurrentLimit);
         config.closedLoop.iZone(angleMotorIzone);
         angleMotor.asSparkMax().configure(config, SparkBase.ResetMode.kResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
-        angleMotor.configEncoder(FridoFeedBackDevice.kBuildin, (int) encoderThicksToRotationNEO);
         angleMotor.setInverted(angleMotorInverted);
         angleMotor.setPID(anglePidValues);
         return angleMotor;

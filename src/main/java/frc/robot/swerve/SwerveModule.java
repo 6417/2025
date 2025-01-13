@@ -21,10 +21,10 @@ class SwerveModule implements Sendable {
 
     public SwerveModule(ModuleConfig config) {
         this.config = config;
+        absoluteEncoder = config.makeAbsoluteEncoder();
         absoluteEncoder.setPositionOffset(config.absEncoderOffset);
         driveMotor = config.makeDriveMotor();
         angleMotor = config.makeAngleMotor();
-        absoluteEncoder = config.makeAbsoluteEncoder();
     }
 
     public void stopMotors() {

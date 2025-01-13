@@ -6,7 +6,6 @@ import static edu.wpi.first.units.Units.Radians;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.fridowpi.sensors.FridoNavx;
 import frc.fridowpi.utils.Vector2;
 import frc.robot.RobotContainer;
 import frc.robot.Constants;
@@ -14,8 +13,8 @@ import frc.robot.Controls;
 
 public class DriveCommand extends Command {
 
-    public DriveCommand() {
-        addRequirements(RobotContainer.drive);
+    public DriveCommand(SwerveDrive drive) {
+        addRequirements(drive);
     }
 
     public void execute() {

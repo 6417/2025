@@ -61,10 +61,10 @@ public final class Constants {
             final int LOC_RL = frc.robot.swerve.SwerveDrive.LOC_RL;
             final int LOC_RR = frc.robot.swerve.SwerveDrive.LOC_RR;
 
-            configs[LOC_FL] = defaultModuleConfig2024;
-            configs[LOC_FR] = defaultModuleConfig2024;
-            configs[LOC_RL] = defaultModuleConfig2024;
-            configs[LOC_RR] = defaultModuleConfig2024;
+            configs[LOC_FL] = defaultModuleConfig2024.clone();
+            configs[LOC_FR] = defaultModuleConfig2024.clone();
+            configs[LOC_RL] = defaultModuleConfig2024.clone();
+            configs[LOC_RR] = defaultModuleConfig2024.clone();
 
             configs[LOC_FL].driveMotorID = 1;
             configs[LOC_FL].angleMotorID = 11;
