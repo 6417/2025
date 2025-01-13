@@ -3,11 +3,13 @@ package frc.robot.swerve;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
 import frc.fridowpi.sensors.AnalogEncoder;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 
-class SwerveModule {
+class SwerveModule implements Sendable {
     private String moduleName;
     private FridolinsMotor driveMotor;
     private FridolinsMotor angleMotor;
@@ -107,5 +109,15 @@ class SwerveModule {
         Rotation2d angle = Rotation2d.fromRotations(
                 angleMotor.getEncoderTicks() / config.encoderThicksToRotationNEO / config.angleGearboxRatio);
         return new SwerveModuleState(velocity, angle);
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
+        builder.addDoubleProperty("angle motor angle [deg]", () -> getEncoderRotation().getDegrees(), null);
+        builder.addDoubleProperty("state speed [m/s]", () -> getState().speedMetersPerSecond, null);
+        builder.addDoubleProperty("state angle [deg]", () -> getState().angle.getDegrees(), null);
+        builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
+        builder.addDoubleProperty("drive vel [m/s]", () -> getVelocityMPS(), null);
     }
 }
