@@ -42,10 +42,10 @@ public class Controls {
     public boolean slewRateLimited = true;
     public double slewRateLimit = 1.0;
 
-    public static double turnSensitivity = 0.08;
+    public double turnSensitivity = 0.08;
 
-    public ControlMode controlMode = ControlMode.CONVENTIONAL;
 	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
+    public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
         activeSpeedFactor = speedFactor;
