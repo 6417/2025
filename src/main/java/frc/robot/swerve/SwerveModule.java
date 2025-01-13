@@ -21,6 +21,10 @@ class SwerveModule implements Sendable {
 
     public SwerveModule(ModuleConfig config) {
         this.config = config;
+        absoluteEncoder.setPositionOffset(config.absEncoderOffset);
+        driveMotor = config.makeDriveMotor();
+        angleMotor = config.makeAngleMotor();
+        absoluteEncoder = config.makeAbsoluteEncoder();
     }
 
     public void stopMotors() {
@@ -33,7 +37,7 @@ class SwerveModule implements Sendable {
     }
 
     public void resetToAbsolute() {
-        double position = absoluteEncoder.getAbsolutePosition() * config.angleGearboxRatio
+        double position = absoluteEncoder.getRaw() * config.angleGearboxRatio
                 * config.encoderThicksToRotationNEO;
         angleMotor.setEncoderPosition(position);
     }
@@ -66,6 +70,8 @@ class SwerveModule implements Sendable {
         // desiredState = CTREModuleState.optimize(desiredState, getState().angle);
         // minimize the change in heading/easiest way
 
+        desiredState.optimize(getEncoderRotation());
+
         double percentOutput = desiredState.speedMetersPerSecond / config.maxSpeed;
         driveMotor.set(percentOutput);
 
@@ -92,7 +98,7 @@ class SwerveModule implements Sendable {
     }
 
     public Rotation2d getEncoderRotation() {
-        return Rotation2d.fromRotations(absoluteEncoder.getAbsolutePosition());
+        return Rotation2d.fromRotations(absoluteEncoder.getRaw());
     }
 
     public SwerveModulePosition getPosition() {
@@ -119,5 +125,6 @@ class SwerveModule implements Sendable {
         builder.addDoubleProperty("state angle [deg]", () -> getState().angle.getDegrees(), null);
         builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
         builder.addDoubleProperty("drive vel [m/s]", () -> getVelocityMPS(), null);
+        builder.addDoubleProperty("abs encoder ", () -> absoluteEncoder.getRaw(), null);
     }
 }

@@ -126,7 +126,7 @@ public class AnalogEncoder implements Sendable, AutoCloseable {
    *
    * @return the absolute position
    */
-  public double getAbsolutePosition() {
+  public double getRaw() {
     if (m_simAbsolutePosition != null) {
       return m_simAbsolutePosition.get();
     }
@@ -226,6 +226,7 @@ public class AnalogEncoder implements Sendable, AutoCloseable {
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("AbsoluteEncoder");
     builder.addDoubleProperty("Distance", this::getDistance, null);
-    builder.addDoubleProperty("Distance Per Rotation", this::getDistancePerRotation, null);
+    builder.addDoubleProperty("offset", this::getPositionOffset, this::setPositionOffset);
+    builder.addDoubleProperty("Distance Per Rotation", this::getDistancePerRotation, this::setDistancePerRotation);
   }
 }
