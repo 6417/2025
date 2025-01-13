@@ -17,8 +17,8 @@ class SwerveModule {
 
     private double lastAngle;
 
-    public SwerveModule() {
-
+    public SwerveModule(ModuleConfig config) {
+        this.config = config;
     }
 
     public void stopMotors() {
@@ -41,6 +41,8 @@ class SwerveModule {
         // desiredState = CTREModuleState.optimize(desiredState, getState().angle); //
         // minimize the change in
         // heading/easiest way
+
+        desiredState.optimize(getEncoderRotation());
 
         double desiredVelocity = (desiredState.speedMetersPerSecond / config.wheelCircumference)
                 * config.driveGearboxRatio
