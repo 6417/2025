@@ -35,14 +35,14 @@ public class Controls {
     private DriveSpeed activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;
     private double accelerationSensitivity = speedFactors.get(activeSpeedFactor);
 
-    public double deadBandDrive = 0.08;
-    public double deadBandTurn = 0.08;
+    public static double deadBandDrive = 0.08;
+    public static double deadBandTurn = 0.08;
     public boolean inputsSquared = false;
 
     public boolean slewRateLimited = true;
     public double slewRateLimit = 1.0;
 
-    public double turnSensitivity = 0.08;
+    public static double turnSensitivity = 0.08;
 
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
