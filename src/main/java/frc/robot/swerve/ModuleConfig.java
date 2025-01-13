@@ -110,4 +110,22 @@ public class ModuleConfig {
         encoder.setPositionOffset(encoderPositionOffset);
         return encoder;
     }
+
+    @Override
+    public ModuleConfig clone() {
+        try {
+            ModuleConfig cloned = (ModuleConfig) super.clone();
+
+            // Deep copy of mutable objects
+            cloned.moduleOffset = moduleOffset != null ? new Translation2d(moduleOffset.getX(), moduleOffset.getY())
+                    : null;
+            cloned.drivePidValues = drivePidValues != null ? drivePidValues.clone() : null;
+            cloned.driveFFValues = driveFFValues != null ? driveFFValues.clone() : null;
+            cloned.anglePidValues = anglePidValues != null ? anglePidValues.clone() : null;
+
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Cloning not supported", e);
+        }
+    }
 }
