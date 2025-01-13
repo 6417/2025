@@ -4,9 +4,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 
-public class SwerveDrive {
+public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] modules;
     private SwerveDriveKinematics kinematics;
 

@@ -1,7 +1,6 @@
 package frc.robot.swerve;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -15,36 +14,68 @@ import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.fridowpi.sensors.AnalogEncoder;
 
-class ModuleConfig implements Cloneable {
+public class ModuleConfig {
     public String name;
-    public double maxSpeed = 6.5;
-    public double wheelCircumference = Units.inchesToMeters(4) * Math.PI;
+    public double maxSpeed;
+    public double wheelCircumference;
     public Translation2d moduleOffset;
     public double absEncoderOffset;
 
-    public double driveGearboxRatio = 5.192;
-    public int driveMotorID = 0;
-    public double driveMotorStallCurrentLimit = 55;
-    public double driveMotorFreeCurrentLimit = 30;
-    public boolean isDriveMotorInverted = false;
-    public PidValues drivePidValues = new PidValues(0.03, 0.00, 0);
-    public FeedForwardValues driveFFValues = new FeedForwardValues(0.18, 0.27, 0);
+    public double driveGearboxRatio;
+    public int driveMotorID;
+    public double driveMotorStallCurrentLimit;
+    public double driveMotorFreeCurrentLimit;
+    public boolean driveMotorInverted;
+    public PidValues drivePidValues;
+    public FeedForwardValues driveFFValues;
 
-    public int angleMotorID = 0;
-    public double angleGearboxRatio = 47.62;
-    public int angleMotorStallCurrentLimit = 35;
-    public int angleMotorFreeCurrentLimit = 20;
-    public double angleMotorIzone = 1.5;
-    public boolean isAngleMotorInverted = false;
-    public PidValues anglePidValues = new PidValues(1.05, 0.01, 1);
+    public int angleMotorID;
+    public double angleGearboxRatio;
+    public int angleMotorStallCurrentLimit;
+    public int angleMotorFreeCurrentLimit;
+    public double angleMotorIzone;
+    public boolean angleMotorInverted;
+    public PidValues anglePidValues;
 
-    public int encoderChannel = 0;
-    public double encoderPositionOffset = 0;
+    public int encoderChannel;
+    public double encoderPositionOffset;
 
-    public double encoderThicksToRotationFalcon = 1;
-    public double encoderVelocityToRPSFalcon = 1;
-    public double encoderThicksToRotationNEO = 1;
-    public double encoderVelocityToRPSNEO = 1;
+    public double encoderThicksToRotationFalcon;
+    public double encoderVelocityToRPSFalcon;
+    public double encoderThicksToRotationNEO;
+    public double encoderVelocityToRPSNEO;
+
+    public ModuleConfig() {
+        name = null;
+        maxSpeed = 0.0;
+        wheelCircumference = 0.0;
+        moduleOffset = null;
+        absEncoderOffset = 0.0;
+
+        driveGearboxRatio = 0.0;
+        driveMotorID = -1; // Invalid ID
+        driveMotorStallCurrentLimit = 0;
+        driveMotorFreeCurrentLimit = 0;
+        driveMotorInverted = false;
+        drivePidValues = null; // Consider creating an "invalid" PidValues object if null isn't suitable
+        driveFFValues = null;
+
+        angleMotorID = -1; // Invalid ID
+        angleGearboxRatio = 0.0;
+        angleMotorStallCurrentLimit = 0;
+        angleMotorFreeCurrentLimit = 0;
+        angleMotorIzone = 0.0;
+        angleMotorInverted = false;
+        anglePidValues = null;
+
+        encoderChannel = -1; // Invalid channel
+        encoderPositionOffset = 0.0;
+
+        encoderThicksToRotationFalcon = 0.0;
+        encoderVelocityToRPSFalcon = 0.0;
+        encoderThicksToRotationNEO = 0.0;
+        encoderVelocityToRPSNEO = 0.0;
+    }
 
     public FridolinsMotor makeDriveMotor() {
         FridoFalcon500v6 driveMotor = new FridoFalcon500v6(driveMotorID);
@@ -55,7 +86,7 @@ class ModuleConfig implements Cloneable {
                 .apply(new CurrentLimitsConfigs().withStatorCurrentLimit(driveMotorFreeCurrentLimit)
                         .withSupplyCurrentLimit(driveMotorStallCurrentLimit));
         driveMotor.configEncoder(FridoFeedBackDevice.kBuildin, (int) encoderThicksToRotationFalcon);
-        driveMotor.setInverted(isDriveMotorInverted);
+        driveMotor.setInverted(driveMotorInverted);
         driveMotor.setPID(drivePidValues, driveFFValues);
         return driveMotor;
     }
@@ -69,7 +100,7 @@ class ModuleConfig implements Cloneable {
         angleMotor.asSparkMax().configure(config, SparkBase.ResetMode.kResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
         angleMotor.configEncoder(FridoFeedBackDevice.kBuildin, (int) encoderThicksToRotationNEO);
-        angleMotor.setInverted(isAngleMotorInverted);
+        angleMotor.setInverted(angleMotorInverted);
         angleMotor.setPID(anglePidValues);
         return angleMotor;
     }
