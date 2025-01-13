@@ -4,28 +4,7 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import frc.fridowpi.motors.utils.FeedForwardValues;
-
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import frc.fridowpi.motors.FridoFalcon500v6;
-import frc.fridowpi.motors.FridoSparkMax;
-import frc.fridowpi.motors.FridoTalonSRX;
-import frc.fridowpi.motors.FridolinsMotor;
-import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
-import frc.fridowpi.motors.FridolinsMotor.IdleMode;
-import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
-import frc.fridowpi.motors.utils.PidValues;
+import com.pathplanner.lib.config.ModuleConfig;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -45,5 +24,9 @@ public final class Constants {
         public static final int operatorJoystickId = 1;
         public static final int idCounterStart = 1000;
         public static final double lt_rt_reshold = 0.2;
+    }
+
+    public static final class SwerveDrive {
+        public static ModuleConfig[] configs;
     }
 }

@@ -43,11 +43,6 @@ class SwerveModule implements Sendable {
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-
-        // desiredState = CTREModuleState.optimize(desiredState, getState().angle); //
-        // minimize the change in
-        // heading/easiest way
-
         desiredState.optimize(getEncoderRotation());
 
         double desiredVelocity = (desiredState.speedMetersPerSecond / config.wheelCircumference)
@@ -66,10 +61,6 @@ class SwerveModule implements Sendable {
     }
 
     public void setDesiredStateWithPercentOutput(SwerveModuleState desiredState) {
-
-        // desiredState = CTREModuleState.optimize(desiredState, getState().angle);
-        // minimize the change in heading/easiest way
-
         desiredState.optimize(getEncoderRotation());
 
         double percentOutput = desiredState.speedMetersPerSecond / config.maxSpeed;
