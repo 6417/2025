@@ -116,6 +116,7 @@ class SwerveModule implements Sendable {
         builder.addDoubleProperty("state angle [deg]", () -> getState().angle.getDegrees(), null);
         builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
         builder.addDoubleProperty("drive vel [m/s]", () -> getVelocityMPS(), null);
-        builder.addDoubleProperty("abs encoder ", () -> absoluteEncoder.getRaw(), null);
+        builder.addDoubleProperty("abs encoder raw", () -> absoluteEncoder.getRaw(), null);
+        builder.addDoubleProperty("abs encoder value", () -> absoluteEncoder.get(), null);
     }
 }
