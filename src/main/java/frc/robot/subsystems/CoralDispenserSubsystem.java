@@ -14,15 +14,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     private FridoSparkMax coralMotorBottomMaster;
     private static CoralDispenserSubsystem instance;
 
-    public CoralDispenserSubsystem() {
+    private CoralDispenserSubsystem() {
         coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
         coralMotorBottomMaster = new FridoSparkMax(Constants.CoralDispenser.coralMotorBottomID);
 
         coralMotorBottomMaster.follow(coralMotorTop, DirectionType.invertMaster);
-    }
-
-    private CoralDispenserSubsystem() {
-    
     }
 
     public static CoralDispenserSubsystem getInstance() {

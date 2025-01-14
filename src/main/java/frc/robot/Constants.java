@@ -59,6 +59,11 @@ public final class Constants {
         public static final int climberMotorLID = 3;
     }
 
+    public static final class LiftingTower {
+        public static final int liftingTowerLeftId = 4;
+        public static final int liftingTowerRightId = 5;
+    }
+
     public static final class SwerveDrive {
 
         public static double navxPitchOffset = 90;

@@ -22,6 +22,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     
     public static LiftingTowerSubsystem getInstance() {
         if (instance == null) {
+            
             instance = new LiftingTowerSubsystem();
         }
         
