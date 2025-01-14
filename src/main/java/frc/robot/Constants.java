@@ -96,7 +96,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = false;
             configs[LOC_RR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.480;
+            configs[LOC_RR].absEncoderOffset = 0.48;
         }
     }
 }

@@ -25,6 +25,10 @@ class SwerveModule implements Sendable {
         absoluteEncoder.setPositionOffset(config.absEncoderOffset);
         driveMotor = config.makeDriveMotor();
         angleMotor = config.makeAngleMotor();
+
+        lastAngle = getEncoderRotation().getRotations();
+
+        resetToAbsolute();
     }
 
     public void stopMotors() {
@@ -37,13 +41,13 @@ class SwerveModule implements Sendable {
     }
 
     public void resetToAbsolute() {
-        double position = absoluteEncoder.getRaw() * config.angleGearboxRatio
+        double position = absoluteEncoder.get() * config.angleGearboxRatio
                 * config.encoderThicksToRotationNEO;
         angleMotor.setEncoderPosition(position);
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-        desiredState.optimize(getEncoderRotation());
+        desiredState.optimize(getState().angle);
 
         double desiredVelocity = (desiredState.speedMetersPerSecond / config.wheelCircumference)
                 * config.driveGearboxRatio
@@ -54,6 +58,7 @@ class SwerveModule implements Sendable {
                 ? lastAngle
                 : desiredState.angle.getRotations(); // https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
 
+        System.out.println(angle * config.angleGearboxRatio);
         angleMotor.setPosition(angle);
 
         lastAngle = angle;
@@ -61,7 +66,7 @@ class SwerveModule implements Sendable {
     }
 
     public void setDesiredStateWithPercentOutput(SwerveModuleState desiredState) {
-        desiredState.optimize(getEncoderRotation());
+        desiredState.optimize(getState().angle);
 
         double percentOutput = desiredState.speedMetersPerSecond / config.maxSpeed;
         driveMotor.set(percentOutput);
@@ -70,7 +75,7 @@ class SwerveModule implements Sendable {
                 ? lastAngle
                 : desiredState.angle.getRadians(); // https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
 
-        angleMotor.setPosition(angle);
+        angleMotor.setPosition(angle * config.angleGearboxRatio);
 
         lastAngle = angle;
 
@@ -89,7 +94,7 @@ class SwerveModule implements Sendable {
     }
 
     public Rotation2d getEncoderRotation() {
-        return Rotation2d.fromRotations(absoluteEncoder.getRaw());
+        return Rotation2d.fromRotations(absoluteEncoder.get());
     }
 
     public SwerveModulePosition getPosition() {

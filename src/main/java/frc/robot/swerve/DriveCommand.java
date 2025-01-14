@@ -19,16 +19,17 @@ public class DriveCommand extends Command {
 
     public void execute() {
 
-        var pitchOffsetRadians = Radians.convertFrom(90, Degrees);
+        //var pitchOffsetRadians = Radians.convertFrom(90, Degrees);
 
         var joystick = RobotContainer.controls.driveJoystick;
         var xy = new Vector2(joystick.getX(), joystick.getY());
-        xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
+        //xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
         var rot = -joystick.getTwist();
 
         if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
             xy = xy.normalized().scaled(joystick.getZ());
         }
+
 
         // Brake if input is 0
         /*
@@ -40,6 +41,7 @@ public class DriveCommand extends Command {
          */
 
         // Apply deadband
+        //System.out.println(xy.y); //x is the horizqantol value, y is the vertical value
         xy = applyDeadband(xy, Controls.deadBandDrive)
                 .scaled(RobotContainer.controls.getAccelerationSensitivity());
         rot = applyDeadband(rot, Controls.deadBandTurn)
@@ -61,10 +63,10 @@ public class DriveCommand extends Command {
          */
 
         // Convert to velocity
-        xy.scale(Constants.SwerveDrive.maxSpeed);
-        rot *= Constants.SwerveDrive.maxTurnSpeed;
-
-        setChassisSpeeds(xy, rot);
+        xy.scale(Constants.SwerveDrive.maxSpeed * 0.3);
+        rot *= (Constants.SwerveDrive.maxTurnSpeed * 0.3);
+        //System.out.println(xy.y);
+        setChassisSpeeds(new Vector2(0, 0.3), 0);
     }
 
     public static Vector2 applyDeadband(Vector2 xy, double deadBand) {

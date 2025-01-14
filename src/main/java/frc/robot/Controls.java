@@ -32,7 +32,7 @@ public class Controls {
             DriveSpeed.DEFAULT_SPEED, 1.0,
             DriveSpeed.FAST, 1.0,
             DriveSpeed.SLOW, 0.3);
-    private DriveSpeed activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;
+    private DriveSpeed activeSpeedFactor = DriveSpeed.SLOW;
     private double accelerationSensitivity = speedFactors.get(activeSpeedFactor);
 
     public static double deadBandDrive = 0.08;
@@ -44,7 +44,7 @@ public class Controls {
 
     public double turnSensitivity = 0.08;
 
-	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
+	public DriveOrientation driveOrientation = DriveOrientation.Forwards;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
