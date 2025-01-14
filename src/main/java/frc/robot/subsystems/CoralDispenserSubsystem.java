@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-public class SkihalterSubsystem {
+public class CoralDispenserSubsystem {
     
-    public SkihalterSubsystem() {
+    public CoralDispenserSubsystem() {
     }
 
     public void periodic() {
