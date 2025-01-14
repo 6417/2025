@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-public class KlettererSubsytem {
+public class ClimberSubsytem {
     
-    public KlettererSubsytem() {
+    public ClimberSubsytem() {
     }
 
     public void periodic() {
