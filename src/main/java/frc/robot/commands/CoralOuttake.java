@@ -18,12 +18,12 @@ public class CoralOuttake extends Command {
 
     @Override
     public void execute() {
-        coralSubsystem.setMotorSpeed(0.5);
+        coralSubsystem.setMotorTopSpeed(0.5);
     }
 
     @Override
     public void end(boolean interrupted) {
-        coralSubsystem.stopMotors();
+        coralSubsystem.stopMotorTop();
     }
 
     @Override
