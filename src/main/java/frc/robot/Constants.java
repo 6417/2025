@@ -49,6 +49,16 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
+    public static final class CoralDispenser {
+        public static final int coralMotorTopID = 0;
+        public static final int coralMotorBottomID = 1;
+    }
+
+    public static final class ClimberSubsytem {
+        public static final int climberMotorRID = 2;
+        public static final int climberMotorLID = 3;
+    }
+
     public static final class SwerveDrive {
 
         public static double navxPitchOffset = 90;
