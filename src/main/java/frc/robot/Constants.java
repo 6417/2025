@@ -65,10 +65,6 @@ public final class Constants {
         public static final int liftingTowerRightId = 6;
     }
 
-    public static final class LiftingTower {
-        public static final int liftingTowerLeftId = 4;
-        public static final int liftingTowerRightId = 5;
-    }
 
     public static final class SwerveDrive {
 
