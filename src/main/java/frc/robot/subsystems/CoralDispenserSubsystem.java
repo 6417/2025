@@ -12,11 +12,18 @@ import frc.robot.Constants;
 public class CoralDispenserSubsystem extends SubsystemBase {
     private FridoSparkMax coralMotorTop;
     private FridoSparkMax coralMotorBottomMaster;
+<<<<<<< Updated upstream
   
+=======
+    private FridoSparkMax coralMotorChangePitch;
+    
+>>>>>>> Stashed changes
     public CoralDispenserSubsystem() {
         coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
         coralMotorBottomMaster = new FridoSparkMax(Constants.CoralDispenser.coralMotorBottomID);
-
+        
+        coralMotorChangePitch = new FridoSparkMax(Constants.ClimberSubsytem.coralMotorChangePitchID);
+        
         coralMotorBottomMaster.follow(coralMotorTop, DirectionType.invertMaster);
     }
 

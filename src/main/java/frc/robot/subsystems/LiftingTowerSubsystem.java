@@ -27,7 +27,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorRight.setPID(pidValues);
     }
     
-    public void startMotors(double speed) {
+    public void setMotorSpeed(double speed) {
         if (speed < -1.0 || speed > 1.0) {
             throw new IllegalArgumentException("Set speed between -1.0 and 1.0");
         }
@@ -40,6 +40,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     }
 
     public void stopMotors() {
-        startMotors(0);
+        setMotorSpeed(0);
     }
 }

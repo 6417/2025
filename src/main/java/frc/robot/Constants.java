@@ -57,6 +57,12 @@ public final class Constants {
     public static final class ClimberSubsytem {
         public static final int climberMotorRID = 2;
         public static final int climberMotorLID = 3;
+        public static final int coralMotorChangePitchID = 4;
+    }
+
+    public static final class LiftingTower {
+        public static final int liftingTowerLeftId = 5;
+        public static final int liftingTowerRightId = 6;
     }
 
     public static final class LiftingTower {
