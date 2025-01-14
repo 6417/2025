@@ -6,6 +6,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.Sendable;
 import frc.fridowpi.sensors.AnalogEncoder;
+import frc.fridowpi.utils.Vector2;
+import frc.robot.swerve.CTREModuleState;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 
@@ -17,7 +19,7 @@ class SwerveModule implements Sendable {
 
     private ModuleConfig config;
 
-    private double lastAngle;
+    private Rotation2d lastAngle;
 
     public SwerveModule(ModuleConfig config) {
         this.config = config;
@@ -26,7 +28,7 @@ class SwerveModule implements Sendable {
         driveMotor = config.makeDriveMotor();
         angleMotor = config.makeAngleMotor();
 
-        lastAngle = getEncoderRotation().getRotations();
+        lastAngle = getRotation();
 
         resetToAbsolute();
     }
@@ -41,44 +43,43 @@ class SwerveModule implements Sendable {
     }
 
     public void resetToAbsolute() {
-        double position = absoluteEncoder.get() * config.angleGearboxRatio
-                * config.encoderThicksToRotationNEO;
+        double position = (1.0 - absoluteEncoder.get()) * config.encoderThicksToRotationNEO * config.angleGearboxRatio;
         angleMotor.setEncoderPosition(position);
     }
 
+    public Rotation2d angleToTargetAngle(Rotation2d angle) {
+        Vector2 moduleRot = Vector2.fromRadians(getRotation().getRadians());
+        Vector2 angleHeading = Vector2.fromRadians(angle.getRadians());
+        double angleDelta = Math.acos(moduleRot.dot(angleHeading));
+
+        // doesn'tt seem to be used in the old code
+        // if (currentRotationInverted)
+        // angleDelta = Math.PI * 2 + angleDelta;
+
+        double steeringDirection = Math.signum(moduleRot.cross(angleHeading));
+        return Rotation2d.fromRotations(getRotation().getRotations()
+                + steeringDirection * (angleDelta / (Math.PI * 2)));
+    }
+
+    double counter = 0.0;
+
     public void setDesiredState(SwerveModuleState desiredState) {
-        desiredState.optimize(getState().angle);
+        // counter += 0.005;
+        desiredState.angle = Rotation2d.fromRotations(counter);
+
+        desiredState = CTREModuleState.optimize(desiredState, getRotation());
 
         double desiredVelocity = (desiredState.speedMetersPerSecond / config.wheelCircumference)
                 * config.driveGearboxRatio
                 * config.encoderVelocityToRPSFalcon;
-        driveMotor.setVelocity(desiredVelocity); // https://github.com/CrossTheRoadElec/Phoenix6-Examples/blob/main/java/VelocityClosedLoop/src/main/java/frc/robot/Robot.java
+        // driveMotor.setVelocity(desiredVelocity); //
 
-        double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (config.maxSpeed * 0.01))
+        Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (config.maxSpeed * 0.01))
                 ? lastAngle
-                : desiredState.angle.getRotations(); // https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
-
-        System.out.println(angle * config.angleGearboxRatio);
-        angleMotor.setPosition(angle);
+                : desiredState.angle; // https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
 
         lastAngle = angle;
-
-    }
-
-    public void setDesiredStateWithPercentOutput(SwerveModuleState desiredState) {
-        desiredState.optimize(getState().angle);
-
-        double percentOutput = desiredState.speedMetersPerSecond / config.maxSpeed;
-        driveMotor.set(percentOutput);
-
-        double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (config.maxSpeed * 0.01))
-                ? lastAngle
-                : desiredState.angle.getRadians(); // https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
-
-        angleMotor.setPosition(angle * config.angleGearboxRatio);
-
-        lastAngle = angle;
-
+        angleMotor.setPosition(lastAngle.getRotations() * config.angleGearboxRatio);
     }
 
     public double getVelocityMPS() {
@@ -93,8 +94,12 @@ class SwerveModule implements Sendable {
         return moduleName;
     }
 
-    public Rotation2d getEncoderRotation() {
+    public Rotation2d getAbsEncoderRotation() {
         return Rotation2d.fromRotations(absoluteEncoder.get());
+    }
+
+    public Rotation2d getRotation() {
+        return getState().angle;
     }
 
     public SwerveModulePosition getPosition() {
@@ -113,15 +118,20 @@ class SwerveModule implements Sendable {
         return new SwerveModuleState(velocity, angle);
     }
 
+    static double normalizeAngle(double v) {
+        return Math.asin(Math.sin(v));
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
-        builder.addDoubleProperty("angle motor angle [deg]", () -> getEncoderRotation().getDegrees(), null);
-        builder.addDoubleProperty("state speed [m/s]", () -> getState().speedMetersPerSecond, null);
-        builder.addDoubleProperty("state angle [deg]", () -> getState().angle.getDegrees(), null);
+        builder.addDoubleProperty("angle motor angle [deg]",
+                () -> normalizeAngle(getRotation().getRadians()) * 180 / Math.PI, null);
+        builder.addDoubleProperty("state speed [mps]", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
-        builder.addDoubleProperty("drive vel [m/s]", () -> getVelocityMPS(), null);
+        builder.addDoubleProperty("drive vel [mps]", () -> getVelocityMPS(), null);
         builder.addDoubleProperty("abs encoder raw", () -> absoluteEncoder.getRaw(), null);
         builder.addDoubleProperty("abs encoder value", () -> absoluteEncoder.get(), null);
+        builder.addDoubleProperty("last angle [deg]", () -> lastAngle.getDegrees(), null);
     }
 }

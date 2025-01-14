@@ -1,6 +1,7 @@
 package frc.robot.swerve;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -80,8 +81,8 @@ public class ModuleConfig implements Cloneable {
     public FridolinsMotor makeDriveMotor() {
         FridoFalcon500v6 driveMotor = new FridoFalcon500v6(driveMotorID);
         driveMotor.factoryDefault();
-        // driveMotor.asTalonFX().getConfigurator().apply(new
-        // Slot0Configs().withKP(0.03).withKS(0.18).withKV(0.27));
+        driveMotor.asTalonFX().getConfigurator().apply(new Slot0Configs().withKP(drivePidValues.kP)
+                .withKS(driveFFValues.kS).withKV(driveFFValues.kV));
         driveMotor.asTalonFX().getConfigurator()
                 .apply(new CurrentLimitsConfigs().withStatorCurrentLimit(driveMotorFreeCurrentLimit)
                         .withSupplyCurrentLimit(driveMotorStallCurrentLimit));
@@ -93,13 +94,13 @@ public class ModuleConfig implements Cloneable {
 
     public FridolinsMotor makeAngleMotor() {
         FridoSparkMax angleMotor = new FridoSparkMax(angleMotorID);
-        //angleMotor.factoryDefault();
+        // angleMotor.factoryDefault();
         SparkMaxConfig config = new SparkMaxConfig();
         config.smartCurrentLimit(angleMotorStallCurrentLimit, angleMotorFreeCurrentLimit);
-        config.closedLoop.iZone(angleMotorIzone);
         angleMotor.asSparkMax().configure(config, SparkBase.ResetMode.kResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
         angleMotor.setInverted(angleMotorInverted);
+        config.closedLoop.iZone(angleMotorIzone);
         angleMotor.setPID(anglePidValues);
         return angleMotor;
     }

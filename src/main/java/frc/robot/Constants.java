@@ -69,7 +69,7 @@ public final class Constants {
             configs[LOC_FL].driveMotorID = 1;
             configs[LOC_FL].angleMotorID = 11;
             configs[LOC_FL].driveMotorInverted = false;
-            configs[LOC_FL].angleMotorInverted = false;
+            configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
             configs[LOC_FL].absEncoderOffset = 0.150;
@@ -77,26 +77,26 @@ public final class Constants {
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
             configs[LOC_FR].driveMotorInverted = false;
-            configs[LOC_FR].angleMotorInverted = false;
+            configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 1.0 - 0.221 - 0.05;
+            configs[LOC_FR].absEncoderOffset = 0.721;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
             configs[LOC_RL].driveMotorInverted = false;
-            configs[LOC_RL].angleMotorInverted = false;
+            configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.487;
+            configs[LOC_RL].absEncoderOffset = 0.486;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
             configs[LOC_RR].driveMotorInverted = false;
-            configs[LOC_RR].angleMotorInverted = false;
+            configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.48;
+            configs[LOC_RR].absEncoderOffset = 0.470;
         }
     }
 }

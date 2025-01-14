@@ -27,7 +27,7 @@ public class SwerveDrive extends SubsystemBase {
         for (int i = 0; i < 4; i++) {
             configs[i].name = moduleNames[i];
             modules[i] = new SwerveModule(configs[i]);
-            Shuffleboard.getTab("Drive").add("SwerveModule" + moduleNames[i], modules[i]);
+            Shuffleboard.getTab("Drive").add("SwerveModule " + moduleNames[i], modules[i]);
         }
 
         kinematics = new SwerveDriveKinematics(

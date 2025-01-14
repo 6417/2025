@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -16,6 +17,7 @@ import frc.fridowpi.motors.utils.PidValues;
 
 public class FridoSparkMax implements FridolinsMotor {
     private SparkMax motorProxy;
+    private RelativeEncoder encoder;
     private SparkMaxConfig config;
     private PidValues currentPidConfiguration;
     private PidType currentPidType;
@@ -25,6 +27,7 @@ public class FridoSparkMax implements FridolinsMotor {
     public FridoSparkMax(int deviceID) {
         config = new SparkMaxConfig();
         motorProxy = new SparkMax(deviceID, MotorType.kBrushless);
+        encoder = motorProxy.getEncoder();
     }
 
     private com.revrobotics.spark.config.SparkBaseConfig.IdleMode convertFromFridoIdleMode(IdleMode mode) {
@@ -140,9 +143,9 @@ public class FridoSparkMax implements FridolinsMotor {
     public boolean pidAtTarget() {
         switch (currentPidType) {
             case position:
-                return Math.abs(getEncoderTicks()-pidSetpoint) < currentPidConfiguration.tolerance.orElse(0.01);
+                return Math.abs(getEncoderTicks() - pidSetpoint) < currentPidConfiguration.tolerance.orElse(0.01);
             case velocity:
-                return Math.abs(getEncoderVelocity()-pidSetpoint) < currentPidConfiguration.tolerance.orElse(0.01);
+                return Math.abs(getEncoderVelocity() - pidSetpoint) < currentPidConfiguration.tolerance.orElse(0.01);
             default:
                 return false;
         }
@@ -219,17 +222,18 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public void setEncoderPosition(double position) {
-        motorProxy.getEncoder().setPosition(position);
+        System.out.println("neo reset to: " + position);
+        encoder.setPosition(position);
     }
 
     @Override
     public double getEncoderTicks() {
-        return motorProxy.getEncoder().getPosition();
+        return encoder.getPosition();
     }
 
     @Override
     public double getEncoderVelocity() {
-        return motorProxy.getEncoder().getVelocity();
+        return encoder.getVelocity();
     }
 
     @Override
