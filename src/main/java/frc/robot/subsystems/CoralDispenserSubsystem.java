@@ -12,20 +12,12 @@ import frc.robot.Constants;
 public class CoralDispenserSubsystem extends SubsystemBase {
     private FridoSparkMax coralMotorTop;
     private FridoSparkMax coralMotorBottomMaster;
-    private static CoralDispenserSubsystem instance;
-
-    private CoralDispenserSubsystem() {
+  
+    public CoralDispenserSubsystem() {
         coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
         coralMotorBottomMaster = new FridoSparkMax(Constants.CoralDispenser.coralMotorBottomID);
 
         coralMotorBottomMaster.follow(coralMotorTop, DirectionType.invertMaster);
-    }
-
-    public static CoralDispenserSubsystem getInstance() {
-        if (instance == null) {
-            instance = new CoralDispenserSubsystem();
-        }
-        return instance;
     }
 
     public void setMotorSpeed(double speed) {

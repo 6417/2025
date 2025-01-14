@@ -13,23 +13,12 @@ import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 
 public class LiftingTowerSubsystem extends SubsystemBase {
-    private static LiftingTowerSubsystem instance;
-
     private final PidValues pidValues = new PidValues(0, 0, 0, 0); // p, i, d, f
             
     private FridoSparkMax motorLeft;
     private FridoSparkMax motorRight;
     
-    public static LiftingTowerSubsystem getInstance() {
-        if (instance == null) {
-            
-            instance = new LiftingTowerSubsystem();
-        }
-        
-        return instance;
-    }
-
-    private LiftingTowerSubsystem() {
+    public LiftingTowerSubsystem() {
         motorLeft = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
         motorRight = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
         
