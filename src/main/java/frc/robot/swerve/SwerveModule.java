@@ -28,7 +28,7 @@ class SwerveModule implements Sendable {
         driveMotor = config.makeDriveMotor();
         angleMotor = config.makeAngleMotor();
 
-        lastAngle = Rotation2d.fromDegrees(0);
+        lastAngle = getAbsEncoderRotation();
 
         resetToAbsolute();
     }

@@ -30,11 +30,11 @@ public final class Constants {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = true;
 
-        public static final double maxSpeed = 6.5 * 0.25; // TODO: for testing
+        public static final double maxSpeed = 6.5 ; // TODO: for testing
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.275;
         public static final double moduleYoffset = 0.275;
-        public static final double maxTurnSpeed = 11.5;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
+        public static final double maxTurnSpeed = 11.5 ;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
 
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
@@ -43,14 +43,14 @@ public final class Constants {
             defaultModuleConfig2024.driveGearboxRatio = 5.192;
             defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.03, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.18, 0.27, 0);
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.18, 0.25, 0.05);
 
             defaultModuleConfig2024.angleGearboxRatio = 47.62;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
             defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
             defaultModuleConfig2024.angleMotorIzone = 1.5;
-            defaultModuleConfig2024.anglePidValues = new PidValues(1.05, 0.01, 1);
+            defaultModuleConfig2024.anglePidValues = new PidValues(0.35, 0.0, 0.03);
 
             defaultModuleConfig2024.encoderThicksToRotationFalcon = 1;
             defaultModuleConfig2024.encoderVelocityToRPSFalcon = 1;
