@@ -63,10 +63,11 @@ public class DriveCommand extends Command {
          */
 
         // Convert to velocity
-        xy.scale(Constants.SwerveDrive.maxSpeed * 0.3);
-        rot *= (Constants.SwerveDrive.maxTurnSpeed * 0.3);
+        xy.scale(Constants.SwerveDrive.maxSpeed);
+        rot *= Constants.SwerveDrive.maxTurnSpeed;
         //System.out.println(xy.y);
-        setChassisSpeeds(new Vector2(0, 0.3), 0);
+        // setChassisSpeeds(new Vector2(0, 0.3), 0);
+        setChassisSpeeds(xy, rot);
     }
 
     public static Vector2 applyDeadband(Vector2 xy, double deadBand) {

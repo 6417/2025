@@ -61,18 +61,13 @@ class SwerveModule implements Sendable {
                 + steeringDirection * (angleDelta / (Math.PI * 2)));
     }
 
-    double counter = 0.0;
-
     public void setDesiredState(SwerveModuleState desiredState) {
-        // counter += 0.005;
-        desiredState.angle = Rotation2d.fromRotations(counter);
-
         desiredState = CTREModuleState.optimize(desiredState, getRotation());
 
         double desiredVelocity = (desiredState.speedMetersPerSecond / config.wheelCircumference)
                 * config.driveGearboxRatio
                 * config.encoderVelocityToRPSFalcon;
-        // driveMotor.setVelocity(desiredVelocity); //
+        driveMotor.setVelocity(desiredVelocity); //
 
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (config.maxSpeed * 0.01))
                 ? lastAngle

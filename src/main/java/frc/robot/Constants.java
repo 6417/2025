@@ -29,7 +29,7 @@ public final class Constants {
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
 
-        public static final double maxSpeed = 6.5;
+        public static final double maxSpeed = 6.5 * 0.1; // TODO: for testing
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.275;
         public static final double moduleYoffset = 0.275;
