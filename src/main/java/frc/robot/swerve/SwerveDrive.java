@@ -1,6 +1,11 @@
 package frc.robot.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -48,6 +54,35 @@ public class SwerveDrive extends SubsystemBase {
                 configs[3].moduleOffset);
         odometry = new SwerveDriveOdometry(kinematics, getGyroRotation2d(), getModulePositions());
         setDefaultCommand(new DriveCommand(this));
+        
+        RobotConfig config;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+            config = null;
+        }
+
+        AutoBuilder.configure(
+            this::getPose,
+            this::resetOdoemetry,
+            this::getChassisSpeeds,
+            (speeds, feedforwards) -> setChassisSpeeds(speeds),
+            new PPHolonomicDriveController(
+                new PIDConstants(5.0, 0.0, 0.0), 
+                new PIDConstants(5.0, 0.0, 0.0)
+            ),
+            config,
+            () -> {
+
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            },
+            this
+        );
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
@@ -58,11 +93,20 @@ public class SwerveDrive extends SubsystemBase {
         }
     }
 
+    public ChassisSpeeds getChassisSpeeds() {
+        return kinematics.toChassisSpeeds(modules[0].getState(), modules[1].getState(),
+                modules[2].getState(), modules[3].getState());
+    }
+
     public void periodic(){
 
         updateOdometry();
 
         System.out.println(odometry.getPoseMeters());
+    }
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
     }
 
     public void updateOdometry() {
