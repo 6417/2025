@@ -17,12 +17,12 @@ public class CoralIntake extends Command {
 
     @Override
     public void execute() {
-        coralDispenserSubsystem.setMotorSpeed(-0.5);
+        coralDispenserSubsystem.setMotorTopSpeed(-0.5);
     }
 
     @Override
     public void end(boolean interrupted) {
-        coralDispenserSubsystem.stopMotors();
+        coralDispenserSubsystem.stopMotorTop();
     }
 
     @Override

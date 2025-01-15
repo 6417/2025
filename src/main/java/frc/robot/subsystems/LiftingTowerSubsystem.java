@@ -40,6 +40,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     }
 
     public void stopMotors() {
-        setMotorSpeed(0);
+        motorRight.set(0);
     }
 }
