@@ -22,9 +22,9 @@ public class DriveCommand extends Command {
         //var pitchOffsetRadians = Radians.convertFrom(90, Degrees);
 
         var joystick = RobotContainer.controls.driveJoystick;
-        var xy = new Vector2(joystick.getX(), joystick.getY());
+        var xy = new Vector2(-joystick.getY(), -joystick.getX());
         //xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
-        var rot = -joystick.getTwist();
+        var rot = -joystick.getRawAxis(4);
 
         if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
             xy = xy.normalized().scaled(joystick.getZ());
@@ -65,6 +65,7 @@ public class DriveCommand extends Command {
         // Convert to velocity
         xy.scale(Constants.SwerveDrive.maxSpeed);
         rot *= Constants.SwerveDrive.maxTurnSpeed;
+        //System.out.println(rot);
         //System.out.println(xy.y);
         // setChassisSpeeds(new Vector2(0, 0.3), 0);
         setChassisSpeeds(xy, rot);
@@ -90,7 +91,7 @@ public class DriveCommand extends Command {
                 break;
             case FieldOriented:
                 RobotContainer.drive.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
-                        vRot, Rotation2d.fromDegrees(RobotContainer.gyro.getAngle())));
+                        vRot, RobotContainer.drive.getGyroRotation2d()));
                 break;
         }
     }

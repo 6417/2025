@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
      */
     public Robot() {
         robotContainer = new RobotContainer();
-        RobotContainer.gyro.reset();
+        
     }
 
     /**
@@ -73,6 +73,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        robotContainer.drive.stopMotors();
     }
 
     /** This function is called periodically during operator control. */
