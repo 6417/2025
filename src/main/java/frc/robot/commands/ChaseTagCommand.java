@@ -1,17 +1,23 @@
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
+import frc.robot.swerve.SwerveDrive;
 
-public class ChaseTagCommand extends CommandBase {
+public class ChaseTagCommand extends Command {
 
     private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
@@ -21,20 +27,20 @@ public class ChaseTagCommand extends CommandBase {
     private static final Transform3d TAG_TO_GOAL = new Transform3d(
             new Translation3d(1.5, 0, 0), // x, y, z
             new Rotation3d(0, 0, Math.PI)); // roll, pitch, yaw
-    private final Limelight limelight;
-    private finalk DriveTrainSubsystem driveTrainSubsystem;
+    private final LimelightHelpers limelight;
+    private final SwerveDrive swerveDriveSubsystem;
     private final Supplier<Pose2d> poseProvider;
 
     private final ProfiledPIDController xController = new ProfiledPIDController(0, 0, 0, X_CONSTRAINTS);
-    private final ProfiledPIDController yController = new ProfiledPIDController(0, 0, 0, X_CONSTRAINTS);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(0, 0, 0, X_CONSTRAINTS);
+    private final ProfiledPIDController yController = new ProfiledPIDController(0, 0, 0, Y_CONSTRAINTS);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(0, 0, 0, OMEGA_CONSTRAINTS);
+    
+    private double lastTarget;
 
-    private LimelightTarget_Fiducial lastTarget;
-
-    public ChaseTagCommand(Limelight limelight, DriveTrainSubsystem driveTrainSubsystem,
+    public ChaseTagCommand(LimelightHelpers limelight, SwerveDrive swerveDriveSubsystem,
             Supplier<Pose2d> poseProvider) {
         this.limelight = limelight;
-        this.driveTrainSubsystem = driveTrainSubsystem;
+        this.swerveDriveSubsystem = swerveDriveSubsystem;
         this.poseProvider = poseProvider;
 
         xController.setTolerance(0.2);
@@ -42,12 +48,12 @@ public class ChaseTagCommand extends CommandBase {
         omegaController.setTolerance(Units.degreesToRadians(3));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        addRequirements(driveTrain);
+        addRequirements(swerveDriveSubsystem);
     }
 
     @Override
     public void initialize() {
-        lastTarget = null;
+        lastTarget = -1;
         Pose2d robotPose = poseProvider.get();
         omegaController.reset(robotPose.getRotation().getRadians());
         xController.reset(robotPose.getX());
@@ -56,7 +62,7 @@ public class ChaseTagCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Pose2d robotPose2d = LimelightHelpers.getBotPose2d("");
+        Pose2d robotPose2d = swerveDriveSubsystem.getPose();
         Pose3d robotPose = new Pose3d(
                 robotPose2d.getX(),
                 robotPose2d.getY(),
@@ -65,32 +71,24 @@ public class ChaseTagCommand extends CommandBase {
 
         if (LimelightHelpers.getTV("")) {
             // Find the tag we want to chase
-            var target = LimelightHelpers.getFiducialID("");
-            if (targetOpt.isPrsent()) {
-                var target = targetOpt.get();
-                // This is new target data, so recalculate the goal
-                lastTarget = target;
+            double target = LimelightHelpers.getFiducialID("");
 
-                // Transform the robot's pose to find the camera's pose
-                var cameraPose = robotPose.transformBy(ROBOT_TO_CAMERA);
+            // This is new target data, so recalculate the goal
+            lastTarget = target;
 
-                // Transform the camera's pose to find the goal's pose
-                var camToTarget = target.getBestCameraToTarget();
-                var targetPose = cameraPose.transformBy(camToTarget);
+            // Transform the tag's pose to set our goal
+            var goalPose = limelight.getTargetPose3d_CameraSpace("");
 
-                // Transform the tag's pose to set our goal
-                var goalPose = targetPose.transformBy(TAG_TO_GOAL).toPose2d();
+            // Drive
+            xController.setGoal(goalPose.getX());
+            yController.setGoal(goalPose.getY());
+            omegaController.setGoal(goalPose.getRotation().getAngle());
 
-                // Drive
-                xController.setGoal(goalPose.getX());
-                yController.setGoal(goalPose.getY());
-                omegaController.setGoal(goalPose.getRotation().getRadians());
-            }
         }
 
-        if (lastTarget == null) {
+        if (lastTarget == -1) {
             // No target has been visible, so just stop
-            driveTrainSubsystem.stop();
+            swerveDriveSubsystem.stopMotors();
         } else {
             var xSpeed = xController.calculate(robotPose.getX());
             if (xController.atGoal()) {
@@ -100,19 +98,19 @@ public class ChaseTagCommand extends CommandBase {
             if (yController.atGoal()) {
                 ySpeed = 0;
             }
-            var omegaSpeed = omegaController.calculate(robotPose.getRotation().getRadians());
+            var omegaSpeed = omegaController.calculate(robotPose.getRotation().getAngle());
             if (omegaController.atGoal()) {
                 omegaSpeed = 0;
             }
 
-            driveTrainSubsystem.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed,
-                    robotPose2d.getRotation.getRadians()));
+            swerveDriveSubsystem.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed,
+                    robotPose2d.getRotation()));
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        driveTrainSubsystem.stop();
+        swerveDriveSubsystem.stopMotors();
     }
 
 }
