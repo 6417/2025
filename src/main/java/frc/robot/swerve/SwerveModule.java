@@ -7,11 +7,12 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.Sendable;
 import frc.fridowpi.sensors.AnalogEncoder;
 import frc.fridowpi.utils.Vector2;
+import frc.robot.Utils;
 import frc.robot.swerve.CTREModuleState;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 
-class SwerveModule implements Sendable {
+public class SwerveModule implements Sendable {
     private String moduleName;
     private FridolinsMotor driveMotor;
     private FridolinsMotor angleMotor;
@@ -113,15 +114,11 @@ class SwerveModule implements Sendable {
         return new SwerveModuleState(velocity, angle);
     }
 
-    static double normalizeAngle(double v) {
-        return Math.asin(Math.sin(v));
-    }
-
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
         builder.addDoubleProperty("angle motor angle [deg]",
-                () -> normalizeAngle(getRotation().getRadians()) * 180 / Math.PI, null);
+                () -> Utils.normalizeAngleRad(getRotation().getRadians()) * 180 / Math.PI, null);
         builder.addDoubleProperty("state speed [mps]", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
         builder.addDoubleProperty("drive vel [mps]", () -> getVelocityMPS(), null);

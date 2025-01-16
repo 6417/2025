@@ -54,7 +54,7 @@ public class SwerveDrive extends SubsystemBase {
                 configs[1].moduleOffset,
                 configs[2].moduleOffset,
                 configs[3].moduleOffset);
-        odometry = new SwerveDriveOdometry(kinematics, getGyroRotation2d(), getModulePositions());
+        odometry = new SwerveDriveOdometry(kinematics, RobotContainer.getGyroRotation2d(), getModulePositions());
         setDefaultCommand(new DriveCommand(this));
 
         RobotConfig config;
@@ -109,13 +109,13 @@ public class SwerveDrive extends SubsystemBase {
 
     public void updateOdometry() {
         odometry.update(
-                getGyroRotation2d(),
+                RobotContainer.getGyroRotation2d(),
                 getModulePositions());
     }
 
     public void resetOdoemetry(Pose2d newPose) {
         RobotContainer.gyro.reset();
-        odometry.resetPosition(getGyroRotation2d(), getModulePositions(), newPose);
+        odometry.resetPosition(RobotContainer.getGyroRotation2d(), getModulePositions(), newPose);
     }
 
     public void stopMotors() {
@@ -137,12 +137,6 @@ public class SwerveDrive extends SubsystemBase {
                 modules[2].getPosition(),
                 modules[3].getPosition(),
         };
-    }
-
-    public Rotation2d getGyroRotation2d() {
-        double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
-        double angle = SwerveModule.normalizeAngle(inverted * RobotContainer.gyro.getAngle() * Math.PI / 180.0);
-        return Rotation2d.fromRadians(angle);
     }
 
     @Override
