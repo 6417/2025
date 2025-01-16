@@ -26,6 +26,10 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
+    public static final class Limelight{
+        public static final String limelightID = "limelight";
+    }
+
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = true;
@@ -35,7 +39,7 @@ public final class Constants {
         public static final double moduleXoffset = 0.275;
         public static final double moduleYoffset = 0.275;
         public static final double maxTurnSpeed = 11.5 ;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
-
+    
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI;

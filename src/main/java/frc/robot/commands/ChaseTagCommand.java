@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
@@ -27,9 +28,7 @@ public class ChaseTagCommand extends Command {
     private static final Transform3d TAG_TO_GOAL = new Transform3d(
             new Translation3d(1.5, 0, 0), // x, y, z
             new Rotation3d(0, 0, Math.PI)); // roll, pitch, yaw
-    private final LimelightHelpers limelight;
     private final SwerveDrive swerveDriveSubsystem;
-    private final Supplier<Pose2d> poseProvider;
 
     private final ProfiledPIDController xController = new ProfiledPIDController(0, 0, 0, X_CONSTRAINTS);
     private final ProfiledPIDController yController = new ProfiledPIDController(0, 0, 0, Y_CONSTRAINTS);
@@ -37,11 +36,8 @@ public class ChaseTagCommand extends Command {
     
     private double lastTarget;
 
-    public ChaseTagCommand(LimelightHelpers limelight, SwerveDrive swerveDriveSubsystem,
-            Supplier<Pose2d> poseProvider) {
-        this.limelight = limelight;
+    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem) {
         this.swerveDriveSubsystem = swerveDriveSubsystem;
-        this.poseProvider = poseProvider;
 
         xController.setTolerance(0.2);
         yController.setTolerance(0.2);
@@ -54,7 +50,7 @@ public class ChaseTagCommand extends Command {
     @Override
     public void initialize() {
         lastTarget = -1;
-        Pose2d robotPose = poseProvider.get();
+        Pose2d robotPose = swerveDriveSubsystem.getPose();
         omegaController.reset(robotPose.getRotation().getRadians());
         xController.reset(robotPose.getX());
         yController.reset(robotPose.getY());
@@ -69,15 +65,15 @@ public class ChaseTagCommand extends Command {
                 0.0,
                 new Rotation3d(0, 0, robotPose2d.getRotation().getRadians())); // x, y, z, roll, pitch, yaw
 
-        if (LimelightHelpers.getTV("")) {
+        if (LimelightHelpers.getTV(Constants.Limelight.limelightID)) {
             // Find the tag we want to chase
-            double target = LimelightHelpers.getFiducialID("");
+            double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 
             // This is new target data, so recalculate the goal
             lastTarget = target;
 
             // Transform the tag's pose to set our goal
-            var goalPose = limelight.getTargetPose3d_CameraSpace("");
+            var goalPose = LimelightHelpers.getTargetPose3d_CameraSpace(Constants.Limelight.limelightID);
 
             // Drive
             xController.setGoal(goalPose.getX());

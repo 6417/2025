@@ -4,6 +4,8 @@ import java.util.Map;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ChaseTagCommand;
 
 /**
  * Holds the data concerning input, which should be available
@@ -12,6 +14,11 @@ import edu.wpi.first.wpilibj.Joystick;
 public class Controls {
     public Joystick driveJoystick = new Joystick(Constants.Joystick.driveJoystickId);
     public Joystick operatorJoystick = new Joystick(Constants.Joystick.driveJoystickId);
+    
+    public Controls() {
+        JoystickButton lbButton = new JoystickButton(operatorJoystick, 5);
+        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive));
+    }
 
     public enum ControlMode {
         CONVENTIONAL,
@@ -44,7 +51,7 @@ public class Controls {
 
     public double turnSensitivity = 0.08;
 
-	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
+    public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
