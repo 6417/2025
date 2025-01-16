@@ -7,13 +7,14 @@ import com.ctre.phoenix6.controls.StaticBrake;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
+import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 
 public class CoralDispenserSubsystem extends SubsystemBase {
-    private FridoSparkMax coralMotorTop;
-    private FridoSparkMax coralMotorChangePitch;
+    private FridolinsMotor coralMotorTop;
+    private FridolinsMotor coralMotorChangePitch;
 
     private PidValues pidValues = new PidValues(0, 0, 0, 0); // p, i, d, f
     
@@ -23,7 +24,25 @@ public class CoralDispenserSubsystem extends SubsystemBase {
         coralMotorChangePitch = new FridoSparkMax(Constants.ClimberSubsytem.coralMotorChangePitchID);
         
         coralMotorChangePitch.setPID(pidValues);
-        setPitch(0);
+        coralMotorChangePitch.enableReverseLimitSwitch(Constants.CoralDispenser.revPolarity, true);
+        coralMotorChangePitch.enableForwardLimitSwitch(Constants.CoralDispenser.fwdPolarity, true);
+
+    }
+
+    public void setPitchPercent(double percent) {
+        coralMotorChangePitch.set(percent);
+    }
+
+    public void resetPitchEncoder() {
+        coralMotorChangePitch.setEncoderPosition(Constants.CoralDispenser.resetEncoderPosition);
+    }
+
+    public boolean isForwardLimitSwitchPressed() {
+        return coralMotorChangePitch.isForwardLimitSwitchActive();
+    }
+
+    public boolean isReverseLimitSwitchPressed() {
+        return coralMotorChangePitch.isReverseLimitSwitchActive();
     }
 
     public void setMotorTopSpeed(double speed) {
@@ -35,6 +54,10 @@ public class CoralDispenserSubsystem extends SubsystemBase {
 
     public void stopMotorTop() {
         coralMotorTop.set(0);
+    }
+
+    public void stopMotorPitch() {
+        coralMotorChangePitch.set(0);
     }
 
     /**
