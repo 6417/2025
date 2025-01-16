@@ -32,11 +32,11 @@ public class Controls {
             DriveSpeed.DEFAULT_SPEED, 1.0,
             DriveSpeed.FAST, 1.0,
             DriveSpeed.SLOW, 0.3);
-    private DriveSpeed activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;
+    private DriveSpeed activeSpeedFactor = DriveSpeed.SLOW;
     private double accelerationSensitivity = speedFactors.get(activeSpeedFactor);
 
-    public double deadBandDrive = 0.08;
-    public double deadBandTurn = 0.08;
+    public static double deadBandDrive = 0.08;
+    public static double deadBandTurn = 0.08;
     public boolean inputsSquared = false;
 
     public boolean slewRateLimited = true;
@@ -44,11 +44,8 @@ public class Controls {
 
     public double turnSensitivity = 0.08;
 
-    public double maxTurnSpeed = Constants.SwerveDrive.Swerve2024.maxTurnSpeed;
-    public double maxVelocity = Constants.SwerveDrive.Swerve2024.maxVelocity;
-
-    public ControlMode controlMode = ControlMode.CONVENTIONAL;
 	public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
+    public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
         activeSpeedFactor = speedFactor;

@@ -39,6 +39,8 @@ public class AnalogEncoder implements Sendable, AutoCloseable {
    * @param channel the analog input channel to attach to
    */
   public AnalogEncoder(int channel) {
+    System.out.print("channel: ");
+    System.out.println(channel);
     m_analogInput = new AnalogInput(channel);
     init();
   }
@@ -126,7 +128,7 @@ public class AnalogEncoder implements Sendable, AutoCloseable {
    *
    * @return the absolute position
    */
-  public double getAbsolutePosition() {
+  public double getRaw() {
     if (m_simAbsolutePosition != null) {
       return m_simAbsolutePosition.get();
     }
@@ -226,6 +228,7 @@ public class AnalogEncoder implements Sendable, AutoCloseable {
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("AbsoluteEncoder");
     builder.addDoubleProperty("Distance", this::getDistance, null);
-    builder.addDoubleProperty("Distance Per Rotation", this::getDistancePerRotation, null);
+    builder.addDoubleProperty("offset", this::getPositionOffset, this::setPositionOffset);
+    builder.addDoubleProperty("Distance Per Rotation", this::getDistancePerRotation, this::setDistancePerRotation);
   }
 }

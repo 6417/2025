@@ -1,33 +1,10 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import frc.fridowpi.motors.utils.FeedForwardValues;
-
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import frc.fridowpi.motors.FridoFalcon500v6;
-import frc.fridowpi.motors.FridoSparkMax;
-import frc.fridowpi.motors.FridoTalonSRX;
-import frc.fridowpi.motors.FridolinsMotor;
-import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
-import frc.fridowpi.motors.FridolinsMotor.IdleMode;
-import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
+import edu.wpi.first.math.util.Units;
+import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
-import frc.robot.swerve.SwerveDrive2024.MountingLocations;
-import frc.robot.swerve.SwerveModule;
+import frc.robot.swerve.ModuleConfig;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -50,246 +27,77 @@ public final class Constants {
     }
 
     public static final class SwerveDrive {
+        public static ModuleConfig[] configs = new ModuleConfig[4];
+        public static boolean isGyroInverted = true;
 
-        public static double navxPitchOffset = 90;
+        public static final double maxSpeed = 6.5 ; // TODO: for testing
+        public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
+        public static final double moduleXoffset = 0.275;
+        public static final double moduleYoffset = 0.275;
+        public static final double maxTurnSpeed = 11.5 ;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
 
-        public static final class Swerve2024 {
+        static {
+            defaultModuleConfig2024.maxSpeed = maxSpeed;
+            defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI;
 
-            public static final double gearRatio = 1 / 5.192308;
+            defaultModuleConfig2024.driveGearboxRatio = 5.192;
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
+            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.18, 0.25, 0.05);
 
-            public static final boolean enabled = true;
-            public static final double absoluteEncoderZeroPositionTolerance = 0.01;
-            public static final boolean joystickYinverted = true;
-            public static final boolean joystickXinverted = true;
-            public static final double deadBand = 0.08;
-            public static final double yOffsetMapperMaxVoltage = 12.5;
-            public static final double yOffsetMapperMinVoltage = 9;
+            defaultModuleConfig2024.angleGearboxRatio = 47.62;
+            defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
+            defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
+            defaultModuleConfig2024.angleMotorIzone = 1.5;
+            defaultModuleConfig2024.anglePidValues = new PidValues(0.35, 0.0, 0.03);
 
-            public static final double modulesXOffset = 0.275;
-            public static final double modulesYOffset = 0.275;
+            defaultModuleConfig2024.encoderThicksToRotationFalcon = 1;
+            defaultModuleConfig2024.encoderVelocityToRPSFalcon = 1;
+            defaultModuleConfig2024.encoderThicksToRotationNEO = 1;
+            defaultModuleConfig2024.encoderVelocityToRPSNEO = 1;
 
-            public static final double maxVelocity = 5.2;
-            // Not yet tested
-            public static final double maxAcceleration = 1;
-            public static final double maxTurnSpeed = maxVelocity // v (m/x)
-                    / Math.hypot(modulesXOffset, modulesYOffset) // radius of the circle described by motors
-                                                                 // during the turn movement
-                    * 2 * Math.PI; // 2 * pi * radius
+            final int LOC_FL = frc.robot.swerve.SwerveDrive.LOC_FL;
+            final int LOC_FR = frc.robot.swerve.SwerveDrive.LOC_FR;
+            final int LOC_RL = frc.robot.swerve.SwerveDrive.LOC_RL;
+            final int LOC_RR = frc.robot.swerve.SwerveDrive.LOC_RR;
 
-            public static final double absoluteEncoderToMeters = 1;
-            public static final double metersToRelativeEncoder = 1;
+            configs[LOC_FL] = defaultModuleConfig2024.clone();
+            configs[LOC_FR] = defaultModuleConfig2024.clone();
+            configs[LOC_RL] = defaultModuleConfig2024.clone();
+            configs[LOC_RR] = defaultModuleConfig2024.clone();
 
-            private static final List<Integer> motorIds = List.of(
-                    1, 2, 3, 4,
-                    11, 12, 13, 14);
+            configs[LOC_FL].driveMotorID = 1;
+            configs[LOC_FL].angleMotorID = 11;
+            configs[LOC_FL].driveMotorInverted = false;
+            configs[LOC_FL].angleMotorInverted = true;
+            configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
+            configs[LOC_FL].encoderChannel = 0;
+            configs[LOC_FL].absEncoderOffset = 0.150;
 
-            public static final Map<MountingLocations, SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
+            configs[LOC_FR].driveMotorID = 2;
+            configs[LOC_FR].angleMotorID = 12;
+            configs[LOC_FR].driveMotorInverted = false;
+            configs[LOC_FR].angleMotorInverted = true;
+            configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
+            configs[LOC_FR].encoderChannel = 1;
+            configs[LOC_FR].absEncoderOffset = 0.721;
 
-            public static SwerveModule.Config commonConfigurations = new frc.robot.swerve.SwerveModule.Config();
+            configs[LOC_RL].driveMotorID = 3;
+            configs[LOC_RL].angleMotorID = 13;
+            configs[LOC_RL].driveMotorInverted = false;
+            configs[LOC_RL].angleMotorInverted = true;
+            configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
+            configs[LOC_RL].encoderChannel = 2;
+            configs[LOC_RL].absEncoderOffset = 0.486;
 
-            static {
-                addCommonModuleConfigurarions();
-                addModuleSpecificConfigurarions();
-            }
-
-            private static void addCommonModuleConfigurarions() {
-                commonConfigurations.driveMotorTicksPerRotation = 1;
-                commonConfigurations.rotationMotorTicksPerRotation = 47.691;
-                commonConfigurations.drivePID = new PidValues(0.1, 0, 0);
-                commonConfigurations.driveFeedForward = new FeedForwardValues(0.39, 0.17);
-                commonConfigurations.driveAccelerationLimitRotationsPerS2 = 100;
-                commonConfigurations.drivePID.slotIdX = Optional.of(0);
-                commonConfigurations.rotationPID = new PidValues(1.05, 0.01, 1);
-                commonConfigurations.rotationPID.slotIdX = Optional.of(0);
-                commonConfigurations.wheelCircumference = 0.12 * Math.PI;
-                commonConfigurations.maxVelocity = maxVelocity;
-                commonConfigurations.driveEncoderType = FridoFeedBackDevice.kBuildin;
-                commonConfigurations.rotationEncoderType = FridoFeedBackDevice.kBuildin;
-                commonConfigurations.driveIdleMode = IdleMode.kCoast;
-                commonConfigurations.rotationIdleMode = IdleMode.kBrake;
-            }
-
-            public static final double xOffset = modulesXOffset;
-            public static final double yOffset = modulesYOffset;
-
-            private static FridolinsMotor driveMotorInitializer(int id) {
-                var motor = new FridoFalcon500v6(id);
-                motor.factoryDefault();
-                motor.asTalonFX().getConfigurator()
-                        .apply(new Slot0Configs().withKP(0.03).withKS(0.18).withKV(0.27));
-                return motor;
-            }
-
-            private static FridolinsMotor angleMotorInitializer(int id) {
-                var motor = new FridoSparkMax(id);
-                motor.factoryDefault();
-
-                SparkMaxConfig config = new SparkMaxConfig();
-                config.closedLoop.iZone(1.5);
-                config.smartCurrentLimit(20, 20);
-
-                motor.asSparkMax()
-                     .configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-
-                return motor;
-            }
-
-            public static final Translation2d[] SWERVE_MODULE_TRANSLATIONS = {
-                    new Translation2d(xOffset, yOffset), // FL
-                    new Translation2d(xOffset, -yOffset), // FR
-                    new Translation2d(-xOffset, yOffset), // BL
-                    new Translation2d(-xOffset, -yOffset), // BR
-            };
-
-            public static final SwerveModulePosition[] SWERVE_MODULE_POSITIONS = {
-                    new SwerveModulePosition(SWERVE_MODULE_TRANSLATIONS[0].getNorm(),
-                            SWERVE_MODULE_TRANSLATIONS[0].getAngle()),
-                    new SwerveModulePosition(SWERVE_MODULE_TRANSLATIONS[1].getNorm(),
-                            SWERVE_MODULE_TRANSLATIONS[1].getAngle()),
-                    new SwerveModulePosition(SWERVE_MODULE_TRANSLATIONS[2].getNorm(),
-                            SWERVE_MODULE_TRANSLATIONS[2].getAngle()),
-                    new SwerveModulePosition(SWERVE_MODULE_TRANSLATIONS[3].getNorm(),
-                            SWERVE_MODULE_TRANSLATIONS[3].getAngle())
-            };
-
-            private static void addModuleSpecificConfigurarions() {
-
-                SwerveModule.Config frontLeftConfig = commonConfigurations
-                        .clone();
-                frontLeftConfig.absoluteEncoderZeroPosition = 0.150;
-                // frontLeftConfig.mountingPoint = SWERVE_MODULE_TRANSLATIONS[0];
-                frontLeftConfig.mountingPoint = new Translation2d(-xOffset, yOffset);
-                frontLeftConfig.driveMotorInitializer = () -> driveMotorInitializer(1);
-                frontLeftConfig.rotationMotorInitializer = () -> angleMotorInitializer(11);
-                frontLeftConfig.driveMotorInverted = false;
-                frontLeftConfig.absoluteEncoderChannel = 0;
-                swerveModuleConfigs.put(MountingLocations.FrontLeft, frontLeftConfig);
-
-                SwerveModule.Config frontRightConfig = commonConfigurations
-                        .clone();
-                frontRightConfig.absoluteEncoderZeroPosition = 1.0 - 0.221 - 0.05;
-                // frontLeftConfig.mountingPoint = SWERVE_MODULE_TRANSLATIONS[1];
-                frontRightConfig.mountingPoint = new Translation2d(-xOffset, -yOffset);
-                frontRightConfig.driveMotorInitializer = () -> driveMotorInitializer(2);
-                frontRightConfig.rotationMotorInitializer = () -> angleMotorInitializer(12);
-                frontRightConfig.driveMotorInverted = false;
-                frontRightConfig.absoluteEncoderChannel = 1;
-                swerveModuleConfigs.put(MountingLocations.FrontRight, frontRightConfig);
-
-                SwerveModule.Config backLeftConfig = commonConfigurations
-                        .clone();
-                backLeftConfig.absoluteEncoderZeroPosition = 0.487;
-                // frontLeftConfig.mountingPoint = SWERVE_MODULE_TRANSLATIONS[2];
-                backLeftConfig.mountingPoint = new Translation2d(xOffset, yOffset);
-                backLeftConfig.driveMotorInitializer = () -> driveMotorInitializer(3);
-                backLeftConfig.rotationMotorInitializer = () -> angleMotorInitializer(13);
-                backLeftConfig.driveMotorInverted = false;
-                backLeftConfig.absoluteEncoderChannel = 2;
-                swerveModuleConfigs.put(MountingLocations.BackLeft, backLeftConfig);
-
-                SwerveModule.Config backRightConfig = commonConfigurations
-                        .clone();
-                backRightConfig.absoluteEncoderZeroPosition = 0.480;
-                backRightConfig.mountingPoint = new Translation2d(xOffset, -yOffset);
-                backRightConfig.driveMotorInitializer = () -> driveMotorInitializer(4);
-                backRightConfig.rotationMotorInitializer = () -> angleMotorInitializer(14);
-                backRightConfig.driveMotorInverted = false;
-                backRightConfig.absoluteEncoderChannel = 3;
-                swerveModuleConfigs.put(MountingLocations.BackRight, backRightConfig);
-            }
-
-            public static final class Swerve2019 {
-                private static void setSwerveDriveConstants() {
-                    zeroingSpeed = 500;
-                    maxFineTuneOffsetForZeroEncodersCommand = 196608 / 100;
-                    maxSpeedOfDrive = 1;
-                }
-
-                public static final double gearRatio = 1.0 / 5.192308;
-
-                public static final boolean enabled = false;
-                public static final boolean rotateAllModulesInSameDirection = false;
-                public static final boolean joystickYinverted = true;
-                public static final boolean joystickXinverted = true;
-                public static double zeroingSpeed;
-                public static final double deadBand = 0.015;
-                public static final double yOffsetMapperMaxVoltage = 12.5;
-                public static final double yOffsetMapperMinVoltage = 9;
-                public static final double finetuningZeroFactor = 0.1;
-                public static double maxFineTuneOffsetForZeroEncodersCommand;
-                public static double maxSpeedOfDrive; // in meters per second
-                public static final double maxRotationSpeed = 15 * Math.PI / 16; // at full rotation speed the robot
-                                                                                 // will
-                                                                                 // turn
-                                                                                 // by 180 degrees, in rad per second
-                public static final Map<MountingLocations, SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
-
-                public static SwerveModule.Config commonConfigurations = new SwerveModule.Config();
-                public static double defaultSpeedFactor = 0.3;
-                public static double slowSpeedFactor = 0.35;
-                public static double fullSpeed = 1.0;
-
-                static {
-                    setSwerveDriveConstants();
-                    addCommonModuleConfigurarions();
-                    addModuleSpecificConfigurarions();
-                }
-
-                private static void addCommonModuleConfigurarions() {
-                    commonConfigurations.driveMotorTicksPerRotation = 11_564.0;
-                    commonConfigurations.rotationMotorTicksPerRotation = 196_608.0;
-                    commonConfigurations.drivePID = new PidValues(0.015, 0.0, 0.0, 0.03375);
-                    commonConfigurations.drivePID.slotIdX = Optional.of(0);
-                    commonConfigurations.rotationPID = new PidValues(0.04, 0.0, 0.5);
-                    commonConfigurations.rotationPID.slotIdX = Optional.of(0);
-                    commonConfigurations.wheelCircumference = 0.1 * Math.PI;
-                    commonConfigurations.maxVelocity = maxSpeedOfDrive;
-                    commonConfigurations.driveEncoderType = FridoFeedBackDevice.kRelative;
-                    commonConfigurations.rotationEncoderType = FridoFeedBackDevice.kRelative;
-                    commonConfigurations.limitSwitchPolarity = LimitSwitchPolarity.kNormallyOpen;
-                }
-
-                private static FridoTalonSRX angleMotorInitializer(int id) {
-                    FridoTalonSRX motor = new FridoTalonSRX(id);
-                    motor.factoryDefault();
-                    return motor;
-                }
-
-                private static FridolinsMotor driveMotorInitializer(int id) {
-                    FridoTalonSRX motor = angleMotorInitializer(id);
-                    motor.enableForwardLimitSwitch(LimitSwitchPolarity.kDisabled, false);
-                    motor.enableReverseLimitSwitch(LimitSwitchPolarity.kDisabled, false);
-                    return motor;
-                }
-
-                private static void addModuleSpecificConfigurarions() {
-                    // TODO: Add limit switch stuff again
-
-                    SwerveModule.Config frontLeftConfig = commonConfigurations.clone();
-                    frontLeftConfig.mountingPoint = new Translation2d(0.32, 0.305);
-                    frontLeftConfig.driveMotorInitializer = () -> driveMotorInitializer(32);
-                    frontLeftConfig.rotationMotorInitializer = () -> angleMotorInitializer(33);
-                    swerveModuleConfigs.put(MountingLocations.FrontLeft, frontLeftConfig);
-
-                    SwerveModule.Config frontRightConfig = commonConfigurations.clone();
-                    frontRightConfig.mountingPoint = new Translation2d(-0.32, 0.305);
-                    frontRightConfig.driveMotorInitializer = () -> driveMotorInitializer(38);
-                    frontRightConfig.rotationMotorInitializer = () -> angleMotorInitializer(39);
-                    swerveModuleConfigs.put(MountingLocations.FrontRight, frontRightConfig);
-
-                    SwerveModule.Config backLeftConfig = commonConfigurations.clone();
-                    backLeftConfig.mountingPoint = new Translation2d(0.32, -0.305);
-                    backLeftConfig.driveMotorInitializer = () -> driveMotorInitializer(34);
-                    backLeftConfig.rotationMotorInitializer = () -> angleMotorInitializer(35);
-                    swerveModuleConfigs.put(MountingLocations.BackLeft, backLeftConfig);
-
-                    SwerveModule.Config backRightConfig = commonConfigurations.clone();
-                    backRightConfig.mountingPoint = new Translation2d(-0.32, -0.305);
-                    backRightConfig.driveMotorInitializer = () -> driveMotorInitializer(36);
-                    backRightConfig.rotationMotorInitializer = () -> angleMotorInitializer(37);
-                    swerveModuleConfigs.put(MountingLocations.BackRight, backRightConfig);
-                }
-            }
+            configs[LOC_RR].driveMotorID = 4;
+            configs[LOC_RR].angleMotorID = 14;
+            configs[LOC_RR].driveMotorInverted = false;
+            configs[LOC_RR].angleMotorInverted = true;
+            configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
+            configs[LOC_RR].encoderChannel = 3;
+            configs[LOC_RR].absEncoderOffset = 0.470;
         }
     }
 }

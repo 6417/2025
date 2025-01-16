@@ -16,12 +16,15 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
+    private final RobotContainer robotContainer;
     /**
      * This function is run when the robot is first started up and should be used
      * for any
      * initialization code.
      */
     public Robot() {
+        robotContainer = new RobotContainer();
+        
     }
 
     /**
@@ -61,6 +64,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        // robotContainer.getAutonomousCommand().schedule();
     }
 
     /** This function is called periodically during autonomous. */
@@ -70,6 +74,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        robotContainer.drive.stopMotors();
     }
 
     /** This function is called periodically during operator control. */
