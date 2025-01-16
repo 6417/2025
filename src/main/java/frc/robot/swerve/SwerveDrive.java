@@ -59,33 +59,6 @@ public class SwerveDrive extends SubsystemBase {
                 new Pose2d(new Translation2d(0, 0), Rotation2d.fromRotations(0)));
 
         setDefaultCommand(new DriveCommand(this));
-
-        RobotConfig config;
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-            config = null;
-        }
-
-        AutoBuilder.configure(
-                this::getPose,
-                this::resetOdoemetry,
-                this::getChassisSpeeds,
-                (speeds, feedforwards) -> setChassisSpeeds(speeds),
-                new PPHolonomicDriveController(
-                        new PIDConstants(5.0, 0.0, 0.0),
-                        new PIDConstants(5.0, 0.0, 0.0)),
-                config,
-                () -> {
-
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this);
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
