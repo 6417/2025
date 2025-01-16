@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -17,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
     private final RobotContainer robotContainer;
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any
@@ -24,7 +31,7 @@ public class Robot extends TimedRobot {
      */
     public Robot() {
         robotContainer = new RobotContainer();
-        
+
     }
 
     /**
@@ -64,7 +71,32 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        // robotContainer.getAutonomousCommand().schedule();
+        RobotConfig config;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+            config = null;
+        }
+
+        AutoBuilder.configure(
+                RobotContainer.drive::getPose,
+                RobotContainer.drive::resetOdoemetry,
+                RobotContainer.drive::getChassisSpeeds,
+                (speeds, feedforwards) -> RobotContainer.drive.setChassisSpeeds(speeds),
+                new PPHolonomicDriveController(
+                        new PIDConstants(5.0, 0.0, 0.0),
+                        new PIDConstants(5.0, 0.0, 0.0)),
+                config,
+                () -> {
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                RobotContainer.drive);
     }
 
     /** This function is called periodically during autonomous. */
