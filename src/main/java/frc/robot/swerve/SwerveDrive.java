@@ -1,32 +1,30 @@
 package frc.robot.swerve;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] modules;
     private SwerveDriveKinematics kinematics;
-    public SwerveDriveOdometry odometry;
+    public SwerveDrivePoseEstimator poseEstimator;
 
     ChassisSpeeds lastSpeeds = new ChassisSpeeds();
 
@@ -54,7 +52,12 @@ public class SwerveDrive extends SubsystemBase {
                 configs[1].moduleOffset,
                 configs[2].moduleOffset,
                 configs[3].moduleOffset);
-        odometry = new SwerveDriveOdometry(kinematics, RobotContainer.getGyroRotation2d(), getModulePositions());
+
+        poseEstimator = new SwerveDrivePoseEstimator(kinematics,
+                RobotContainer.getGyroRotation2d(),
+                getModulePositions(),
+                new Pose2d(new Translation2d(0, 0), Rotation2d.fromRotations(0)));
+
         setDefaultCommand(new DriveCommand(this));
 
         RobotConfig config;
@@ -104,18 +107,18 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     public void updateOdometry() {
-        odometry.update(
+        poseEstimator.update(
                 RobotContainer.getGyroRotation2d(),
                 getModulePositions());
     }
 
     public void resetOdoemetry(Pose2d newPose) {
         RobotContainer.gyro.reset();
-        odometry.resetPosition(RobotContainer.getGyroRotation2d(), getModulePositions(), newPose);
+        poseEstimator.resetPosition(RobotContainer.getGyroRotation2d(), getModulePositions(), newPose);
     }
 
     public void stopMotors() {
@@ -144,9 +147,9 @@ public class SwerveDrive extends SubsystemBase {
         builder.addDoubleProperty("Chassis speed vx [mps]", () -> lastSpeeds.vxMetersPerSecond, null);
         builder.addDoubleProperty("Chassis speed vy [mps]", () -> lastSpeeds.vyMetersPerSecond, null);
         builder.addDoubleProperty("Chassis speed omega [rad p s]", () -> lastSpeeds.omegaRadiansPerSecond, null);
-        builder.addDoubleProperty("odometry pos x [m]", () -> odometry.getPoseMeters().getX(), null);
-        builder.addDoubleProperty("odometry pos y [m]", () -> odometry.getPoseMeters().getY(), null);
-        builder.addDoubleProperty("odometry rot [deg]", () -> odometry.getPoseMeters().getRotation().getDegrees(),
-                null);
+        builder.addDoubleProperty("pose estimator pos x [m]", () -> poseEstimator.getEstimatedPosition().getX(), null);
+        builder.addDoubleProperty("pose estimator pos y [m]", () -> poseEstimator.getEstimatedPosition().getY(), null);
+        builder.addDoubleProperty("pose estimator rot [deg]",
+                () -> poseEstimator.getEstimatedPosition().getRotation().getDegrees(), null);
     }
 }
