@@ -2,8 +2,10 @@ package frc.robot;
 
 import java.util.Map;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ChaseTagCommand;
 
@@ -11,13 +13,15 @@ import frc.robot.commands.ChaseTagCommand;
  * Holds the data concerning input, which should be available
  * either to the entire program or get exported to the shuffleboard
  */
-public class Controls {
+public class Controls implements Sendable {
     public Joystick driveJoystick = new Joystick(Constants.Joystick.driveJoystickId);
-    public Joystick operatorJoystick = new Joystick(Constants.Joystick.driveJoystickId);
+    public Joystick operatorJoystick = new Joystick(Constants.Joystick.operatorJoystickId);
+    public int tagToChase = 2;
     
     public Controls() {
         JoystickButton lbButton = new JoystickButton(operatorJoystick, 5);
-        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive));
+        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, 2));
+        Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
     public enum ControlMode {
@@ -51,7 +55,7 @@ public class Controls {
 
     public double turnSensitivity = 0.08;
 
-    public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
+    public DriveOrientation driveOrientation = DriveOrientation.Forwards;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
@@ -86,5 +90,8 @@ public class Controls {
                 val -> slewRateLimited = val);
         builder.addDoubleProperty("SlewRate Limit", () -> slewRateLimit, null);
         builder.addBooleanProperty("SquareInputs", () -> inputsSquared, val -> inputsSquared = val);
+
+        builder.addDoubleProperty("TagToChase", ()->tagToChase, (val) -> tagToChase = (int) val);
+
     }
 }

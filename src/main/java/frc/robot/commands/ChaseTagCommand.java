@@ -1,11 +1,14 @@
 package frc.robot.commands;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,23 +23,24 @@ import frc.robot.swerve.SwerveDrive;
 
 public class ChaseTagCommand extends Command {
 
-    private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
-    private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
-    private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(8, 8);
+    private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(2.5, 1.5);
+    private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(2.5, 1.5);
+    private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 6);
 
-    private static final int TAG_TO_CHASE = 2;
+    private final int tagToChase;
     private static final Transform3d TAG_TO_GOAL = new Transform3d(
-            new Translation3d(1.5, 0, 0), // x, y, z
+            new Translation3d(-1, 0, 0), // x, y, z
             new Rotation3d(0, 0, Math.PI)); // roll, pitch, yaw
     private final SwerveDrive swerveDriveSubsystem;
 
-    private final ProfiledPIDController xController = new ProfiledPIDController(0, 0, 0, X_CONSTRAINTS);
-    private final ProfiledPIDController yController = new ProfiledPIDController(0, 0, 0, Y_CONSTRAINTS);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(0, 0, 0, OMEGA_CONSTRAINTS);
-    
+    private final ProfiledPIDController xController = new ProfiledPIDController(1.5, 0, 0, X_CONSTRAINTS);
+    private final ProfiledPIDController yController = new ProfiledPIDController(1.5, 0, 0, Y_CONSTRAINTS);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(1, 0, 0, OMEGA_CONSTRAINTS);
+
     private double lastTarget;
 
-    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem) {
+    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem, int tagToChase) {
+        this.tagToChase = tagToChase;
         this.swerveDriveSubsystem = swerveDriveSubsystem;
 
         xController.setTolerance(0.2);
@@ -52,6 +56,7 @@ public class ChaseTagCommand extends Command {
         lastTarget = -1;
         Pose2d robotPose = swerveDriveSubsystem.getPose();
         omegaController.reset(robotPose.getRotation().getRadians());
+        omegaController.enableContinuousInput(-Math.PI, Math.PI);
         xController.reset(robotPose.getX());
         yController.reset(robotPose.getY());
     }
@@ -59,13 +64,8 @@ public class ChaseTagCommand extends Command {
     @Override
     public void execute() {
         Pose2d robotPose2d = swerveDriveSubsystem.getPose();
-        Pose3d robotPose = new Pose3d(
-                robotPose2d.getX(),
-                robotPose2d.getY(),
-                0.0,
-                new Rotation3d(0, 0, robotPose2d.getRotation().getRadians())); // x, y, z, roll, pitch, yaw
 
-        if (LimelightHelpers.getTV(Constants.Limelight.limelightID)) {
+        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) == tagToChase) {
             // Find the tag we want to chase
             double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 
@@ -73,35 +73,46 @@ public class ChaseTagCommand extends Command {
             lastTarget = target;
 
             // Transform the tag's pose to set our goal
-            var goalPose = LimelightHelpers.getTargetPose3d_CameraSpace(Constants.Limelight.limelightID);
+            double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ() - 1;
+            double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX();
+            double rRotation = - LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY();
+            
+            new Rotation2d();
+            Pose2d goalPose = robotPose2d.plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
+            /*var goalPose = robotPose.plus(new Transform3d(new Pose3d(0.0, 0.0, 0.0, new Rotation3d()),
+                    LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)));*/
+
+            //goalPose = goalPose.plus(TAG_TO_GOAL);
+
+            // returns the target pose in field space, calculatet by adding the target pose
+            // in robot space to the robot pose in field space}
 
             // Drive
             xController.setGoal(goalPose.getX());
             yController.setGoal(goalPose.getY());
-            omegaController.setGoal(goalPose.getRotation().getAngle());
+            omegaController.setGoal(goalPose.getRotation().getRadians());
 
-        }
-
-        if (lastTarget == -1) {
-            // No target has been visible, so just stop
-            swerveDriveSubsystem.stopMotors();
-        } else {
-            var xSpeed = xController.calculate(robotPose.getX());
+            var xSpeed = xController.calculate(robotPose2d.getX());
             if (xController.atGoal()) {
                 xSpeed = 0;
             }
-            var ySpeed = yController.calculate(robotPose.getY());
+            var ySpeed = yController.calculate(robotPose2d.getY());
             if (yController.atGoal()) {
                 ySpeed = 0;
             }
-            var omegaSpeed = omegaController.calculate(robotPose.getRotation().getAngle());
+            double omegaSpeed = omegaController.calculate(robotPose2d.getRotation().getRadians());
             if (omegaController.atGoal()) {
                 omegaSpeed = 0;
             }
+            var chas = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed,
+            robotPose2d.getRotation());
+            
+            swerveDriveSubsystem.setChassisSpeeds(chas);
 
-            swerveDriveSubsystem.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed,
-                    robotPose2d.getRotation()));
+        }else {
+            swerveDriveSubsystem.stopMotors();
         }
+        
     }
 
     @Override
