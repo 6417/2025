@@ -83,7 +83,7 @@ public class SwerveModule implements Sendable {
     }
 
     public double getVelocityRPS() {
-        return driveMotor.getEncoderVelocity() / config.encoderVelocityToRPSFalcon;
+        return driveMotor.getEncoderVelocity() / config.encoderVelocityToRPSFalcon / config.driveGearboxRatio;
     }
 
     public String getName() {

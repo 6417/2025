@@ -24,8 +24,9 @@ public class RobotContainer {
 
     public static Rotation2d getGyroRotation2d() {
         double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
-        double angle = Utils.normalizeAngleRad(inverted * RobotContainer.gyro.getAngle() * Math.PI / 180.0);
-        return Rotation2d.fromRadians(angle);
+        //double angle = Utils.normalizeAngleRad(inverted * RobotContainer.gyro.getAngle() * Math.PI / 180.0);
+        double angle = Math.IEEEremainder(inverted * gyro.getAngle(), 360);
+        return Rotation2d.fromDegrees(angle);
     }
 
     public Command getAutonomousCommand() {
