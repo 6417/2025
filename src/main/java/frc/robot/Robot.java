@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        // robotContainer.getAutonomousCommand().schedule();
+        // robotContainer.pathplanner.getAutonomousCommand("Example Path");
     }
 
     /** This function is called periodically during autonomous. */

@@ -1,0 +1,80 @@
+package frc.robot.swerve;
+
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathPlannerPath;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import java.util.List;
+
+public class FridoPathplanner {
+    private SwerveDrive drive;
+    
+    public FridoPathplanner(SwerveDrive drive) {
+        this.drive = drive;
+
+        RobotConfig config;
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
+            config = null;
+        }
+
+        AutoBuilder.configure(
+                drive::getPose,
+                drive::resetOdoemetry,
+                drive::getChassisSpeeds,
+                (speeds, feedforwards) -> drive.setChassisSpeeds(speeds),
+                new PPHolonomicDriveController(
+                        new PIDConstants(5.0, 0.0, 0.0),
+                        new PIDConstants(5.0, 0.0, 0.0)),
+                config,
+                () -> {
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                drive
+        );
+
+    }
+
+    public Command getAutoCommandGroup(String fileName) {
+        try {
+            // Use the PathPlannerAuto class to get a path group from an auto
+            List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile(fileName);
+
+            for (PathPlannerPath path : pathGroup) {
+                AutoBuilder.followPath(path);
+            }
+            return null; // TODO:
+
+        } catch (Exception e) {
+            DriverStation.reportError("PathPlanner failed: " + e.getMessage(), e.getStackTrace());
+            return Commands.none();
+        }
+    }
+    public Command getAutonomousCommand(String fileName) {
+
+        // return new PathPlannerAuto("Example Auto");
+        try {
+            PathPlannerPath path = PathPlannerPath.fromPathFile(fileName);
+
+            // Possible to implement a Path from here
+    
+            return AutoBuilder.followPath(path);
+        } catch (Exception e) {
+            DriverStation.reportError("PathPlanner failed: " + e.getMessage(), e.getStackTrace());
+            return Commands.none();
+        }
+    }
+}
+
