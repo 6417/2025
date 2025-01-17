@@ -23,6 +23,7 @@ public class RobotContainer {
         drive = new SwerveDrive(Constants.SwerveDrive.configs);
         controls = new Controls();
         pathplanner = new FridoPathplanner(drive);
+        pathplanner = new FridoPathplanner(drive);
     }
 
     public static Rotation2d getGyroRotation2d() {
