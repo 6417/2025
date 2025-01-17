@@ -71,32 +71,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        RobotConfig config;
-        try {
-            config = RobotConfig.fromGUISettings();
-        } catch (Exception e) {
-            e.printStackTrace();
-            config = null;
-        }
-
-        AutoBuilder.configure(
-                RobotContainer.drive::getPose,
-                RobotContainer.drive::resetOdoemetry,
-                RobotContainer.drive::getChassisSpeeds,
-                (speeds, feedforwards) -> RobotContainer.drive.setChassisSpeeds(speeds),
-                new PPHolonomicDriveController(
-                        new PIDConstants(5.0, 0.0, 0.0),
-                        new PIDConstants(5.0, 0.0, 0.0)),
-                config,
-                () -> {
-
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                RobotContainer.drive);
+        // robotContainer.pathplanner.getAutonomousCommand("Example Path");
     }
 
     /** This function is called periodically during autonomous. */

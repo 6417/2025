@@ -91,7 +91,7 @@ public class DriveCommand extends Command {
                 break;
             case FieldOriented:
                 RobotContainer.drive.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(vxy.x, vxy.y,
-                        vRot, RobotContainer.drive.getGyroRotation2d()));
+                        vRot, RobotContainer.getGyroRotation2d()));
                 break;
         }
     }
