@@ -17,6 +17,7 @@ public class FridoPathplanner {
     public FridoPathplanner(SwerveDrive drive) {
         this.drive = drive;
 
+        // configuration
         RobotConfig config;
         try {
             config = RobotConfig.fromGUISettings();
@@ -49,19 +50,14 @@ public class FridoPathplanner {
 
     public Command getAutoCommandGroup(String fileName) {
         try {
-            // Use the PathPlannerAuto class to get a path group from an auto
-            List<PathPlannerPath> pathGroup = PathPlannerAuto.getPathGroupFromAutoFile(fileName);
-
-            for (PathPlannerPath path : pathGroup) {
-                AutoBuilder.followPath(path);
-            }
-            return null; // TODO:
+           return new PathPlannerAuto(fileName);
 
         } catch (Exception e) {
             DriverStation.reportError("PathPlanner failed: " + e.getMessage(), e.getStackTrace());
             return Commands.none();
         }
     }
+    
     public Command getAutonomousCommand(String fileName) {
 
         // return new PathPlannerAuto("Example Auto");
