@@ -25,7 +25,7 @@ public class RobotContainer {
         pathplanner = new FridoPathplanner(drive);
     }
 
-    public static Rotation2d getGyroRotation2d() {
+    public static synchronized Rotation2d getGyroRotation2d() {
         double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
         //double angle = Utils.normalizeAngleRad(inverted * RobotContainer.gyro.getAngle() * Math.PI / 180.0);
         double angle = Math.IEEEremainder(inverted * gyro.getAngle(), 360);

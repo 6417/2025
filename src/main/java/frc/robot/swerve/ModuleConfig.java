@@ -11,6 +11,7 @@ import frc.fridowpi.motors.FridoFalcon500v6;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
+import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.fridowpi.sensors.AnalogEncoder;
@@ -89,6 +90,7 @@ public class ModuleConfig implements Cloneable {
         driveMotor.configEncoder(FridoFeedBackDevice.kBuildin, (int) encoderThicksToRotationFalcon);
         driveMotor.setInverted(driveMotorInverted);
         driveMotor.setPID(drivePidValues, driveFFValues);
+        driveMotor.setIdleMode(IdleMode.kBrake);
         return driveMotor;
     }
 

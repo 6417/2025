@@ -4,9 +4,16 @@
 
 package frc.robot;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.logging.log4j.core.layout.CsvLogEventLayout;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.fridowpi.utils.CSVLogger;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -17,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
     private final RobotContainer robotContainer;
+    private final CSVLogger logger = new CSVLogger("/tmp/log.csv", 10000);
+    private long time;
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any
@@ -24,7 +34,8 @@ public class Robot extends TimedRobot {
      */
     public Robot() {
         robotContainer = new RobotContainer();
-        
+        time = System.currentTimeMillis();
+        Shuffleboard.getTab("Drive").add(robotContainer.drive);
     }
 
     /**
@@ -64,7 +75,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.pathplanner.getAutoCommandGroup("Auto");
+        robotContainer.pathplanner.getAutoCommandGroup("Auto").schedule();
     }
 
     /** This function is called periodically during autonomous. */
@@ -74,6 +85,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
+
         robotContainer.drive.stopMotors();
     }
 

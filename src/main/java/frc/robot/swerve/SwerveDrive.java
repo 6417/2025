@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -32,6 +33,8 @@ public class SwerveDrive extends SubsystemBase {
     public static final int LOC_FR = 1;
     public static final int LOC_RL = 2;
     public static final int LOC_RR = 3;
+
+    Thread odometryThread;
 
     public SwerveDrive(ModuleConfig[] configs) {
         String[] moduleNames = new String[4];
@@ -59,6 +62,21 @@ public class SwerveDrive extends SubsystemBase {
                 new Pose2d(new Translation2d(0, 0), Rotation2d.fromRotations(0)));
 
         setDefaultCommand(new DriveCommand(this));
+
+        odometryThread = new Thread(this::updateOdometryThread);
+        odometryThread.start();
+    }
+
+    public synchronized void updateOdometryThread() {
+        while (true) {
+            updateOdometry();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
@@ -76,14 +94,13 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void periodic() {
-        updateOdometry();
     }
 
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
     }
 
-    public void updateOdometry() {
+    public synchronized void updateOdometry() {
         poseEstimator.update(
                 RobotContainer.getGyroRotation2d(),
                 getModulePositions());
@@ -120,9 +137,23 @@ public class SwerveDrive extends SubsystemBase {
         builder.addDoubleProperty("Chassis speed vx [mps]", () -> lastSpeeds.vxMetersPerSecond, null);
         builder.addDoubleProperty("Chassis speed vy [mps]", () -> lastSpeeds.vyMetersPerSecond, null);
         builder.addDoubleProperty("Chassis speed omega [rad p s]", () -> lastSpeeds.omegaRadiansPerSecond, null);
-        builder.addDoubleProperty("pose estimator pos x [m]", () -> poseEstimator.getEstimatedPosition().getX(), null);
-        builder.addDoubleProperty("pose estimator pos y [m]", () -> poseEstimator.getEstimatedPosition().getY(), null);
+        builder.addDoubleProperty("pose estimator pos x [m]", () -> poseEstimator.getEstimatedPosition().getX(),
+                (double posX) -> {
+                    Pose2d currentPos = poseEstimator.getEstimatedPosition();
+                    currentPos = new Pose2d(posX, currentPos.getY(), currentPos.getRotation());
+                    poseEstimator.resetPose(currentPos);
+                });
+        builder.addDoubleProperty("pose estimator pos y [m]", () -> poseEstimator.getEstimatedPosition().getY(),
+                (double posY) -> {
+                    Pose2d currentPos = poseEstimator.getEstimatedPosition();
+                    currentPos = new Pose2d(currentPos.getX(), posY, currentPos.getRotation());
+                    poseEstimator.resetPose(currentPos);
+                });
         builder.addDoubleProperty("pose estimator rot [deg]",
-                () -> poseEstimator.getEstimatedPosition().getRotation().getDegrees(), null);
+                () -> poseEstimator.getEstimatedPosition().getRotation().getDegrees(), (double rotationDeg) -> {
+                    Pose2d currentPos = poseEstimator.getEstimatedPosition();
+                    Rotation2d newRot = new Rotation2d(rotationDeg);
+                    currentPos = new Pose2d(currentPos.getX(), currentPos.getY(), newRot);
+                });
     }
 }
