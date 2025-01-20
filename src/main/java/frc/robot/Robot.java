@@ -11,8 +11,11 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.fridowpi.utils.CSVLogger;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -71,7 +74,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        // robotContainer.pathplanner.getAutonomousCommand("Example Path");
+        robotContainer.pathplanner.getAutoCommandGroup("Auto").schedule();
     }
 
     /** This function is called periodically during autonomous. */
@@ -81,6 +84,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
+
         robotContainer.drive.stopMotors();
     }
 
