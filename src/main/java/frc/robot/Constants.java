@@ -30,6 +30,12 @@ public final class Constants {
         public static final String limelightID = "limelight";
     }
 
+    public static final class OffsetsToAprilTags{
+        public static final double[] offsetToAprilTagLeftToReef = {-0.5, 0.165, 0};
+        public static final double[] offsetToAprilTagRightToReef = {-0.5, -0.165, 0};
+        public static final double[] offsetToAprilTagCenterToReef = {-0.5, 0, 0};
+    }
+
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = true;

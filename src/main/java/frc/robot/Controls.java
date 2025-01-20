@@ -19,8 +19,14 @@ public class Controls implements Sendable {
     public int tagToChase = 2;
     
     public Controls() {
+        JoystickButton aButton = new JoystickButton(operatorJoystick, 1);
+        JoystickButton bButton = new JoystickButton(operatorJoystick, 2);
+        JoystickButton xButton = new JoystickButton(operatorJoystick, 3);
+        JoystickButton yButton = new JoystickButton(operatorJoystick, 4);
         JoystickButton lbButton = new JoystickButton(operatorJoystick, 5);
-        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, 2));
+        JoystickButton rbButton = new JoystickButton(operatorJoystick, 6);
+        
+        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, 2, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 

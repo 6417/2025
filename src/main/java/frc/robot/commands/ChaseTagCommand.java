@@ -31,6 +31,7 @@ public class ChaseTagCommand extends Command {
     private static final Transform3d TAG_TO_GOAL = new Transform3d(
             new Translation3d(-1, 0, 0), // x, y, z
             new Rotation3d(0, 0, Math.PI)); // roll, pitch, yaw
+    private final double[] offset;
     private final SwerveDrive swerveDriveSubsystem;
 
     private final ProfiledPIDController xController = new ProfiledPIDController(1.5, 0, 0, X_CONSTRAINTS);
@@ -39,7 +40,8 @@ public class ChaseTagCommand extends Command {
 
     private double lastTarget;
 
-    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem, int tagToChase) {
+    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem, int tagToChase, double[] offset) {
+        this.offset = offset;
         this.tagToChase = tagToChase;
         this.swerveDriveSubsystem = swerveDriveSubsystem;
 
@@ -73,9 +75,9 @@ public class ChaseTagCommand extends Command {
             lastTarget = target;
 
             // Transform the tag's pose to set our goal
-            double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ() - 1;
-            double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX();
-            double rRotation = - LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY();
+            double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ() - offset[0];
+            double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX() - offset[1];
+            double rRotation = - LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY() - offset[2];
             
             new Rotation2d();
             Pose2d goalPose = robotPose2d.plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
