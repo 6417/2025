@@ -22,14 +22,14 @@ public class Controls implements Sendable {
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
     public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
 
-    Trigger ltButton = operatorJoystick.leftTrigger();
-    Trigger rtButton = operatorJoystick.rightTrigger();
-    Trigger lbButton = operatorJoystick.leftBumper();
-    Trigger rbButton = operatorJoystick.rightBumper();
-    Trigger aButton = operatorJoystick.a();
-    Trigger bButton = operatorJoystick.b();
-    Trigger xButton = operatorJoystick.x();
-    Trigger yButton = operatorJoystick.y();
+    Trigger ltButtonOperator = operatorJoystick.leftTrigger();
+    Trigger rtButtonOperator = operatorJoystick.rightTrigger();
+    Trigger lbButtonOperator = operatorJoystick.leftBumper();
+    Trigger rbButtonOperator = operatorJoystick.rightBumper();
+    Trigger aButtonOperator = operatorJoystick.a();
+    Trigger bButtonOperator = operatorJoystick.b();
+    Trigger xButtonOperator = operatorJoystick.x();
+    Trigger yButtonOperator = operatorJoystick.y();
     
     public Controls() {
         // JoystickButton aButton = new JoystickButton(operatorJoystick, 1);
@@ -40,9 +40,9 @@ public class Controls implements Sendable {
         // JoystickButton rbButton = new JoystickButton(operatorJoystick, 6);
 
         
-        ltButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
-        rtButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+        ltButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
+        rtButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
+        lbButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
