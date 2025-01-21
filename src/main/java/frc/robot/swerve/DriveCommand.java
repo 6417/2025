@@ -22,12 +22,12 @@ public class DriveCommand extends Command {
         //var pitchOffsetRadians = Radians.convertFrom(90, Degrees);
 
         var joystick = RobotContainer.controls.driveJoystick;
-        var xy = new Vector2(-joystick.getY(), -joystick.getX());
+        var xy = new Vector2(-joystick.getLeftY(), -joystick.getLeftX());
         //xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
-        var rot = -joystick.getRawAxis(4);
+        var rot = -joystick.getRightX();
 
-        if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
-            xy = xy.normalized().scaled(joystick.getZ());
+        if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) { // was ist Z Achse?
+            // xy = xy.normalized().scaled(joystick.getZ());
         }
 
 

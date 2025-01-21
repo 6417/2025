@@ -16,6 +16,9 @@ import frc.robot.commands.ChaseTagCommand;
  * either to the entire program or get exported to the shuffleboard
  */
 public class Controls implements Sendable {
+
+    int tagToChase = 2;
+
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
     public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
 
@@ -35,8 +38,11 @@ public class Controls implements Sendable {
         // JoystickButton yButton = new JoystickButton(operatorJoystick, 4);
         // JoystickButton lbButton = new JoystickButton(operatorJoystick, 5);
         // JoystickButton rbButton = new JoystickButton(operatorJoystick, 6);
+
         
-        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, 2, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+        ltButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
+        rtButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
+        lbButton.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
