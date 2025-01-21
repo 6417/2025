@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -74,7 +76,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.pathplanner.getAutoCommandGroup("Auto").schedule();
+       robotContainer.pathplanner.getAutoCommandGroup("Auto").schedule();
     }
 
     /** This function is called periodically during autonomous. */
