@@ -6,10 +6,14 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LiftingTowerSubsystem;
 
 /**
  * Holds the data concerning input, which should be available
@@ -17,10 +21,11 @@ import frc.robot.commands.ChaseTagCommand;
  */
 public class Controls implements Sendable {
 
-    int tagToChase = 2;
+    public int tagToChase = 2;
 
+    // private ExampleSubsystem ss = new ExampleSubsystem();
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
-    public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
+    public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.operatorJoystickId);
 
     Trigger ltButtonOperator = operatorJoystick.leftTrigger();
     Trigger rtButtonOperator = operatorJoystick.rightTrigger();
@@ -31,18 +36,12 @@ public class Controls implements Sendable {
     Trigger xButtonOperator = operatorJoystick.x();
     Trigger yButtonOperator = operatorJoystick.y();
     
-    public Controls() {
-        // JoystickButton aButton = new JoystickButton(operatorJoystick, 1);
-        // JoystickButton bButton = new JoystickButton(operatorJoystick, 2);
-        // JoystickButton xButton = new JoystickButton(operatorJoystick, 3);
-        // JoystickButton yButton = new JoystickButton(operatorJoystick, 4);
-        // JoystickButton lbButton = new JoystickButton(operatorJoystick, 5);
-        // JoystickButton rbButton = new JoystickButton(operatorJoystick, 6);
-
-        
+    public Controls() {        
         ltButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
         rtButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
         lbButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+
+        // aButtonOperator.onTrue(new ExampleCommand(ss));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
