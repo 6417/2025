@@ -67,7 +67,7 @@ public class ChaseTagCommand extends Command {
     public void execute() {
         Pose2d robotPose2d = swerveDriveSubsystem.getPose();
 
-        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) == tagToChase) {
+        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1) {
             // Find the tag we want to chase
             double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 

@@ -37,9 +37,9 @@ public class Controls implements Sendable {
     Trigger yButtonOperator = operatorJoystick.y();
     
     public Controls() {        
-        ltButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
-        rtButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        lbButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+        rtButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
+        ltButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
+        yButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
 
         // aButtonOperator.onTrue(new ExampleCommand(ss));
         Shuffleboard.getTab("Drive").add("Controls", this);
@@ -76,7 +76,7 @@ public class Controls implements Sendable {
 
     public double turnSensitivity = 0.08;
 
-    public DriveOrientation driveOrientation = DriveOrientation.Forwards;
+    public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {

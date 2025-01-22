@@ -44,7 +44,7 @@ public final class Constants {
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.275;
         public static final double moduleYoffset = 0.275;
-        public static final double maxTurnSpeed = 11.5 ;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
+        public static final double maxTurnSpeed = 50 ;//Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
     
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
