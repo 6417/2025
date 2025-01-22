@@ -15,6 +15,36 @@
           "data": {
             "pathName": "Path2"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Path7"
+          }
         }
       ]
     }
