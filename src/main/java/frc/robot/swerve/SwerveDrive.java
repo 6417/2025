@@ -63,8 +63,8 @@ public class SwerveDrive extends SubsystemBase {
 
         setDefaultCommand(new DriveCommand(this));
 
-        odometryThread = new Thread(this::updateOdometryThread);
-        odometryThread.start();
+        //odometryThread = new Thread(this::updateOdometryThread);
+        //odometryThread.start();
     }
 
     public synchronized void updateOdometryThread() {
@@ -94,6 +94,9 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void periodic() {
+        updateOdometry();
+
+       System.out.println(getPose().toString());
     }
 
     public Pose2d getPose() {
