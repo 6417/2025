@@ -5,6 +5,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
+import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 
 public class SwerveDrive extends SubsystemBase {
@@ -49,6 +51,7 @@ public class SwerveDrive extends SubsystemBase {
             modules[i] = new SwerveModule(configs[i]);
             Shuffleboard.getTab("Drive").add("SwerveModule " + moduleNames[i], modules[i]);
         }
+        Shuffleboard.getTab("Drive").add("SwerveDrive", this);
 
         kinematics = new SwerveDriveKinematics(
                 configs[0].moduleOffset,
@@ -103,7 +106,32 @@ public class SwerveDrive extends SubsystemBase {
     public synchronized void updateOdometry() {
         poseEstimator.update(
                 RobotContainer.getGyroRotation2d(),
-                getModulePositions());
+                new SwerveModulePosition[] {
+                        modules[LOC_FL].getPosition(),
+                        modules[LOC_FR].getPosition(),
+                        modules[LOC_RL].getPosition(),
+                        modules[LOC_RR].getPosition()
+                });
+
+        boolean doRejectUpdate = false;
+
+       /*  LimelightHelpers.SetRobotOrientation("limelight",
+                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+        if (Math.abs(RobotContainer.gyro.getRate()) > 720) {// if our angular velocity is greater than 720 degrees per
+                                                            // second, ignore vision updates
+            doRejectUpdate = true;
+        }
+        if (mt2.tagCount == 0) {
+            doRejectUpdate = true;
+        }
+        if (!doRejectUpdate) {
+            poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+            poseEstimator.addVisionMeasurement(
+                    mt2.pose,
+                    mt2.timestampSeconds);
+        }*/
+
     }
 
     public void resetOdoemetry(Pose2d newPose) {

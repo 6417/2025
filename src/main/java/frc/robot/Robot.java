@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
      */
     public Robot() {
         robotContainer = new RobotContainer();
-
+        Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
     }
 
     /**
