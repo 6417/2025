@@ -31,4 +31,9 @@ public class RobotContainer {
         double angle = Math.IEEEremainder(inverted * gyro.getAngle(), 360);
         return Rotation2d.fromDegrees(angle);
     }
+
+    public Command getAutoCommand(){
+        
+        return pathplanner.getAutoCommandGroup("Auto");
+    }
 }
