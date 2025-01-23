@@ -65,26 +65,46 @@ public class ChaseTagCommand extends Command {
 
     @Override
     public void execute() {
-        Pose2d robotPose2d = swerveDriveSubsystem.getPose();
+        Pose2d robotPose2d = swerveDriveSubsystem
+        .getPose();
 
-        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) == tagToChase) {
+        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1) {
             // Find the tag we want to chase
             double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 
             // This is new target data, so recalculate the goal
             lastTarget = target;
 
-            // Transform the tag's pose to set our goal
-            double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ() - offset[0];
-            double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX() - offset[1];
-            double rRotation = - LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY() - offset[2];
-            
-            new Rotation2d();
-            Pose2d goalPose = robotPose2d.plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
-            /*var goalPose = robotPose.plus(new Transform3d(new Pose3d(0.0, 0.0, 0.0, new Rotation3d()),
-                    LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)));*/
+            double rotationOfTargetToXaxesOfRobotspace = LimelightHelpers
+                    .getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getX();
 
-            //goalPose = goalPose.plus(TAG_TO_GOAL);
+            offset[0] = Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[0]
+            - Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[1];
+            offset[1] = Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[0]
+            + Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[1];
+
+            // Transform the tag's pose to set our goal
+            double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ()
+                    - offset[0];
+            double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX()
+                    - offset[1];
+            double rRotation = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)
+                    .getRotation().getY() - offset[2];
+
+            new Rotation2d();
+            Pose2d goalPose = robotPose2d
+                    .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
+            /*
+             * var goalPose = robotPose.plus(new Transform3d(new Pose3d(0.0, 0.0, 0.0, new
+             * Rotation3d()),
+             * LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID))
+             * );
+             */
+            System.out.print("\n" + "XGoal: " + goalPose.getX() + "  YGoal: ");
+            System.out.print(goalPose.getY() + "  RotationGoal: ");
+            System.out.print(goalPose.getRotation());
+
+            // goalPose = goalPose.plus(TAG_TO_GOAL);
 
             // returns the target pose in field space, calculatet by adding the target pose
             // in robot space to the robot pose in field space}
@@ -93,7 +113,9 @@ public class ChaseTagCommand extends Command {
             xController.setGoal(goalPose.getX());
             yController.setGoal(goalPose.getY());
             omegaController.setGoal(goalPose.getRotation().getRadians());
+        }
 
+        if (lastTarget != -1) {
             var xSpeed = xController.calculate(robotPose2d.getX());
             if (xController.atGoal()) {
                 xSpeed = 0;
@@ -107,14 +129,15 @@ public class ChaseTagCommand extends Command {
                 omegaSpeed = 0;
             }
             var chas = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, omegaSpeed,
-            robotPose2d.getRotation());
-            
-            swerveDriveSubsystem.setChassisSpeeds(chas);
+                    robotPose2d.getRotation());
 
-        }else {
-            swerveDriveSubsystem.stopMotors();
+            swerveDriveSubsystem.setChassisSpeeds(chas);
         }
-        
+    }
+
+    @Override
+    public boolean isFinished() {
+        return (xController.atGoal() && yController.atGoal() && omegaController.atGoal());
     }
 
     @Override

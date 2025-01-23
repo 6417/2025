@@ -33,7 +33,7 @@ public final class Constants {
     public static final class OffsetsToAprilTags{
         public static final double[] offsetToAprilTagLeftToReef = {0.5, 0.165, 0};
         public static final double[] offsetToAprilTagRightToReef = {0.5, -0.165, 0};
-        public static final double[] offsetToAprilTagCenterToReef = {0.5, 0, 0};
+        public static final double[] offsetToAprilTagCenterToReef = {0.7, 0, 0};
     }
 
     public static final class SwerveDrive {
@@ -91,7 +91,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.721;
+            configs[LOC_FR].absEncoderOffset = 0.63;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
