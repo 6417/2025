@@ -118,6 +118,7 @@ public class SwerveDrive extends SubsystemBase {
                         modules[LOC_RR].getPosition()
                 });
 
+<<<<<<< HEAD
         boolean doRejectUpdate = false;
 
         LimelightHelpers.SetRobotOrientation("limelight",
@@ -139,6 +140,9 @@ public class SwerveDrive extends SubsystemBase {
                         mt2.timestampSeconds);
             }
         }
+=======
+        // TODO : Add vision measurements in separate command
+>>>>>>> origin/develop
     }
 
     public void resetOdoemetry(Pose2d newPose) {
