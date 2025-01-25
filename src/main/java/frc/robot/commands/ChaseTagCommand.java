@@ -65,8 +65,7 @@ public class ChaseTagCommand extends Command {
 
     @Override
     public void execute() {
-        Pose2d robotPose2d = swerveDriveSubsystem
-        .getPose();
+        Pose2d robotPose2d = swerveDriveSubsystem.getPose();
 
         if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1) {
             // Find the tag we want to chase
@@ -78,10 +77,10 @@ public class ChaseTagCommand extends Command {
             double rotationOfTargetToXaxesOfRobotspace = LimelightHelpers
                     .getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getX();
 
-            offset[0] = Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[0]
-            - Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[1];
-            offset[1] = Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[0]
-            + Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[1];
+            // offset[0] = Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[0]
+            //         - Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[1];
+            // offset[1] = Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[0]
+            //         + Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[1];
 
             // Transform the tag's pose to set our goal
             double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ()
@@ -89,7 +88,7 @@ public class ChaseTagCommand extends Command {
             double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX()
                     - offset[1];
             double rRotation = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)
-                    .getRotation().getY() - offset[2];
+                    .getRotation().getZ() - offset[2];
 
             new Rotation2d();
             Pose2d goalPose = robotPose2d
@@ -100,9 +99,9 @@ public class ChaseTagCommand extends Command {
              * LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID))
              * );
              */
-            System.out.print("\n" + "XGoal: " + goalPose.getX() + "  YGoal: ");
-            System.out.print(goalPose.getY() + "  RotationGoal: ");
-            System.out.print(goalPose.getRotation());
+            System.out.print("\n" + "XGoal: " + xDistance + "  YGoal: ");
+            System.out.print(yDistance + "  RotationGoal: ");
+            System.out.print(rRotation);
 
             // goalPose = goalPose.plus(TAG_TO_GOAL);
 

@@ -28,11 +28,15 @@ public final class Constants {
 
     public static final class Limelight{
         public static final String limelightID = "limelight";
+
+        public static final double[] positionsForChasetags = {
+            
+        };
     }
 
     public static final class OffsetsToAprilTags{
-        public static final double[] offsetToAprilTagLeftToReef = {0.5, 0.165, 0};
-        public static final double[] offsetToAprilTagRightToReef = {0.5, -0.165, 0};
+        public static final double[] offsetToAprilTagLeftToReef = {0.5, 0.5, 0};
+        public static final double[] offsetToAprilTagRightToReef = {0.5, -0.5, 0};
         public static final double[] offsetToAprilTagCenterToReef = {0.7, 0, 0};
     }
 
