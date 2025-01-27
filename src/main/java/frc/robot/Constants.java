@@ -104,7 +104,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.486;
+            configs[LOC_RL].absEncoderOffset = 0.426;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;

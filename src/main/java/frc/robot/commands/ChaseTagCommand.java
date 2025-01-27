@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +15,9 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -69,6 +73,8 @@ public class ChaseTagCommand extends Command {
 
         if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1) {
 
+            Pose3d robotPoseInTargetSpace = LimelightHelpers
+                    .toPose3D(LimelightHelpers.getBotPose_TargetSpace(Constants.Limelight.limelightID));
             // Find the tag we want to chase
             double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 
@@ -84,21 +90,26 @@ public class ChaseTagCommand extends Command {
             // offset[1] = Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[0]
             // + Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[1];
 
-
-            offset[1] *= Math.cos(rotationOfTargetToXaxesOfRobotspace);
+            // offset[1] *= Math.cos(rotationOfTargetToXaxesOfRobotspace);
             // offset[0] *= Math.cos(rotationOfTargetToXaxesOfRobotspace);
 
             // Transform the tag's pose to set our goal
-            double xDistance = LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ()
-                    - offset[0];
-            double yDistance = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX()
-                    - offset[1];
-            double rRotation = -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)
-                    .getRotation().getY() - offset[2];
+            // double xDistance =
+            // LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ();
+            // double yDistance =
 
+            // -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX();
+            // double rRotation =
+            // -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)
+            // .getRotation().getY();
+
+            double xDistance = -robotPoseInTargetSpace.getZ()-offset[0];
+            double yDistance = robotPoseInTargetSpace.getX()-offset[1];
+            double rRotation = robotPoseInTargetSpace.getRotation().getY()-offset[2];
             new Rotation2d();
             Pose2d goalPose = robotPose2d
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
+
             /*
              * var goalPose = robotPose.plus(new Transform3d(new Pose3d(0.0, 0.0, 0.0, new
              * Rotation3d()),
@@ -107,9 +118,8 @@ public class ChaseTagCommand extends Command {
              */
             // System.out.print("\n" + "XGol: " + goalPose.getX() + " YGol: ");
             // System.out.print(goalPose.getY() + " RotationGol: ");
-            System.out.println("RotationOfTargetToXaxesOfRobotspace: " + rotationOfTargetToXaxesOfRobotspace);
+            // System.out.println("RotationOfTargetToXaxesOfRobotspace: " + rotationOfTargetToXaxesOfRobotspace);
 
-            // goalPose = goalPose.plus(TAG_TO_GOAL);
 
             // returns the target pose in field space, calculatet by adding the target pose
             // in robot space to the robot pose in field space}
@@ -118,6 +128,9 @@ public class ChaseTagCommand extends Command {
             xController.setGoal(goalPose.getX());
             yController.setGoal(goalPose.getY());
             omegaController.setGoal(goalPose.getRotation().getRadians());
+
+            System.out.println("OmegaGoal" + omegaController.getGoal().toString());
+
         }
 
         if (lastTarget != -1) {

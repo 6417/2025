@@ -101,8 +101,6 @@ public class SwerveDrive extends SubsystemBase {
 
     public void periodic() {
         updateOdometry();
-
-        // System.out.println(getPose().toString());
     }
 
     public Pose2d getPose() {

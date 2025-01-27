@@ -12,6 +12,8 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -42,6 +44,31 @@ public class Robot extends TimedRobot {
 
         autoCommand = robotContainer.getAutoCommand();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
+        Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+
+                builder.addDoubleProperty("distanceX",
+                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX(),
+                        null);
+                builder.addDoubleProperty("distanceY",
+                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getY(),
+                        null);
+                builder.addDoubleProperty("distanceZ",
+                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ(),
+                        null);
+
+                builder.addDoubleProperty("RotationX (Roll)",
+                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getX(),
+                        null);
+                builder.addDoubleProperty("RotationY (Pitch)",
+                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY(),
+                        null);
+                builder.addDoubleProperty("RotationZ (Yaw)",
+                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getZ(),
+                        null);
+            }
+        });
     }
 
     /**
@@ -81,10 +108,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        
-      if(autoCommand != null){
-        autoCommand.schedule();
-      }
+
+        if (autoCommand != null) {
+            autoCommand.schedule();
+        }
     }
 
     /** This function is called periodically during autonomous. */
