@@ -22,8 +22,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.robot.Constants;
+import frc.robot.Controls;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
+import frc.robot.Controls.IntakeState;
 
 public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] modules;
@@ -101,6 +103,19 @@ public class SwerveDrive extends SubsystemBase {
 
     public void periodic() {
         updateOdometry();
+        updateState();
+    }
+
+    public void updateState() {
+        if (Constants.Limelight.aprilTagsForIntakeStateTeamIsBlue
+                .contains(LimelightHelpers.getFiducialID(Constants.Limelight.limelightID))) {
+            RobotContainer.controls.setActiveIntakeState(IntakeState.INTAKE);
+        }
+        if (Constants.Limelight.aprilTagsForOuttakeStateTeamIsBlue
+                .contains(LimelightHelpers.getFiducialID(Constants.Limelight.limelightID))) {
+            RobotContainer.controls.setActiveIntakeState(IntakeState.OUTTAKE);
+        }
+        RobotContainer.controls.updateStateControlls();
     }
 
     public Pose2d getPose() {

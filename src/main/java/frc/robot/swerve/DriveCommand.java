@@ -19,7 +19,7 @@ public class DriveCommand extends Command {
 
     public void execute() {
 
-        var pitchOffsetRadians = Radians.convertFrom(-90, Degrees);
+        var pitchOffsetRadians = Radians.convertFrom(180, Degrees);
 
         var joystick = RobotContainer.controls.driveJoystick;
         var xy = new Vector2(joystick.getRawAxis(1), joystick.getRawAxis(0));

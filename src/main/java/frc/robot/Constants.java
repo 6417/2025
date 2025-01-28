@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import frc.fridowpi.motors.utils.FeedForwardValues;
@@ -26,30 +29,50 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
-    public static final class Limelight{
+    public static final class Limelight {
         public static final String limelightID = "limelight";
 
-        public static final double[] positionsForChasetags = {
-            
-        };
+        public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
+                22.0);
+        public static final List<Double> aprilTagsForOuttakeStateTeamIsBlue = Arrays.asList(6.0, 7.0, 8.0, 9.0, 10.0,
+                11.0);
+        public static final List<Double> aprilTagsForIntakeStateTeamIsBlue = Arrays.asList(12.0, 13.0);
+        public static final List<Double> aprilTagsForIntakeStateTeamIsRed = Arrays.asList(1.0, 2.0);
     }
 
-    public static final class OffsetsToAprilTags{
-        public static final double[] offsetToAprilTagLeftToReef = {0.5, 0.144, 0};
-        public static final double[] offsetToAprilTagRightToReef = {0.5, -0.144, 0};
-        public static final double[] offsetToAprilTagCenterToReef = {0.45, 0, 0};
+    public static final class OffsetsToAprilTags {
+        public static final double[] offsetToAprilTagLeftToReef = { 0.5, 0.165, 0 };
+        public static final double[] offsetToAprilTagRightToReef = { 0.5, -0.165, 0 };
+        public static final double[] offsetToAprilTagCenterToReef = { 0.5, 0, 0 };
+    }
+
+    public static final class Hubturm {
+        public static final double l0Angle = 20;
+        public static final double l1Angle = 35;
+        public static final double l2Angle = 35;
+        public static final double l3Angle = 35;
+        public static final double lowestPosAngle = 80;
+
+
+        public static final double l0Height = 0.3;
+        public static final double l1Height = 0.6;
+        public static final double l2Height = 0.7;
+        public static final double l3Height = 0.8;
+        public static final double lowestPosHeight = 0.1;
+
     }
 
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = true;
 
-        public static final double maxSpeed = 6.5 ; // TODO: for testing
+        public static final double maxSpeed = 6.3; // TODO: for testing
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.275;
         public static final double moduleYoffset = 0.275;
-        public static final double maxTurnSpeed = 50 ;//Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
-    
+        public static final double maxTurnSpeed = 60;// Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI
+                                                     // * 2); // rps
+
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI;
@@ -95,8 +118,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.73
-            ;
+            configs[LOC_FR].absEncoderOffset = 0.73;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;

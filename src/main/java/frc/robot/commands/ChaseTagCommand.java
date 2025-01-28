@@ -27,9 +27,9 @@ import frc.robot.swerve.SwerveDrive;
 
 public class ChaseTagCommand extends Command {
 
-    private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(2.5, 1.5);
-    private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(2.5, 1.5);
-    private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 6);
+    private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
+    private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(3.5, 6);
 
     private final int tagToChase;
     private static final Transform3d TAG_TO_GOAL = new Transform3d(
@@ -40,7 +40,7 @@ public class ChaseTagCommand extends Command {
 
     private final ProfiledPIDController xController = new ProfiledPIDController(1.5, 0, 0, X_CONSTRAINTS);
     private final ProfiledPIDController yController = new ProfiledPIDController(1.5, 0, 0, Y_CONSTRAINTS);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(1, 0, 0, OMEGA_CONSTRAINTS);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(1.5, 0, 0, OMEGA_CONSTRAINTS);
 
     private double lastTarget;
 
@@ -81,9 +81,6 @@ public class ChaseTagCommand extends Command {
             // This is new target data, so recalculate the goal
             lastTarget = target;
 
-            double rotationOfTargetToXaxesOfRobotspace = LimelightHelpers
-                    .getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY();
-
             // offset[0] = Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[0]
 
             // - Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[1];
@@ -103,11 +100,11 @@ public class ChaseTagCommand extends Command {
             // -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)
             // .getRotation().getY();
 
-            double xDistance = -robotPoseInTargetSpace.getZ()-offset[0];
-            double yDistance = robotPoseInTargetSpace.getX()-offset[1];
-            double rRotation = robotPoseInTargetSpace.getRotation().getY()-offset[2];
-            new Rotation2d();
-            Pose2d goalPose = robotPose2d
+            double xDistance = -robotPoseInTargetSpace.getZ() - offset[0];
+            double yDistance = robotPoseInTargetSpace.getX() - offset[1];
+            double rRotation = robotPoseInTargetSpace.getRotation().getY() - offset[2];
+            // new Rotation2d();
+            Pose2d goalPose = robotPose2d // robot pose in fieldspace
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
 
             /*
@@ -116,10 +113,11 @@ public class ChaseTagCommand extends Command {
              * LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID))
              * );
              */
+
             // System.out.print("\n" + "XGol: " + goalPose.getX() + " YGol: ");
             // System.out.print(goalPose.getY() + " RotationGol: ");
-            // System.out.println("RotationOfTargetToXaxesOfRobotspace: " + rotationOfTargetToXaxesOfRobotspace);
-
+            // System.out.println("RotationOfTargetToXaxesOfRobotspace: " +
+            // rotationOfTargetToXaxesOfRobotspace);
 
             // returns the target pose in field space, calculatet by adding the target pose
             // in robot space to the robot pose in field space}

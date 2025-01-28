@@ -7,11 +7,13 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LiftingTowerSubsystem;
 
@@ -35,19 +37,71 @@ public class Controls implements Sendable {
     Trigger bButtonOperator = operatorJoystick.b();
     Trigger xButtonOperator = operatorJoystick.x();
     Trigger yButtonOperator = operatorJoystick.y();
-    
-    public Controls() {        
-        rtButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
-        ltButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        yButtonOperator.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase, Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+    Trigger pov0Operator = operatorJoystick.povUp();
+    Trigger pov2Operator = operatorJoystick.povRight();
+    Trigger pov4Operator = operatorJoystick.povDown();
+    Trigger pov6Operator = operatorJoystick.povLeft();
 
-        // aButtonOperator.onTrue(new ExampleCommand(ss));
-        Shuffleboard.getTab("Drive").add("Controls", this);
-    }
+    Trigger ltButtonDrive = driveJoystick.leftTrigger();
+    Trigger rtButtonDrive = driveJoystick.rightTrigger();
+    Trigger lbButtonDrive = driveJoystick.leftBumper();
+    Trigger rbButtonDrive = driveJoystick.rightBumper();
+    Trigger aButtonDrive = driveJoystick.a();
+    Trigger bButtonDrive = driveJoystick.b();
+    Trigger xButtonDrive = driveJoystick.x();
+    Trigger yButtonDrive = driveJoystick.y();
 
     public enum ControlMode {
         CONVENTIONAL,
         SEPARATE_ACCELERATION;
+    }
+
+    public enum HubturmState {
+        LZERO,
+        LONE,
+        LTWO,
+        LTHREE,
+    }
+
+    private Map<HubturmState, SuperStructureState> superstructureOnState = Map.of(
+            HubturmState.LZERO, new SuperStructureState(Constants.Hubturm.l0Angle, Constants.Hubturm.l0Height),
+            HubturmState.LTWO, new SuperStructureState(Constants.Hubturm.l1Angle, Constants.Hubturm.l1Height),
+            HubturmState.LTHREE, new SuperStructureState(Constants.Hubturm.l2Angle, Constants.Hubturm.l2Height),
+            HubturmState.LONE, new SuperStructureState(Constants.Hubturm.l3Angle, Constants.Hubturm.l3Height));
+
+    public enum GamePieceState {
+        CORAL,
+        ALGUE;
+    }
+
+    public enum IntakeState {
+        INTAKE,
+        OUTTAKE;
+    }
+
+    private GamePieceState activePieceState = GamePieceState.ALGUE;
+    private IntakeState activeIntakeState = IntakeState.INTAKE;
+
+    public void updateStateControlls() {
+        yButtonOperator.whileTrue(new InstantCommand(() -> {
+            if (activeIntakeState == IntakeState.INTAKE && activePieceState == GamePieceState.CORAL) {
+                // What happens if CoralIntakestate is Active and y is Pressed
+            } else if (activeIntakeState == IntakeState.INTAKE) {
+                // What happens if AlgueIntakestate is Active and y is Pressed
+            } else if (activePieceState == GamePieceState.CORAL) {
+                // What happens if CoralOuttakestate is Active and y is Pressed
+            } else {
+                // What happens if AlgueOuttakestate is Active and y is Pressed
+            }
+        }));
+    }
+
+    public void setActiveIntakeState(IntakeState newIntakeState) {
+        activeIntakeState = newIntakeState;
+    }
+
+    public void setActivePieceState(GamePieceState newPieceState) {
+        activePieceState = newPieceState;
     }
 
     public enum DriveSpeed {
@@ -84,12 +138,45 @@ public class Controls implements Sendable {
         accelerationSensitivity = speedFactors.get(speedFactor);
     }
 
-    public DriveSpeed setActiveSpeedFactor() {
+    public DriveSpeed getActiveSpeedFactor() {
         return activeSpeedFactor;
     }
 
     public double getAccelerationSensitivity() {
         return accelerationSensitivity;
+    }
+
+    public Controls() {
+        rtButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase,
+                Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
+        ltButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase,
+                Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
+        yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase,
+                Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+
+        // aButtonOperator.onTrue(new InstantCommand(() ->
+        // setActivePieceState(GamePieceState.ALGUE)))
+        // .onFalse(new InstantCommand(() ->
+        // setActivePieceState(GamePieceState.CORAL)));
+
+        yButtonOperator.onTrue(new InstantCommand(() -> {
+            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LZERO).getAngle())
+            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LZERO).getHeight())
+        }));
+        bButtonOperator.onTrue(new InstantCommand(() -> {
+            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LONE).getAngle())
+            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LONE).getHeight())
+        }));
+        aButtonOperator.onTrue(new InstantCommand(() -> {
+            //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTWO).getAngle())
+            //LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTWO).getHeight())
+        }));
+        xButtonOperator.onTrue(new InstantCommand(() -> {
+            //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTHREE).getAngle())
+            //LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTHREE).getHeight())
+        }));
+
+        Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
     // Shuffleboard
@@ -112,4 +199,5 @@ public class Controls implements Sendable {
         builder.addDoubleProperty("SlewRate Limit", () -> slewRateLimit, null);
         builder.addBooleanProperty("SquareInputs", () -> inputsSquared, val -> inputsSquared = val);
     }
+
 }
