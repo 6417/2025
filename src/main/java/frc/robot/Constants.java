@@ -2,9 +2,11 @@ package frc.robot;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
@@ -22,6 +24,7 @@ import frc.robot.swerve.ModuleConfig;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
     public static final class Joystick {
         public static final int driveJoystickId = 0;
         public static final int operatorJoystickId = 1;
@@ -34,10 +37,11 @@ public final class Constants {
 
         public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
                 22.0);
+        public static final List<Double> aprilTagsForIntakeStateTeamIsRed = Arrays.asList(1.0, 2.0);
+
         public static final List<Double> aprilTagsForOuttakeStateTeamIsBlue = Arrays.asList(6.0, 7.0, 8.0, 9.0, 10.0,
                 11.0);
         public static final List<Double> aprilTagsForIntakeStateTeamIsBlue = Arrays.asList(12.0, 13.0);
-        public static final List<Double> aprilTagsForIntakeStateTeamIsRed = Arrays.asList(1.0, 2.0);
     }
 
     public static final class OffsetsToAprilTags {
@@ -52,7 +56,6 @@ public final class Constants {
         public static final double l2Angle = 35;
         public static final double l3Angle = 35;
         public static final double lowestPosAngle = 80;
-
 
         public static final double l0Height = 0.3;
         public static final double l1Height = 0.6;

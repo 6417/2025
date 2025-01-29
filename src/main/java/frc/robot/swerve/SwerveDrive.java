@@ -107,7 +107,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void updateState() {
-        if (Constants.Limelight.aprilTagsForIntakeStateTeamIsBlue
+        if (Constants.Limelight.aprilTagsForIntakeStateTeamIsRed
                 .contains(LimelightHelpers.getFiducialID(Constants.Limelight.limelightID))) {
             RobotContainer.controls.setActiveIntakeState(IntakeState.INTAKE);
         }
