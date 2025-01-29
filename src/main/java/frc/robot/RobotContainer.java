@@ -34,6 +34,6 @@ public class RobotContainer {
 
     public Command getAutoCommand(){
         
-        return pathplanner.getAutoCommandGroup("Auto");
+        return pathplanner.getAutoCommandGroup("AutoPathLeftStart");
     }
 }

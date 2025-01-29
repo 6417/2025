@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -67,7 +68,9 @@ public class SwerveDrive extends SubsystemBase {
         poseEstimator = new SwerveDrivePoseEstimator(kinematics,
                 RobotContainer.getGyroRotation2d(),
                 getModulePositions(),
-                new Pose2d(new Translation2d(0, 0), Rotation2d.fromRotations(0)));
+                new Pose2d(),
+                VecBuilder.fill(0.02,0.02,0.01),
+                VecBuilder.fill(0.1,0.1,0.01));
 
         setDefaultCommand(new DriveCommand(this));
 
@@ -136,7 +139,7 @@ public class SwerveDrive extends SubsystemBase {
 
         LimelightHelpers.SetRobotOrientation("limelight",
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
         if (mt2 != null) {
             if (Math.abs(RobotContainer.gyro.getRate()) > 720) {// if our angular velocity is greater than 720 degrees
                                                                 // per
@@ -147,11 +150,12 @@ public class SwerveDrive extends SubsystemBase {
                 doRejectUpdate = true;
             }
             if (!doRejectUpdate) {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999));
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, Units.degreesToRadians(30)));
                 poseEstimator.addVisionMeasurement(
                         mt2.pose,
                         mt2.timestampSeconds);
             }
+            System.out.println(mt2.pose.toString());
         }
     }
 

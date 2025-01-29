@@ -83,7 +83,7 @@ public final class Constants {
             defaultModuleConfig2024.driveGearboxRatio = 5.192;
             defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.3, 0.00, 0);
             defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.18, 0.25, 0.02);
 
             defaultModuleConfig2024.angleGearboxRatio = 47.62;
@@ -121,7 +121,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.73;
+            configs[LOC_FR].absEncoderOffset = 0.72;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
