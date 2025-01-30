@@ -43,6 +43,7 @@ public class Robot extends TimedRobot {
         FollowPathCommand.warmupCommand().schedule();
 
         autoCommand = robotContainer.getAutoCommand();
+        robotContainer.gyro.reset();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
         Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
             @Override

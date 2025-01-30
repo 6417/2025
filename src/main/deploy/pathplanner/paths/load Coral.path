@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.460625,
-        "y": 6.780576923076922
+        "x": 4.703039383561644,
+        "y": 6.391545376712329
       },
       "isLocked": false,
       "linkedName": "a9"
@@ -20,20 +20,15 @@
         "y": 6.772836538461538
       },
       "prevControl": {
-        "x": 2.296298076923076,
-        "y": 4.868701923076923
+        "x": 2.7112847317348514,
+        "y": 5.943520168807522
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "coral loaded"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.7276315789473673,
-      "rotationDegrees": 145.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -55,5 +50,5 @@
     "velocity": 0,
     "rotation": -121.0875053234799
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

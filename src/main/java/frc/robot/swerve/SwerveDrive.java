@@ -69,8 +69,8 @@ public class SwerveDrive extends SubsystemBase {
                 RobotContainer.getGyroRotation2d(),
                 getModulePositions(),
                 new Pose2d(),
-                VecBuilder.fill(0.02,0.02,0.01),
-                VecBuilder.fill(0.1,0.1,0.01));
+                VecBuilder.fill(0.02,0.02,0.1),
+                VecBuilder.fill(0.1,0.1,0.1));
 
         setDefaultCommand(new DriveCommand(this));
 

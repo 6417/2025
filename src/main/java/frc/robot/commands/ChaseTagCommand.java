@@ -38,9 +38,9 @@ public class ChaseTagCommand extends Command {
     private final double[] offset;
     private final SwerveDrive swerveDriveSubsystem;
 
-    private final ProfiledPIDController xController = new ProfiledPIDController(1.5, 0, 0, X_CONSTRAINTS);
-    private final ProfiledPIDController yController = new ProfiledPIDController(1.5, 0, 0, Y_CONSTRAINTS);
-    private final ProfiledPIDController omegaController = new ProfiledPIDController(1.5, 0, 0, OMEGA_CONSTRAINTS);
+    private final ProfiledPIDController xController = new ProfiledPIDController(2, 0, 0, X_CONSTRAINTS);
+    private final ProfiledPIDController yController = new ProfiledPIDController(2, 0, 0, Y_CONSTRAINTS);
+    private final ProfiledPIDController omegaController = new ProfiledPIDController(2.5, 0, 0, OMEGA_CONSTRAINTS);
 
     private double lastTarget;
 
