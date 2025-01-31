@@ -6,6 +6,7 @@ public class LiftingTowerSubsystem {
     private FridoFalcon500v6 hubturmMotorLinks;
     private FridoFalcon500v6 hubturmMotorRechts;
     public LiftingTowerSubsystem() {
+        
     }
 
     public void periodic() {

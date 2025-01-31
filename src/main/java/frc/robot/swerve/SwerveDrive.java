@@ -1,29 +1,19 @@
 package frc.robot.swerve;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.robot.Constants;
-import frc.robot.Controls;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 import frc.robot.Controls.IntakeState;
@@ -139,11 +129,17 @@ public class SwerveDrive extends SubsystemBase {
 
         LimelightHelpers.SetRobotOrientation("limelight",
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-        if (mt2 != null) {
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight"); // We use MegaTag 1 because 2 has problems with rotation
+        // LimelightHelpers.PoseEstimate. mt22 =
+        // LimelightHelpers.getBotPoseEstimate_wpiBlue("limelightBack");
+
+        if (mt2 != null /* && mt22 != null */) {
+            // if (mt2.avgTagDistance > mt22.avgTagDistance) {
+            // mt2 = mt22;
+            // }
+
             if (Math.abs(RobotContainer.gyro.getRate()) > 720) {// if our angular velocity is greater than 720 degrees
-                                                                // per
-                                                                // second, ignore vision updates
+                // per second, ignore vision updates
                 doRejectUpdate = true;
             }
             if (mt2.tagCount == 0) {
@@ -154,8 +150,8 @@ public class SwerveDrive extends SubsystemBase {
                 poseEstimator.addVisionMeasurement(
                         mt2.pose,
                         mt2.timestampSeconds);
+
             }
-            System.out.println(mt2.pose.toString());
         }
     }
 

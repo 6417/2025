@@ -1,28 +1,16 @@
 package frc.robot.commands;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
-import frc.robot.RobotContainer;
-import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 import frc.robot.swerve.SwerveDrive;
 
 public class ChaseTagCommand extends Command {
@@ -31,10 +19,6 @@ public class ChaseTagCommand extends Command {
     private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(3, 2);
     private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(3.5, 6);
 
-    private final int tagToChase;
-    private static final Transform3d TAG_TO_GOAL = new Transform3d(
-            new Translation3d(-1, 0, 0), // x, y, z
-            new Rotation3d(0, 0, Math.PI)); // roll, pitch, yaw
     private final double[] offset;
     private final SwerveDrive swerveDriveSubsystem;
 
@@ -44,9 +28,8 @@ public class ChaseTagCommand extends Command {
 
     private double lastTarget;
 
-    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem, int tagToChase, double[] offset) {
+    public ChaseTagCommand(SwerveDrive swerveDriveSubsystem, double[] offset) {
         this.offset = offset;
-        this.tagToChase = tagToChase;
         this.swerveDriveSubsystem = swerveDriveSubsystem;
 
         xController.setTolerance(0.05);
@@ -81,43 +64,12 @@ public class ChaseTagCommand extends Command {
             // This is new target data, so recalculate the goal
             lastTarget = target;
 
-            // offset[0] = Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[0]
-
-            // - Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[1];
-            // offset[1] = Math.sin(rotationOfTargetToXaxesOfRobotspace) * offset[0]
-            // + Math.cos(rotationOfTargetToXaxesOfRobotspace) * offset[1];
-
-            // offset[1] *= Math.cos(rotationOfTargetToXaxesOfRobotspace);
-            // offset[0] *= Math.cos(rotationOfTargetToXaxesOfRobotspace);
-
-            // Transform the tag's pose to set our goal
-            // double xDistance =
-            // LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ();
-            // double yDistance =
-
-            // -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX();
-            // double rRotation =
-            // -LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID)
-            // .getRotation().getY();
-
             double xDistance = -robotPoseInTargetSpace.getZ() - offset[0];
             double yDistance = robotPoseInTargetSpace.getX() - offset[1];
             double rRotation = robotPoseInTargetSpace.getRotation().getY() - offset[2];
             // new Rotation2d();
             Pose2d goalPose = robotPose2d // robot pose in fieldspace
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
-
-            /*
-             * var goalPose = robotPose.plus(new Transform3d(new Pose3d(0.0, 0.0, 0.0, new
-             * Rotation3d()),
-             * LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID))
-             * );
-             */
-
-            // System.out.print("\n" + "XGol: " + goalPose.getX() + " YGol: ");
-            // System.out.print(goalPose.getY() + " RotationGol: ");
-            // System.out.println("RotationOfTargetToXaxesOfRobotspace: " +
-            // rotationOfTargetToXaxesOfRobotspace);
 
             // returns the target pose in field space, calculatet by adding the target pose
             // in robot space to the robot pose in field space}

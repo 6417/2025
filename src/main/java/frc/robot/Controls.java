@@ -4,26 +4,18 @@ import java.util.Map;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LiftingTowerSubsystem;
 
 /**
  * Holds the data concerning input, which should be available
  * either to the entire program or get exported to the shuffleboard
  */
 public class Controls implements Sendable {
-
-    public int tagToChase = 2;
 
     // private ExampleSubsystem ss = new ExampleSubsystem();
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
@@ -37,6 +29,8 @@ public class Controls implements Sendable {
     Trigger bButtonOperator = operatorJoystick.b();
     Trigger xButtonOperator = operatorJoystick.x();
     Trigger yButtonOperator = operatorJoystick.y();
+    Trigger windowsButtonOperator = operatorJoystick.back();
+    Trigger burgerButtonOperator = operatorJoystick.start();
     Trigger pov0Operator = operatorJoystick.povUp();
     Trigger pov2Operator = operatorJoystick.povRight();
     Trigger pov4Operator = operatorJoystick.povDown();
@@ -50,6 +44,8 @@ public class Controls implements Sendable {
     Trigger bButtonDrive = driveJoystick.b();
     Trigger xButtonDrive = driveJoystick.x();
     Trigger yButtonDrive = driveJoystick.y();
+    Trigger windowsButtonDrive = driveJoystick.back();
+    Trigger burgerButtonDrive = driveJoystick.start();
 
     public enum ControlMode {
         CONVENTIONAL,
@@ -147,17 +143,19 @@ public class Controls implements Sendable {
     }
 
     public Controls() {
-        rtButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase,
+        rtButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
-        ltButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase,
+        ltButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive, tagToChase,
+        yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
 
         // aButtonOperator.onTrue(new InstantCommand(() ->
         // setActivePieceState(GamePieceState.ALGUE)))
         // .onFalse(new InstantCommand(() ->
         // setActivePieceState(GamePieceState.CORAL)));
+
+        burgerButtonOperator.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         yButtonOperator.onTrue(new InstantCommand(() -> {
             // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LZERO).getAngle())
@@ -168,12 +166,12 @@ public class Controls implements Sendable {
             // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LONE).getHeight())
         }));
         aButtonOperator.onTrue(new InstantCommand(() -> {
-            //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTWO).getAngle())
-            //LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTWO).getHeight())
+            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTWO).getAngle())
+            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTWO).getHeight())
         }));
         xButtonOperator.onTrue(new InstantCommand(() -> {
-            //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTHREE).getAngle())
-            //LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTHREE).getHeight())
+            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTHREE).getAngle())
+            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTHREE).getHeight())
         }));
 
         Shuffleboard.getTab("Drive").add("Controls", this);

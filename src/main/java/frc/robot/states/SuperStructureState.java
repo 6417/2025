@@ -1,7 +1,5 @@
 package frc.robot.states;
 
-import edu.wpi.first.units.measure.Angle;
-
 public class SuperStructureState{
     private double angle; // in Degrees or Radians
     private double height; // in Meters

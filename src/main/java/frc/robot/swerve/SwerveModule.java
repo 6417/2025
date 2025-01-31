@@ -8,7 +8,6 @@ import edu.wpi.first.util.sendable.Sendable;
 import frc.fridowpi.sensors.AnalogEncoder;
 import frc.fridowpi.utils.Vector2;
 import frc.robot.Utils;
-import frc.robot.swerve.CTREModuleState;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 

@@ -7,17 +7,9 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.revrobotics.ColorSensorV3.Register;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import edu.wpi.first.math.Pair;
 public class FridoPathplanner {
     private SwerveDrive drive;
     
