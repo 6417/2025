@@ -1,8 +1,29 @@
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import frc.fridowpi.motors.utils.FeedForwardValues;
+import edu.wpi.first.math.geometry.Rotation2d;
 import java.util.Arrays;
 import java.util.List;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.fridowpi.motors.FridoFalcon500v6;
+import frc.fridowpi.motors.FridoSparkMax;
+import frc.fridowpi.motors.FridoTalonSRX;
+import frc.fridowpi.motors.FridolinsMotor;
+import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
+import frc.fridowpi.motors.FridolinsMotor.IdleMode;
+import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import edu.wpi.first.math.util.Units;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
@@ -29,6 +50,72 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
+    public static final class CoralDispenser {
+        public static final int coralMotorTopID = 0;
+        public static final int coralMotorBottomID = 1;
+        public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final double resetPitchEncoderPosition = 0;
+        public static final double resetMotorTopEncoderPosition = 0;
+        public static final double zeroingSpeed = 0.1;
+
+        public static final double stopSpeedMotorTop = 0;
+        public static final double stopSpeedPitch = 0;
+
+        public static final int neutralState = 0;
+        public static final int stationState = 1;
+        public static final int l1State = 2;
+        public static final int l2State = 3;
+        public static final int l3State = 4;
+        public static final int l4State = 5;
+        
+        public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
+        public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
+    }
+
+    public static final class LevelParameters implements Sendable{
+        public String name;
+        public Rotation2d pitchAngle;
+        public double height;
+        @Override
+        public void initSendable(SendableBuilder builder) {
+            builder.addDoubleProperty("pitch angle [deg]", () -> pitchAngle.getDegrees(), (double angle) -> pitchAngle = Rotation2d.fromDegrees(angle));
+            builder.addDoubleProperty("height [m]", () -> height, (double h) -> height = h);
+        }
+    }
+
+    public static LevelParameters[] parameters = new LevelParameters[6];
+
+    static {
+        parameters[CoralDispenser.neutralState].name = "neutral";
+        parameters[CoralDispenser.stationState].name = "station";
+        parameters[CoralDispenser.l1State].name = "l1";
+        parameters[CoralDispenser.l2State].name = "l2";
+        parameters[CoralDispenser.l3State].name = "l3";
+        parameters[CoralDispenser.l4State].name = "l4";
+    }
+
+
+    public static final class ClimberSubsytem {
+        public static final int climberMotorRID = 2;
+        public static final int climberMotorLID = 3;
+        public static final int coralMotorChangePitchID = 4;
+
+        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
+    }
+
+    public static final class LiftingTower {
+        public static final int liftingTowerLeftId = 5;
+        public static final int liftingTowerRightId = 6;
+
+        public static final double stopSpeed = 0;
+
+        public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0,0);
+    }
+
+
+    public static final class SwerveDrive {
     public static final class Limelight {
         public static final String limelightID = "limelight";
 
@@ -73,6 +160,8 @@ public final class Constants {
         public static final double maxTurnSpeed = 60;// Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI
                                                      // * 2); // rps
 
+
+            public static final Map<MountingLocations, SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI;

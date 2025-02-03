@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.states.SuperStructureState;
+import frc.robot.commands.CoralHeightPitchCommandGroup;
 
 /**
  * Holds the data concerning input, which should be available
@@ -128,6 +129,16 @@ public class Controls implements Sendable {
 
     public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
+
+    public Controls() {
+        natrualStateButton.onTrue(new CoralHeightPitchCommandGroup(0));
+        stationStateButton.onTrue(new CoralHeightPitchCommandGroup(1));
+        l1StateButton.onTrue(new CoralHeightPitchCommandGroup(2));
+        l2StateButton.onTrue(new CoralHeightPitchCommandGroup(3));
+        l3StateButton.onTrue(new CoralHeightPitchCommandGroup(4));
+        l4StateButton.onTrue(new CoralHeightPitchCommandGroup(5));
+    }
+
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
         activeSpeedFactor = speedFactor;
