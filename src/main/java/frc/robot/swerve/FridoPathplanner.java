@@ -53,8 +53,8 @@ public class FridoPathplanner {
 
     public Command getAutoCommandGroup(String fileName) {
         try {
-           return new PathPlannerAuto(fileName);
-
+            return new PathPlannerAuto(fileName);
+            
         } catch (Exception e) {
             DriverStation.reportError("PathPlanner failed: " + e.getMessage(), e.getStackTrace());
             return Commands.none();
@@ -62,14 +62,14 @@ public class FridoPathplanner {
     }
     
     // only to test; don't use
-    public Command getAutonomousCommand(String fileName) {
+    public Command getAutonomousSinglePathCommand(String fileName) {
 
         // return new PathPlannerAuto("Example Auto");
         try {
             PathPlannerPath path = PathPlannerPath.fromPathFile(fileName);
 
             // Possible to implement a Path from here
-    
+            
             return AutoBuilder.followPath(path);
         } catch (Exception e) {
             DriverStation.reportError("PathPlanner failed: " + e.getMessage(), e.getStackTrace());

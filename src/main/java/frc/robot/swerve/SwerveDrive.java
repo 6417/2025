@@ -127,30 +127,37 @@ public class SwerveDrive extends SubsystemBase {
 
         boolean doRejectUpdate = false;
 
-        LimelightHelpers.SetRobotOrientation("limelight",
+        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight"); // We use MegaTag 1 because 2 has problems with rotation
-        // LimelightHelpers.PoseEstimate. mt22 =
-        // LimelightHelpers.getBotPoseEstimate_wpiBlue("limelightBack");
+        
+        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightBackID, 
+                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
-        if (mt2 != null /* && mt22 != null */) {
-            // if (mt2.avgTagDistance > mt22.avgTagDistance) {
-            // mt2 = mt22;
-            // }
 
+        LimelightHelpers.PoseEstimate lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems with rotation
+        LimelightHelpers.PoseEstimate lime2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID); 
+        
+        if (lime1 != null || lime2 != null) {
+            lime1 = (lime1 != null) ? lime1 : lime2;
+
+            if (lime1 != null && lime2 != null) {
+                if (lime1.avgTagDist > lime2.avgTagDist) {
+                   lime1 = lime2;
+                }   
+            }
+            
             if (Math.abs(RobotContainer.gyro.getRate()) > 720) {// if our angular velocity is greater than 720 degrees
                 // per second, ignore vision updates
                 doRejectUpdate = true;
             }
-            if (mt2.tagCount == 0) {
+            if (lime1.tagCount == 0) {
                 doRejectUpdate = true;
             }
             if (!doRejectUpdate) {
                 poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, Units.degreesToRadians(30)));
                 poseEstimator.addVisionMeasurement(
-                        mt2.pose,
-                        mt2.timestampSeconds);
-
+                        lime1.pose,
+                        lime1.timestampSeconds);
             }
         }
     }

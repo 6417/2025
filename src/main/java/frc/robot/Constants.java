@@ -7,7 +7,6 @@ import edu.wpi.first.math.util.Units;
 import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -31,6 +30,7 @@ public final class Constants {
 
     public static final class Limelight {
         public static final String limelightID = "limelight";
+        public static final String limelightBackID = "limelight2";
 
         public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
                 22.0);
