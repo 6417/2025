@@ -11,26 +11,4 @@ public class CoralHeightPitchCommandGroup extends ParallelCommandGroup {
         addCommands(new CoralGoToHeightState(Constants.parameters[state].height), new CoralGoToPitchState(Constants.parameters[state].pitchAngle));
     }
 
-    @Override
-    public void initialize() {
-        
-    }
-
-    @Override
-    public void execute() {
-        
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-
-    }
-
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
-    
-}
-
 }

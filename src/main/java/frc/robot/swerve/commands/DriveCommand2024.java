@@ -43,12 +43,12 @@ public class DriveCommand2024 extends Command {
         var pitchOffsetRadians = Radians.convertFrom(Constants.SwerveDrive.navxPitchOffset, Degrees);
 
         var joystick = RobotContainer.controls.driveJoystick;
-        var xy = new Vector2(joystick.getX(), joystick.getY());
+        var xy = new Vector2(joystick.getLeftX(), joystick.getLeftY());
         xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
-        var rot = -joystick.getTwist();
+        var rot = -joystick.getRightX();
 
         if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
-            xy = xy.normalized().scaled(joystick.getZ());
+            xy = xy.normalized().scaled(joystick.getRightY());
         }
 
         // Brake if input is 0

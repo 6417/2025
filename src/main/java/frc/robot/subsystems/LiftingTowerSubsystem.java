@@ -35,7 +35,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorRight.set(speed);
     }
 
-    public void setPosition(double position) {
+    public void setHeight(double position) {
         motorRight.setPosition(position);
     }
 
