@@ -24,7 +24,7 @@ public class CoralDispenserSubsystem extends SubsystemBase {
         coralMotorChangePitch.enableForwardLimitSwitch(Constants.CoralDispenser.fwdPolarity, true);
 
         coralMotorTop.setPID(pidValuesMotorTop);
-        coralMotorTop.enableForwardLimitSwitch(Constants.CoralDispenser.fwdMotorTopPolarity, isForwardLimitSwitchPressed());
+        coralMotorTop.enableForwardLimitSwitch(Constants.CoralDispenser.fwdMotorTopPolarity, true);
 
     }
 

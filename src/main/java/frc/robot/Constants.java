@@ -1,31 +1,20 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
 import frc.fridowpi.motors.utils.FeedForwardValues;
-import edu.wpi.first.math.geometry.Rotation2d;
+
 import java.util.Arrays;
 import java.util.List;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import frc.fridowpi.motors.FridoFalcon500v6;
-import frc.fridowpi.motors.FridoSparkMax;
-import frc.fridowpi.motors.FridoTalonSRX;
-import frc.fridowpi.motors.FridolinsMotor;
-import frc.fridowpi.motors.FridolinsMotor.FridoFeedBackDevice;
-import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
-import edu.wpi.first.math.util.Units;
-import frc.fridowpi.motors.utils.FeedForwardValues;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
 
@@ -42,12 +31,29 @@ import frc.robot.swerve.ModuleConfig;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
     public static final class Joystick {
         public static final int driveJoystickId = 0;
         public static final int operatorJoystickId = 1;
         public static final int idCounterStart = 1000;
         public static final double lt_rt_reshold = 0.2;
+    }
+
+    public static final class Limelight {
+        public static final String limelightID = "limelight";
+
+        public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
+                22.0);
+        public static final List<Double> aprilTagsForIntakeStateTeamIsRed = Arrays.asList(1.0, 2.0);
+
+        public static final List<Double> aprilTagsForOuttakeStateTeamIsBlue = Arrays.asList(6.0, 7.0, 8.0, 9.0, 10.0,
+                11.0);
+        public static final List<Double> aprilTagsForIntakeStateTeamIsBlue = Arrays.asList(12.0, 13.0);
+    }
+
+    public static final class OffsetsToAprilTags {
+        public static final double[] offsetToAprilTagLeftToReef = { 0.5, 0.165, 0 };
+        public static final double[] offsetToAprilTagRightToReef = { 0.5, -0.165, 0 };
+        public static final double[] offsetToAprilTagCenterToReef = { 0.5, 0, 0 };
     }
 
     public static final class CoralDispenser {
@@ -103,6 +109,7 @@ public final class Constants {
         public static final int coralMotorChangePitchID = 4;
 
         public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
+        public static final double resetPitchEncoderPosition = 0;
     }
 
     public static final class LiftingTower {
@@ -112,42 +119,11 @@ public final class Constants {
         public static final double stopSpeed = 0;
 
         public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0,0);
+        public static final double resetEncoderPosition = 0;
+        public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final double zeroingSpeed = 0.1;
     }
 
-
-    public static final class SwerveDrive {
-    public static final class Limelight {
-        public static final String limelightID = "limelight";
-
-        public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
-                22.0);
-        public static final List<Double> aprilTagsForIntakeStateTeamIsRed = Arrays.asList(1.0, 2.0);
-
-        public static final List<Double> aprilTagsForOuttakeStateTeamIsBlue = Arrays.asList(6.0, 7.0, 8.0, 9.0, 10.0,
-                11.0);
-        public static final List<Double> aprilTagsForIntakeStateTeamIsBlue = Arrays.asList(12.0, 13.0);
-    }
-
-    public static final class OffsetsToAprilTags {
-        public static final double[] offsetToAprilTagLeftToReef = { 0.5, 0.165, 0 };
-        public static final double[] offsetToAprilTagRightToReef = { 0.5, -0.165, 0 };
-        public static final double[] offsetToAprilTagCenterToReef = { 0.5, 0, 0 };
-    }
-
-    public static final class Hubturm {
-        public static final double l0Angle = 20;
-        public static final double l1Angle = 35;
-        public static final double l2Angle = 35;
-        public static final double l3Angle = 35;
-        public static final double lowestPosAngle = 80;
-
-        public static final double l0Height = 0.3;
-        public static final double l1Height = 0.6;
-        public static final double l2Height = 0.7;
-        public static final double l3Height = 0.8;
-        public static final double lowestPosHeight = 0.1;
-
-    }
 
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
@@ -160,8 +136,6 @@ public final class Constants {
         public static final double maxTurnSpeed = 60;// Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI
                                                      // * 2); // rps
 
-
-            public static final Map<MountingLocations, SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI;
@@ -225,5 +199,5 @@ public final class Constants {
             configs[LOC_RR].encoderChannel = 3;
             configs[LOC_RR].absEncoderOffset = 0.481;
         }
-    }
+    } 
 }

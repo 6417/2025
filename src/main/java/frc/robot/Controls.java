@@ -60,12 +60,6 @@ public class Controls implements Sendable {
         LTHREE,
     }
 
-    private Map<HubturmState, SuperStructureState> superstructureOnState = Map.of(
-            HubturmState.LZERO, new SuperStructureState(Constants.Hubturm.l0Angle, Constants.Hubturm.l0Height),
-            HubturmState.LTWO, new SuperStructureState(Constants.Hubturm.l1Angle, Constants.Hubturm.l1Height),
-            HubturmState.LTHREE, new SuperStructureState(Constants.Hubturm.l2Angle, Constants.Hubturm.l2Height),
-            HubturmState.LONE, new SuperStructureState(Constants.Hubturm.l3Angle, Constants.Hubturm.l3Height));
-
     public enum GamePieceState {
         CORAL,
         ALGUE;
@@ -129,16 +123,6 @@ public class Controls implements Sendable {
 
     public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
-
-    public Controls() {
-        natrualStateButton.onTrue(new CoralHeightPitchCommandGroup(0));
-        stationStateButton.onTrue(new CoralHeightPitchCommandGroup(1));
-        l1StateButton.onTrue(new CoralHeightPitchCommandGroup(2));
-        l2StateButton.onTrue(new CoralHeightPitchCommandGroup(3));
-        l3StateButton.onTrue(new CoralHeightPitchCommandGroup(4));
-        l4StateButton.onTrue(new CoralHeightPitchCommandGroup(5));
-    }
-
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
         activeSpeedFactor = speedFactor;

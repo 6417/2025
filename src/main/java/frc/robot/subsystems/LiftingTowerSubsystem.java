@@ -18,8 +18,22 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorRight = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
         
         motorLeft.follow(motorRight, DirectionType.invertMaster);
+
+        motorRight.enableForwardLimitSwitch(Constants.LiftingTower.fdwLiftingTowePolarity, true);
         
         motorRight.setPID(pidValues);
+    }
+
+    public void resetEncoder() {
+        motorRight.setEncoderPosition(Constants.LiftingTower.resetEncoderPosition);
+    }
+
+    public boolean isForwardLimitSwitchPressed() {
+        return motorRight.isForwardLimitSwitchActive();
+    }
+
+    public void setPercent(double percent) {
+        motorRight.set(percent);
     }
     
     public void setMotorSpeed(double speed) {

@@ -25,6 +25,10 @@ public class ClimberSubsytem extends SubsystemBase {
         climberMotorR.set(speed);
     }
 
+    public void resetEncoder() {
+        climberMotorR.setEncoderPosition(Constants.ClimberSubsytem.resetPitchEncoderPosition);
+    }
+
     public void setMotorSpeed(double speed) {
         if (speed > 1 || speed < -1) {
             throw new IllegalArgumentException("Speed must be between -1 and 1");
