@@ -1,7 +1,6 @@
 package frc.robot.swerve.commands;
 
 import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;

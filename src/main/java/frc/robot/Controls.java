@@ -3,12 +3,8 @@ package frc.robot;
 import java.util.Map;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.fridowpi.motors.FridoSparkMax;
-import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
 
 /**

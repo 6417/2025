@@ -1,10 +1,5 @@
 package frc.robot.subsystems;
 
-import java.nio.channels.UnsupportedAddressTypeException;
-import java.util.function.LongFunction;
-import java.util.logging.Logger;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.fridowpi.motors.FridoSparkMax;
@@ -40,6 +35,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     }
 
     public void stopMotors() {
-        motorRight.set(0);
+        motorRight.set(Constants.LiftingTower.stopSpeed);
     }
 }

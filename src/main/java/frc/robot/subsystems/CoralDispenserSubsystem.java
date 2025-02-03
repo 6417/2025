@@ -1,14 +1,9 @@
 package frc.robot.subsystems;
 
-import org.apache.logging.log4j.CloseableThreadContext.Instance;
-
-import com.ctre.phoenix6.controls.StaticBrake;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor;
-import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 
@@ -16,16 +11,20 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     private FridolinsMotor coralMotorTop;
     private FridolinsMotor coralMotorChangePitch;
 
-    private PidValues pidValues = new PidValues(0, 0, 0, 0); // p, i, d, f
+    private PidValues pidValuesPitch = Constants.CoralDispenser.PidValuesPitch;
+    private PidValues pidValuesMotorTop = Constants.CoralDispenser.PidValuesMotorTop;
     
     public CoralDispenserSubsystem() {
         coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
         
         coralMotorChangePitch = new FridoSparkMax(Constants.ClimberSubsytem.coralMotorChangePitchID);
         
-        coralMotorChangePitch.setPID(pidValues);
+        coralMotorChangePitch.setPID(pidValuesPitch);
         coralMotorChangePitch.enableReverseLimitSwitch(Constants.CoralDispenser.revPolarity, true);
         coralMotorChangePitch.enableForwardLimitSwitch(Constants.CoralDispenser.fwdPolarity, true);
+
+        coralMotorTop.setPID(pidValuesMotorTop);
+        coralMotorTop.enableForwardLimitSwitch(Constants.CoralDispenser.fwdMotorTopPolarity, isForwardLimitSwitchPressed());
 
     }
 
@@ -34,7 +33,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public void resetPitchEncoder() {
-        coralMotorChangePitch.setEncoderPosition(Constants.CoralDispenser.resetEncoderPosition);
+        coralMotorChangePitch.setEncoderPosition(Constants.CoralDispenser.resetPitchEncoderPosition);
+    }
+
+    public void resetMotorTopEncoder() {
+        coralMotorTop.setEncoderPosition(Constants.CoralDispenser.resetMotorTopEncoderPosition);
     }
 
     public boolean isForwardLimitSwitchPressed() {
@@ -53,11 +56,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public void stopMotorTop() {
-        coralMotorTop.set(0);
+        coralMotorTop.set(Constants.CoralDispenser.stopSpeedMotorTop);
     }
 
     public void stopMotorPitch() {
-        coralMotorChangePitch.set(0);
+        coralMotorChangePitch.set(Constants.CoralDispenser.stopSpeedPitch);
     }
 
     /**

@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -56,8 +55,13 @@ public final class Constants {
         public static final int coralMotorBottomID = 1;
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double resetEncoderPosition = 0;
+        public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final double resetPitchEncoderPosition = 0;
+        public static final double resetMotorTopEncoderPosition = 0;
         public static final double zeroingSpeed = 0.1;
+
+        public static final double stopSpeedMotorTop = 0;
+        public static final double stopSpeedPitch = 0;
 
         public static final int neutralState = 0;
         public static final int stationState = 1;
@@ -65,6 +69,9 @@ public final class Constants {
         public static final int l2State = 3;
         public static final int l3State = 4;
         public static final int l4State = 5;
+        
+        public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
+        public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
     }
 
     public static final class LevelParameters implements Sendable{
@@ -94,11 +101,17 @@ public final class Constants {
         public static final int climberMotorRID = 2;
         public static final int climberMotorLID = 3;
         public static final int coralMotorChangePitchID = 4;
+
+        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
     }
 
     public static final class LiftingTower {
         public static final int liftingTowerLeftId = 5;
         public static final int liftingTowerRightId = 6;
+
+        public static final double stopSpeed = 0;
+
+        public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0,0);
     }
 
 
@@ -132,9 +145,7 @@ public final class Constants {
             public static final double absoluteEncoderToMeters = 1;
             public static final double metersToRelativeEncoder = 1;
 
-            private static final List<Integer> motorIds = List.of(
-                    1, 2, 3, 4,
-                    11, 12, 13, 14);
+
 
             public static final Map<MountingLocations, SwerveModule.Config> swerveModuleConfigs = new HashMap<>();
 
