@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.states.SuperStructureState;
+import frc.robot.commands.CoralHeightPitchCommandGroup;
 
 /**
  * Holds the data concerning input, which should be available
@@ -58,12 +59,6 @@ public class Controls implements Sendable {
         LTWO,
         LTHREE,
     }
-
-    private Map<HubturmState, SuperStructureState> superstructureOnState = Map.of(
-            HubturmState.LZERO, new SuperStructureState(Constants.Hubturm.l0Angle, Constants.Hubturm.l0Height),
-            HubturmState.LTWO, new SuperStructureState(Constants.Hubturm.l1Angle, Constants.Hubturm.l1Height),
-            HubturmState.LTHREE, new SuperStructureState(Constants.Hubturm.l2Angle, Constants.Hubturm.l2Height),
-            HubturmState.LONE, new SuperStructureState(Constants.Hubturm.l3Angle, Constants.Hubturm.l3Height));
 
     public enum GamePieceState {
         CORAL,

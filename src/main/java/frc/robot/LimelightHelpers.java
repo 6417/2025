@@ -160,6 +160,13 @@ public class LimelightHelpers {
         @JsonProperty("t6t_rs")
         private double[] targetPose_RobotSpace;
 
+        // public Pose3d getTargetPose_FieldSpace() {
+        //     return toPose3D(robotPose_FieldSpace)
+        //             .plus(new Transform3d(toPose3D(targetPose_RobotSpace), toPose3D(robotPose_FieldSpace)));
+        //     // returns the target pose in field space, calculatet by adding the target pose
+        //     // in robot space to the robot pose in field space}
+        // }
+
         public Pose3d getCameraPose_TargetSpace() {
             return toPose3D(cameraPose_TargetSpace);
         }

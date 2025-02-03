@@ -1,10 +1,20 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot;
+
+import frc.fridowpi.motors.utils.FeedForwardValues;
 
 import java.util.Arrays;
 import java.util.List;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import frc.fridowpi.motors.utils.FeedForwardValues;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
 /**
@@ -20,7 +30,6 @@ import frc.robot.swerve.ModuleConfig;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
     public static final class Joystick {
         public static final int driveJoystickId = 0;
         public static final int operatorJoystickId = 1;
@@ -47,20 +56,74 @@ public final class Constants {
         public static final double[] offsetToAprilTagCenterToReef = { 0.5, 0, 0 };
     }
 
-    public static final class Hubturm {
-        public static final double l0Angle = 20;
-        public static final double l1Angle = 35;
-        public static final double l2Angle = 35;
-        public static final double l3Angle = 35;
-        public static final double lowestPosAngle = 80;
+    public static final class CoralDispenser {
+        public static final int coralMotorTopID = 0;
+        public static final int coralMotorBottomID = 1;
+        public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final double resetPitchEncoderPosition = 0;
+        public static final double resetMotorTopEncoderPosition = 0;
+        public static final double zeroingSpeed = 0.1;
 
-        public static final double l0Height = 0.3;
-        public static final double l1Height = 0.6;
-        public static final double l2Height = 0.7;
-        public static final double l3Height = 0.8;
-        public static final double lowestPosHeight = 0.1;
+        public static final double stopSpeedMotorTop = 0;
+        public static final double stopSpeedPitch = 0;
 
+        public static final int neutralState = 0;
+        public static final int stationState = 1;
+        public static final int l1State = 2;
+        public static final int l2State = 3;
+        public static final int l3State = 4;
+        public static final int l4State = 5;
+        
+        public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
+        public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
     }
+
+    public static final class LevelParameters implements Sendable{
+        public String name;
+        public Rotation2d pitchAngle;
+        public double height;
+        @Override
+        public void initSendable(SendableBuilder builder) {
+            builder.addDoubleProperty("pitch angle [deg]", () -> pitchAngle.getDegrees(), (double angle) -> pitchAngle = Rotation2d.fromDegrees(angle));
+            builder.addDoubleProperty("height [m]", () -> height, (double h) -> height = h);
+        }
+    }
+
+    public static LevelParameters[] parameters = new LevelParameters[6];
+
+    static {
+        parameters[CoralDispenser.neutralState].name = "neutral";
+        parameters[CoralDispenser.stationState].name = "station";
+        parameters[CoralDispenser.l1State].name = "l1";
+        parameters[CoralDispenser.l2State].name = "l2";
+        parameters[CoralDispenser.l3State].name = "l3";
+        parameters[CoralDispenser.l4State].name = "l4";
+    }
+
+
+    public static final class ClimberSubsytem {
+        public static final int climberMotorRID = 2;
+        public static final int climberMotorLID = 3;
+        public static final int coralMotorChangePitchID = 4;
+
+        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
+        public static final double resetPitchEncoderPosition = 0;
+    }
+
+    public static final class LiftingTower {
+        public static final int liftingTowerLeftId = 5;
+        public static final int liftingTowerRightId = 6;
+
+        public static final double stopSpeed = 0;
+
+        public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0,0);
+        public static final double resetEncoderPosition = 0;
+        public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
+        public static final double zeroingSpeed = 0.1;
+    }
+
 
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
@@ -136,5 +199,5 @@ public final class Constants {
             configs[LOC_RR].encoderChannel = 3;
             configs[LOC_RR].absEncoderOffset = 0.481;
         }
-    }
+    } 
 }

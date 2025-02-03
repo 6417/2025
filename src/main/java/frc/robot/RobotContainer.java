@@ -5,8 +5,11 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.CoralDispenserSubsystem;
+import frc.robot.subsystems.LiftingTowerSubsystem;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.swerve.SwerveDrive;
+import frc.robot.subsystems.ClimberSubsytem;
 
 public class RobotContainer {
     public static final SwerveDrive drive;
@@ -14,6 +17,10 @@ public class RobotContainer {
     public static final AHRS gyro;
     public static final Pigeon2 gyroPigeon;
     public static final FridoPathplanner pathplanner;
+
+    public static final ClimberSubsytem climber = new ClimberSubsytem();
+    public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
+    public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
 
     static {
         gyro = new AHRS(Port.kMXP);
