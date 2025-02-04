@@ -151,20 +151,20 @@ public class Controls implements Sendable {
         burgerButtonOperator.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         yButtonOperator.onTrue(new InstantCommand(() -> {
-            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LZERO).getAngle())
-            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LZERO).getHeight())
-        }));
-        bButtonOperator.onTrue(new InstantCommand(() -> {
             // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LONE).getAngle())
             // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LONE).getHeight())
         }));
-        aButtonOperator.onTrue(new InstantCommand(() -> {
+        bButtonOperator.onTrue(new InstantCommand(() -> {
             // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTWO).getAngle())
             // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTWO).getHeight())
         }));
-        xButtonOperator.onTrue(new InstantCommand(() -> {
+        aButtonOperator.onTrue(new InstantCommand(() -> {
             // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTHREE).getAngle())
             // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTHREE).getHeight())
+        }));
+        xButtonOperator.onTrue(new InstantCommand(() -> {
+            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LFOUR).getAngle())
+            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LFOUR).getHeight())
         }));
 
         Shuffleboard.getTab("Drive").add("Controls", this);

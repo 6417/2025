@@ -12,6 +12,7 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
@@ -91,6 +92,7 @@ public final class Constants {
 
         public static final double waitAfterOuttake = 0.3;
         public static final double zeroingPosition = 0;
+        public static final double waitAfterAlgaeIntake = 0.3;
     }
 
     public static final class LevelParameters implements Sendable{

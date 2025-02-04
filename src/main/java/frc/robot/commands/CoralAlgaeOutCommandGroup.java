@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class CoralOutCommandGroup extends SequentialCommandGroup {
-    public CoralOutCommandGroup() {
+public class CoralAlgaeOutCommandGroup extends SequentialCommandGroup {
+    public CoralAlgaeOutCommandGroup() {
         addCommands(
-            new CoralOuttake(), new WaitCommand(Constants.CoralDispenser.waitAfterOuttake),
+            new CoralAlgaeOuttake(), new WaitCommand(Constants.CoralDispenser.waitAfterOuttake),
             new InstantCommand(() -> {
                 RobotContainer.coralDispenser.stopMotorTop();
             })
