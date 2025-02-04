@@ -152,13 +152,13 @@ public final class Constants {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI;
 
-            defaultModuleConfig2024.driveGearboxRatio = 5.192;
+            defaultModuleConfig2024.driveGearboxRatio = 8.11;
             defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.3, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.185, 0.227, 0.02);
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.15, 0.00, 0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.075, 0.1125, 0);
 
-            defaultModuleConfig2024.angleGearboxRatio = 47.62;
+            defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
             defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
             defaultModuleConfig2024.angleMotorIzone = 1.5;
@@ -185,7 +185,7 @@ public final class Constants {
             configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
-            configs[LOC_FL].absEncoderOffset = 0.151;
+            configs[LOC_FL].absEncoderOffset = 0.165;
 
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
@@ -193,7 +193,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.718;
+            configs[LOC_FR].absEncoderOffset = 0.165;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;  
@@ -201,7 +201,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.429;
+            configs[LOC_RL].absEncoderOffset = 0.165;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
@@ -209,7 +209,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.481;
+            configs[LOC_RR].absEncoderOffset = 0.165L;
         }
     } 
 }
