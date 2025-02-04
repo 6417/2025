@@ -9,7 +9,7 @@ public class ClimberCommand extends Command {
     private final double position;
 
     ClimberCommand(double position) {
-        this.ClimberSubsytem = RobotContainer.climber;
+        this.ClimberSubsytem = null;//RobotContainer.climber;
         addRequirements(ClimberSubsytem);
         this.position = position;
 

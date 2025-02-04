@@ -65,8 +65,8 @@ public final class Constants {
     }
 
     public static final class CoralDispenser {
-        public static final int coralMotorTopID = 0;
-        public static final int coralMotorBottomID = 1;
+        public static final int coralMotorTopID = 40;
+        public static final int coralMotorBottomID = 41;
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
@@ -116,17 +116,16 @@ public final class Constants {
 
 
     public static final class ClimberSubsytem {
-        public static final int climberMotorRID = 2;
-        public static final int climberMotorLID = 3;
-        public static final int coralMotorChangePitchID = 4;
+        public static final int climberMotorID = 59;
+        public static final int coralMotorChangePitchID = 58;
 
         public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
         public static final double resetPitchEncoderPosition = 0;
     }
 
     public static final class LiftingTower {
-        public static final int liftingTowerLeftId = 5;
-        public static final int liftingTowerRightId = 6;
+        public static final int liftingTowerLeftId = 30;
+        public static final int liftingTowerRightId = 31;
 
         public static final double stopSpeed = 0;
 
@@ -141,11 +140,11 @@ public final class Constants {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = true;
 
-        public static final double maxSpeed = 6.3; // TODO: for testing
+        public static final double maxSpeed = 4.45; // TODO: for testing
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.275;
         public static final double moduleYoffset = 0.275;
-        public static final double maxTurnSpeed = 60;// Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI
+        public static final double maxTurnSpeed = 15;// Math.hypots(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI
                                                      // * 2); // rps
 
         static {
@@ -161,8 +160,8 @@ public final class Constants {
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
             defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
-            defaultModuleConfig2024.angleMotorIzone = 1.5;
-            defaultModuleConfig2024.anglePidValues = new PidValues(0.3, 0.0, 0.2);
+            defaultModuleConfig2024.angleMotorIzone = 0.1;
+            defaultModuleConfig2024.anglePidValues = new PidValues(1.1, 0.03, 0.25);
 
             defaultModuleConfig2024.encoderThicksToRotationFalcon = 1;
             defaultModuleConfig2024.encoderVelocityToRPSFalcon = 1;
@@ -176,6 +175,8 @@ public final class Constants {
 
             configs[LOC_FL] = defaultModuleConfig2024.clone();
             configs[LOC_FR] = defaultModuleConfig2024.clone();
+
+            
             configs[LOC_RL] = defaultModuleConfig2024.clone();
             configs[LOC_RR] = defaultModuleConfig2024.clone();
 
@@ -185,7 +186,7 @@ public final class Constants {
             configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
-            configs[LOC_FL].absEncoderOffset = 0.165;
+            configs[LOC_FL].absEncoderOffset = 0.8878;
 
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
@@ -193,7 +194,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.165;
+            configs[LOC_FR].absEncoderOffset = 0.0144;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;  
@@ -201,7 +202,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.165;
+            configs[LOC_RL].absEncoderOffset = 0.9855;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
@@ -209,7 +210,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.165L;
+            configs[LOC_RR].absEncoderOffset = 0.1776;
         }
     } 
 }

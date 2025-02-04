@@ -9,10 +9,10 @@ import frc.robot.RobotContainer;
 public class CoralOutCommandGroup extends SequentialCommandGroup {
     public CoralOutCommandGroup() {
         addCommands(
-            new CoralOuttake(), new WaitCommand(Constants.CoralDispenser.waitAfterOuttake),
-            new InstantCommand(() -> {
+            new CoralOuttake(), new WaitCommand(Constants.CoralDispenser.waitAfterOuttake)
+            /*new InstantCommand(() -> {
                 RobotContainer.coralDispenser.stopMotorTop();
-            })
+            })*/
         );
     }
 
