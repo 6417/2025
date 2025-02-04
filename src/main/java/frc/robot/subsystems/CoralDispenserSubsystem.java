@@ -9,22 +9,17 @@ import frc.robot.Constants;
 
 public class CoralDispenserSubsystem extends SubsystemBase {
     private FridolinsMotor coralMotorTop;
-    private FridolinsMotor coralMotorChangePitch;
-
-    //private DutyCycleEncoder dutyCyclePitchEncoder;
+    private FridoSparkMax coralMotorChangePitch;    
 
     private PidValues pidValuesPitch = Constants.CoralDispenser.PidValuesPitch;
     private PidValues pidValuesMotorTop = Constants.CoralDispenser.PidValuesMotorTop;
     
     public CoralDispenserSubsystem() {
         coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
-        //dutyCyclePitchEncoder = new  DutyCycleEncoder(Constants.CoralDispenser.source);
         
         coralMotorChangePitch = new FridoSparkMax(Constants.ClimberSubsytem.coralMotorChangePitchID);
-        
+        coralMotorChangePitch.asSparkMax().getAbsoluteEncoder();
         coralMotorChangePitch.setPID(pidValuesPitch);
-        coralMotorChangePitch.enableReverseLimitSwitch(Constants.CoralDispenser.revPolarity, true);
-        coralMotorChangePitch.enableForwardLimitSwitch(Constants.CoralDispenser.fwdPolarity, true);
 
         coralMotorTop.setPID(pidValuesMotorTop);
         coralMotorTop.enableForwardLimitSwitch(Constants.CoralDispenser.fwdMotorTopPolarity, true);
@@ -36,19 +31,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public void resetPitchEncoder() {
-        coralMotorChangePitch.setEncoderPosition(Constants.CoralDispenser.resetPitchEncoderPosition);
+        coralMotorChangePitch.setEncoderPosition(coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition());
     }
 
     public void resetMotorTopEncoder() {
         coralMotorTop.setEncoderPosition(Constants.CoralDispenser.resetMotorTopEncoderPosition);
-    }
-
-    public boolean isForwardLimitSwitchPressed() {
-        return coralMotorChangePitch.isForwardLimitSwitchActive();
-    }
-
-    public boolean isReverseLimitSwitchPressed() {
-        return coralMotorChangePitch.isReverseLimitSwitchActive();
     }
 
     public boolean isForwardLimitSwitchPressedMotorTop() {

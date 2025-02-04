@@ -15,22 +15,23 @@ public class ZeroCoralPitch extends Command {
 
     @Override
     public void initialize() {
+        coralDispenserSubsystem.resetPitchEncoder();
+        coralDispenserSubsystem.setPitch(Constants.CoralDispenser.zeroingPosition);
     }
 
     @Override
     public void execute() {
-        coralDispenserSubsystem.setPitchPercent(Constants.CoralDispenser.zeroingSpeed);
+
     }
 
     @Override
     public void end(boolean interrupted) {
-        coralDispenserSubsystem.stopMotorPitch();
-        coralDispenserSubsystem.resetPitchEncoder();
+
     }
 
     @Override
     public boolean isFinished() {
-        return coralDispenserSubsystem.isReverseLimitSwitchPressed();
+        return true;
     }
     
 }

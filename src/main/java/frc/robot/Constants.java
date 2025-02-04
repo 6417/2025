@@ -90,6 +90,7 @@ public final class Constants {
         public static final double outtakeSpeed = 0.5;
 
         public static final double waitAfterOuttake = 0.3;
+        public static final double zeroingPosition = 0;
     }
 
     public static final class LevelParameters implements Sendable{

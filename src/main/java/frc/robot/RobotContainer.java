@@ -1,9 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 import frc.robot.subsystems.LiftingTowerSubsystem;
