@@ -37,6 +37,14 @@ public final class Constants {
         public static final double lt_rt_reshold = 0.2;
     }
 
+    public static final class Gyro {
+        public static final int gyroId = 0;
+    }
+
+    public static final class Autonomous {
+        public static final String autoGroup = "AutoPathLeftStart";
+    }
+
     public static final class Limelight {
         public static final String limelightID = "limelight";
         public static final String limelightBackID = "limelight2";
