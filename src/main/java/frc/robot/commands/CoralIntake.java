@@ -27,7 +27,7 @@ public class CoralIntake extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return coralDispenserSubsystem.isForwardLimitSwitchPressedMotorTop();
     }
     
 }
