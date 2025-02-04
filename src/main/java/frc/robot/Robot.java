@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         autoCommand.cancel();
-        robotContainer.drive.stopMotors();
+        RobotContainer.drive.stopMotors();
 
     }
 

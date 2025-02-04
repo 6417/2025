@@ -12,10 +12,8 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DutyCycle;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
@@ -80,8 +78,8 @@ public final class Constants {
         
         public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
         public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
-        public static Object absoluteEncoderConfig;
-        public static DutyCycle source;
+        public static final double intakeSpeed = -0.5;
+        public static final double outtakeSpeed = 0.5;
 
         public static final double waitAfterOuttake = 0.3;
     }

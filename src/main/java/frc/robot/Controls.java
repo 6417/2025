@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
-import frc.robot.states.SuperStructureState;
-import frc.robot.commands.CoralHeightPitchCommandGroup;
 
 /**
  * Holds the data concerning input, which should be available

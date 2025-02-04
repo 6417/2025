@@ -1,13 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 
 public class CoralIntake extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
 
     private CoralIntake(CoralDispenserSubsystem coralDispenserSubsystem){
-        this.coralDispenserSubsystem = coralDispenserSubsystem;
+        this.coralDispenserSubsystem = RobotContainer.coralDispenser;
         addRequirements(coralDispenserSubsystem);
     }
 
@@ -17,7 +19,7 @@ public class CoralIntake extends Command {
 
     @Override
     public void execute() {
-        coralDispenserSubsystem.setMotorTopSpeed(-0.5);
+        coralDispenserSubsystem.setMotorTopSpeed(Constants.CoralDispenser.intakeSpeed);
     }
 
     @Override

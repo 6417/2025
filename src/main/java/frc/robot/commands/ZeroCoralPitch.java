@@ -2,13 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 
 public class ZeroCoralPitch extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
 
-    private ZeroCoralPitch(CoralDispenserSubsystem coralDispenserSubsystem){
-        this.coralDispenserSubsystem = coralDispenserSubsystem;
+    private ZeroCoralPitch(){
+        this.coralDispenserSubsystem = RobotContainer.coralDispenser;
         addRequirements(coralDispenserSubsystem);
     }
 
