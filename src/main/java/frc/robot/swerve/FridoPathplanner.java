@@ -12,6 +12,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 public class FridoPathplanner {
     public FridoPathplanner(SwerveDrive drive) {
+        this.drive = drive;
+
+        configure();
+    }
+
+    private void configure() {
         // configuration
         RobotConfig config;
         try {
@@ -40,7 +46,6 @@ public class FridoPathplanner {
                 },
                 drive
         );
-
     }
 
     public void registerCommand(String name, Command command) {

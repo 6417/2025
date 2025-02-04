@@ -115,6 +115,7 @@ public class SwerveDrive extends SubsystemBase {
         return poseEstimator.getEstimatedPosition();
     }
 
+    // @SuppressWarnings("removal")
     public synchronized void updateOdometry() {
         poseEstimator.update(
                 RobotContainer.getGyroRotation2d(),
@@ -145,8 +146,11 @@ public class SwerveDrive extends SubsystemBase {
                    lime1 = lime2;
                 }   
             }
-            
-            if (Math.abs(RobotContainer.gyro.getRate()) > 720) {// if our angular velocity is greater than 720 degrees
+
+            // if getAngularVelocityZWorld doesn't work, use
+            // RobotContainer.gyro.getRate();
+            if (Math.abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > 720) {
+                // if our angular velocity is greater than 720 degrees
                 // per second, ignore vision updates
                 doRejectUpdate = true;
             }

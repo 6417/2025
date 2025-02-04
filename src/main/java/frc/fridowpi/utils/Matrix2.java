@@ -1,7 +1,5 @@
 package frc.fridowpi.utils;
 
-import java.util.Arrays;
-
 public class Matrix2 {
     private double[][] components;
 
