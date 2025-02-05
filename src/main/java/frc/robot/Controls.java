@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.states.SuperStructureState;
 
 /**
  * Holds the data concerning input, which should be available
@@ -19,6 +20,9 @@ public class Controls implements Sendable {
     // private ExampleSubsystem ss = new ExampleSubsystem();
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
     public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.operatorJoystickId);
+
+    public SuperStructureState superstructureOnState;
+
 
     Trigger ltButtonOperator = operatorJoystick.leftTrigger();
     Trigger rtButtonOperator = operatorJoystick.rightTrigger();
@@ -148,10 +152,16 @@ public class Controls implements Sendable {
         // .onFalse(new InstantCommand(() ->
         // setActivePieceState(GamePieceState.CORAL)));
 
+        var x = HubturmState.LONE;
+        x.getClass();
+
+        HubturmState y = HubturmState.LONE;
+
+
         burgerButtonOperator.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         yButtonOperator.onTrue(new InstantCommand(() -> {
-            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LONE).getAngle())
+            //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LONE).getAngle());
             // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LONE).getHeight())
         }));
         bButtonOperator.onTrue(new InstantCommand(() -> {

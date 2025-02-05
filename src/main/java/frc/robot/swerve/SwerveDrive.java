@@ -125,6 +125,9 @@ public class SwerveDrive extends SubsystemBase {
                         modules[LOC_RL].getPosition(),
                         modules[LOC_RR].getPosition()
                 });
+    }
+
+    public void addVisionToOdometry() {
 
         boolean doRejectUpdate = false;
 
@@ -137,7 +140,8 @@ public class SwerveDrive extends SubsystemBase {
 
         LimelightHelpers.PoseEstimate lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems with rotation
         LimelightHelpers.PoseEstimate lime2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID); 
-        
+
+        // also works if only one limeight is there 
         if (lime1 != null || lime2 != null) {
             lime1 = (lime1 != null) ? lime1 : lime2;
 
@@ -149,7 +153,8 @@ public class SwerveDrive extends SubsystemBase {
 
             // if getAngularVelocityZWorld doesn't work, use
             // RobotContainer.gyro.getRate();
-            if (Math.abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > 720) {
+            // TODO: Calibrate the values
+            if (Math.abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > 720 && Math.abs(RobotContainer.gyro.getAngle() - lime1.pose.getRotation().getDegrees()) > 5.0) {
                 // if our angular velocity is greater than 720 degrees
                 // per second, ignore vision updates
                 doRejectUpdate = true;
