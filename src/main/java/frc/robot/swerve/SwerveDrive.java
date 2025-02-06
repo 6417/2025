@@ -59,8 +59,8 @@ public class SwerveDrive extends SubsystemBase {
                 RobotContainer.getGyroRotation2d(),
                 getModulePositions(),
                 new Pose2d(),
-                VecBuilder.fill(0.02,0.02,0.1),
-                VecBuilder.fill(0.1,0.1,0.1));
+                VecBuilder.fill(0.02, 0.02, 0.1),
+                VecBuilder.fill(0.1, 0.1, 0.1));
 
         setDefaultCommand(new DriveCommand(this));
 
@@ -133,42 +133,52 @@ public class SwerveDrive extends SubsystemBase {
 
         LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        
-        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightBackID, 
+
+        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightBackID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
+        LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
+                .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems
+        addLimeLightMeasurementToPoseEstimation(lime1);
 
-        LimelightHelpers.PoseEstimate lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems with rotation
-        LimelightHelpers.PoseEstimate lime2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID); 
+        // with rotation
+        LimelightHelpers.PoseEstimate lime2 = LimelightHelpers
+                .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID);
+        addLimeLightMeasurementToPoseEstimation(lime2);
+    }
 
-        // also works if only one limeight is there 
-        if (lime1 != null || lime2 != null) {
-            lime1 = (lime1 != null) ? lime1 : lime2;
+    private void addLimeLightMeasurementToPoseEstimation(LimelightHelpers.PoseEstimate lime) {
+        if (lime == null)
+            return;
 
-            if (lime1 != null && lime2 != null) {
-                if (lime1.avgTagDist > lime2.avgTagDist) {
-                   lime1 = lime2;
-                }   
-            }
+        // TODO: tune these values
+        final double farDist = 3.0;
+        final double maxRotationSpeed = 720.0;
+        final double narrowAngleThreshold = 5.0;
 
-            // if getAngularVelocityZWorld doesn't work, use
-            // RobotContainer.gyro.getRate();
-            // TODO: Calibrate the values
-            if (Math.abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > 720 && Math.abs(RobotContainer.gyro.getAngle() - lime1.pose.getRotation().getDegrees()) > 5.0) {
-                // if our angular velocity is greater than 720 degrees
-                // per second, ignore vision updates
-                doRejectUpdate = true;
-            }
-            if (lime1.tagCount == 0) {
-                doRejectUpdate = true;
-            }
-            if (!doRejectUpdate) {
-                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, Units.degreesToRadians(30)));
-                poseEstimator.addVisionMeasurement(
-                        lime1.pose,
-                        lime1.timestampSeconds);
-            }
+        final boolean isRobotSpinningFast = Math
+                .abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > maxRotationSpeed;
+        final boolean isTagInNarrowAngle = Math
+                .abs(RobotContainer.gyro.getAngle() - lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;
+        if (isRobotSpinningFast && !isTagInNarrowAngle) {
+            // if our angular velocity is greater than 720 degrees
+            // per second, ignore vision updates
+            return;
         }
+
+        if (lime.tagCount == 0)
+            return;
+
+        if (lime.avgTagDist > farDist || lime.avgTagDist < 0.0)
+            return;
+
+        poseEstimator.setVisionMeasurementStdDevs(
+                VecBuilder.fill(0.7 * (1.0 - lime.avgTagDist / farDist),
+                        0.7 * (1.0 - lime.avgTagDist / farDist),
+                        Units.degreesToRadians(30)));
+        poseEstimator.addVisionMeasurement(
+                lime.pose,
+                lime.timestampSeconds);
     }
 
     public void resetOdoemetry(Pose2d newPose) {
