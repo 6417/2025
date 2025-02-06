@@ -71,10 +71,13 @@ public class SwerveModule implements Sendable {
 
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (config.maxSpeed * 0.01))
                 ? lastAngle
-                : desiredState.angle; // https://github.com/REVrobotics/MAXSwerve-Java-Template/blob/main/src/main/java/frc/robot/subsystems/MAXSwerveModule.java
+                : desiredState.angle; 
 
         lastAngle = angle;
-        angleMotor.setPosition(lastAngle.getRotations() * config.angleGearboxRatio);
+
+        double motorPos = angleMotor.getEncoderTicks() / config.angleGearboxRatio;
+        double delta = Utils.wrap(lastAngle.getRotations() - motorPos);
+        angleMotor.setPosition((motorPos + delta) * config.angleGearboxRatio);
     }
 
     public double getVelocityMPS() {
