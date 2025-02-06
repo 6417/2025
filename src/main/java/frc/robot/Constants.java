@@ -46,8 +46,8 @@ public final class Constants {
     }
 
     public static final class Limelight {
-        public static final String limelightID = "limelight";
-        public static final String limelightBackID = "limelight2";
+        public static final String limelightID = "limelight-drei";
+        public static final String limelightBackID = "limelight-vier";
 
         public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
                 22.0);
@@ -194,7 +194,7 @@ public final class Constants {
             configs[LOC_FR].absEncoderOffset = 0.0144;
 
             configs[LOC_RL].driveMotorID = 3;
-            configs[LOC_RL].angleMotorID = 13;  
+            configs[LOC_RL].angleMotorID = 13;
             configs[LOC_RL].driveMotorInverted = false;
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
