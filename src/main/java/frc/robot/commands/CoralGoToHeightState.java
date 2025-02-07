@@ -9,7 +9,7 @@ public class CoralGoToHeightState extends Command {
     private final double height;
 
     CoralGoToHeightState(double height){
-        this.LiftingTowerSubsystem = RobotContainer.liftingTower;
+        this.LiftingTowerSubsystem = null;//RobotContainer.liftingTower;
         addRequirements(LiftingTowerSubsystem);
         this.height = height;
 

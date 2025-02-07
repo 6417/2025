@@ -11,7 +11,7 @@ public class CoralAlgaeOutCommandGroup extends SequentialCommandGroup {
         addCommands(
             new CoralAlgaeOuttake(), new WaitCommand(Constants.CoralDispenser.waitAfterOuttake),
             new InstantCommand(() -> {
-                RobotContainer.coralDispenser.stopMotorTop();
+                // RobotContainer.coralDispenser.stopMotorTop();
             })
         );
     }
