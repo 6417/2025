@@ -59,7 +59,8 @@ public class ChaseTagCommand extends Command {
             var ll = (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1) ? Constants.Limelight.limelightID : Constants.Limelight.limelightBackID;
 
             if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightBackID) != -1 && LimelightHelpers.getFiducialID(ll) != -1) {
-                LimelightHelpers.PoseEstimate lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems with rotation
+                LimelightHelpers.PoseEstimate 
+                lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems with rotation
                 LimelightHelpers.PoseEstimate lime2 = LimelightHelpers.getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID); 
                 
                 if (lime1 != null && lime2 != null) {
@@ -126,5 +127,4 @@ public class ChaseTagCommand extends Command {
     public void end(boolean interrupted) {
         swerveDriveSubsystem.stopMotors();
     }
-
 }
