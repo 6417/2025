@@ -32,6 +32,10 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
         FollowPathCommand.warmupCommand().schedule();
 
+
+        
+        
+
         autoCommand = robotContainer.getAutoCommand();
         robotContainer.gyro.reset();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
