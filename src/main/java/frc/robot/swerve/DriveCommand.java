@@ -27,7 +27,7 @@ public class DriveCommand extends Command {
         var rot = -joystick.getRightX();
 
         if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
-            xy = xy.normalized().scaled(joystick.getRawAxis(3));
+            xy = xy.normalized().scaled(joystick.getRawAxis(4));
         }
 
         // Brake if input is 0
