@@ -43,7 +43,7 @@ public class SwerveModule implements Sendable {
     }
 
     public void resetToAbsolute() {
-        double position = (1.0 - absoluteEncoder.get()) * config.encoderThicksToRotationNEO * config.angleGearboxRatio;
+        double position = (absoluteEncoder.get()) * config.encoderThicksToRotationNEO * config.angleGearboxRatio;
         angleMotor.setEncoderPosition(position);
     }
 
@@ -75,6 +75,7 @@ public class SwerveModule implements Sendable {
 
         lastAngle = angle;
 
+        //angleMotor.setPosition(lastAngle.getRotations() * config.angleGearboxRatio);
         double motorPos = angleMotor.getEncoderTicks() / config.angleGearboxRatio;
         double delta = Utils.wrap(lastAngle.getRotations() - motorPos);
         angleMotor.setPosition((motorPos + delta) * config.angleGearboxRatio);
@@ -120,7 +121,7 @@ public class SwerveModule implements Sendable {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
         builder.addDoubleProperty("angle motor angle [deg]",
-                () -> Utils.normalizeAngleRad(getRotation().getRadians()) * 180 / Math.PI, null);
+                () -> getRotation().getDegrees(), null);
         builder.addDoubleProperty("state speed [mps]", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
         builder.addDoubleProperty("drive vel [mps]", () -> getVelocityMPS(), null);

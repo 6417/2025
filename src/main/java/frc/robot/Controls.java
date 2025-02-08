@@ -124,7 +124,7 @@ public class Controls implements Sendable {
 
     public double turnSensitivity = 0.08;
 
-    public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
+    public DriveOrientation driveOrientation = DriveOrientation.Forwards;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
@@ -180,7 +180,7 @@ public class Controls implements Sendable {
 
         //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
-        yButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()));
+        yButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
