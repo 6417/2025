@@ -123,6 +123,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
+        
         autoCommand.cancel();
         robotContainer.drive.stopMotors();
         robotContainer.drive.resetModulesToAbsolute();
