@@ -43,11 +43,11 @@ public class SwerveModule implements Sendable {
     }
 
     public void resetToAbsolute() {
-        double position = (absoluteEncoder.get()) * config.encoderThicksToRotationNEO * config.angleGearboxRatio;
+        double position = (1 - absoluteEncoder.get()) * config.encoderThicksToRotationNEO * config.angleGearboxRatio;
         angleMotor.setEncoderPosition(position);
     }
 
-    public Rotation2d angleToTargetAngle(Rotation2d angle) {
+/*    public Rotation2d angleToTargetAngle(Rotation2d angle) {
         Vector2 moduleRot = Vector2.fromRadians(getRotation().getRadians());
         Vector2 angleHeading = Vector2.fromRadians(angle.getRadians());
         double angleDelta = Math.acos(moduleRot.dot(angleHeading));
@@ -60,7 +60,7 @@ public class SwerveModule implements Sendable {
         return Rotation2d.fromRotations(getRotation().getRotations()
                 + steeringDirection * (angleDelta / (Math.PI * 2)));
     }
-
+*/
     public void setDesiredState(SwerveModuleState desiredState) {
         desiredState = CTREModuleState.optimize(desiredState, getRotation());
 

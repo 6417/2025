@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Controls.IntakeState;
 
@@ -81,6 +82,8 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
+        speeds = ChassisSpeeds.discretize(speeds, 0.02); //remove the skew
+
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
         for (int i = 0; i < 4; i++) {
@@ -97,6 +100,7 @@ public class SwerveDrive extends SubsystemBase {
     public void periodic() {
         updateOdometry();
         updateState();
+        System.out.println(RobotContainer.getGyroRotation2d().getDegrees());
     }
 
     public void updateState() {
@@ -152,15 +156,15 @@ public class SwerveDrive extends SubsystemBase {
             return;
 
         // TODO: tune these values
-        final double farDist = 3.0;
-        final double maxRotationSpeed = 720.0;
+        final double farDist = 2;
+        final double maxRotationSpeed = 350;
         final double narrowAngleThreshold = 5.0;
 
         final boolean isRobotSpinningFast = Math
                 .abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > maxRotationSpeed;
-        final boolean isTagInNarrowAngle = Math
-                .abs(RobotContainer.gyro.getAngle() - lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;
-        if (isRobotSpinningFast && !isTagInNarrowAngle) {
+        final boolean isTagInNarrowAngle = true;/* Math
+                .abs(RobotContainer.getGyroRotation2d().getDegrees() - lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;*/
+        if (isRobotSpinningFast || !isTagInNarrowAngle) {
             // if our angular velocity is greater than 720 degrees
             // per second, ignore vision updates
             return;
@@ -182,7 +186,8 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void resetOdoemetry(Pose2d newPose) {
-        RobotContainer.gyro.reset();
+        //RobotContainer.gyro.reset();
+        //RobotContainer.gyro.setYaw(newPose.getRotation().getDegrees());
         poseEstimator.resetPosition(RobotContainer.getGyroRotation2d(), getModulePositions(), newPose);
     }
 

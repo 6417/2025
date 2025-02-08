@@ -124,7 +124,7 @@ public class Controls implements Sendable {
 
     public double turnSensitivity = 0.08;
 
-    public DriveOrientation driveOrientation = DriveOrientation.Forwards;
+    public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {

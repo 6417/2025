@@ -1,7 +1,13 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 import frc.robot.subsystems.LiftingTowerSubsystem;
@@ -15,28 +21,23 @@ public class RobotContainer {
     // public static final AHRS gyroNavx; 
     public static final Pigeon2 gyro;
     public static final FridoPathplanner pathplanner;
-
-    //public static final ClimberSubsytem climber = new ClimberSubsytem();
-    //public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
-    //public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
-
-    static {
-        // gyroNavx = new AHRS(Port.kMXP); /* old */
-        gyro = new Pigeon2(Constants.Gyro.gyroId);
-        drive = new SwerveDrive(Constants.SwerveDrive.configs);
-        controls = new Controls();
-        pathplanner = new FridoPathplanner(drive);
+    private static final SendableChooser<Command> autoChooser;
+    
+        //public static final ClimberSubsytem climber = new ClimberSubsytem();
+        //public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
+        //public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
+    
+        static {
+            // gyroNavx = new AHRS(Port.kMXP); /* old */
+            gyro = new Pigeon2(Constants.Gyro.gyroId);
+            drive = new SwerveDrive(Constants.SwerveDrive.configs);
+            controls = new Controls();
+            pathplanner = new FridoPathplanner(drive);
+    
+            autoChooser = AutoBuilder.buildAutoChooser();
+            SmartDashboard.putData("Auto", autoChooser);
+            SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
-
-    // old, don't use
-    /* 
-    public static synchronized Rotation2d getGyroRotation2dFromNavx() {
-        double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
-        //double angle = Utils.normalizeAngleRad(inverted * RobotContainer.gyro.getAngle() * Math.PI / 180.0);
-        double angle = Math.IEEEremainder(inverted * gyroNavx.getAngle(), 360);
-        return Rotation2d.fromDegrees(angle);
-    }
-    */
 
     public static synchronized Rotation2d getGyroRotation2d() {
         double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
@@ -46,7 +47,6 @@ public class RobotContainer {
     }
     
     public Command getAutoCommand(){
-        
-        return pathplanner.getAutoCommandGroup(Constants.Autonomous.autoGroup);
+        return autoChooser.getSelected();
     }
 }

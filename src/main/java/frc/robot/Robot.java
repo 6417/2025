@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    private final Command autoCommand;
+    private Command autoCommand;
     private final RobotContainer robotContainer;
 
     /**
@@ -32,11 +33,10 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
         FollowPathCommand.warmupCommand().schedule();
 
-
+        autoCommand = new WaitCommand(1);
         
-        
 
-        autoCommand = robotContainer.getAutoCommand();
+        //autoCommand = robotContainer.getAutoCommand();
         robotContainer.gyro.reset();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
         Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
@@ -105,24 +105,28 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        autoCommand = robotContainer.getAutoCommand();
 
-        if (autoCommand != null) {
-            autoCommand.schedule();
+        if (autoCommand == null) {
+            autoCommand = new WaitCommand(1);
         }
+
+        autoCommand.schedule();
     }
 
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        //robotContainer.drive.addVisionToOdometry();
+        robotContainer.drive.addVisionToOdometry();
     }
 
     @Override
     public void teleopInit() {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         autoCommand.cancel();
-        RobotContainer.drive.stopMotors();
+        robotContainer.drive.stopMotors();
         robotContainer.drive.resetModulesToAbsolute();
+        robotContainer.gyro.setYaw(robotContainer.drive.getPose().getRotation().getDegrees());
     }
 
     /** This function is called periodically during operator control. */
