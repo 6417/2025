@@ -68,12 +68,17 @@ public class Controls implements Sendable {
         LFOUR,
         STATION,
         ALGAE1,
-        ALGAE2
+        ALGAE2;
     }
 
     public enum GamePieceState {
         CORAL,
-        ALGUE
+        ALGUE;
+    }
+
+    public enum IntakeState {
+        INTAKE,
+        OUTTAKE;
     }
 
     private int liftingTowerState(HubturmState state) {
@@ -99,9 +104,18 @@ public class Controls implements Sendable {
     }
 
     private GamePieceState activePieceState = GamePieceState.CORAL;
+    private IntakeState activeIntakeState = IntakeState.OUTTAKE;
 
     public void setActivePieceState(GamePieceState newPieceState) {
         activePieceState = newPieceState;
+    }
+
+    public void updateStateControlls() {
+        // not used
+    }
+
+    public void setActiveIntakeState(IntakeState state) {
+        activeIntakeState = state;
     }
 
     public enum DriveSpeed {

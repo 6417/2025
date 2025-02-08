@@ -8,6 +8,9 @@ import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.Encoder;
+
+
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = new PidValues(0, 0, 0, 0); // p, i, d, f
             
