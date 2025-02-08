@@ -84,7 +84,7 @@ public final class Constants {
         public static final int l4State = 4;
         public static final int algae1State = 5;
         public static final int algae2State = 6;
-        
+
         public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
         public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
         public static final double intakeSpeed = -0.5;

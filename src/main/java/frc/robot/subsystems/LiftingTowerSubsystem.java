@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
-
+import frc.robot.RobotContainer;
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = new PidValues(0, 0, 0, 0); // p, i, d, f
             
@@ -20,7 +21,10 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorLeft.follow(motorRight, DirectionType.invertMaster);
 
         motorRight.enableForwardLimitSwitch(Constants.LiftingTower.fdwLiftingTowePolarity, true);
-        
+
+        Encoder encoder = new Encoder(0, 1);
+        encoder.getDistance();
+
         motorRight.setPID(pidValues);
 
         
