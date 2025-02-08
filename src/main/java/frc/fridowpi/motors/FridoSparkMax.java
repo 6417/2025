@@ -79,7 +79,7 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public void setInverted(boolean isInverted) {
-        config.inverted(true);
+        config.inverted(isInverted);
         motorProxy.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 

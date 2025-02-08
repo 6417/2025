@@ -66,7 +66,7 @@ public class ModuleConfig implements Cloneable {
         angleMotorStallCurrentLimit = 0;
         angleMotorFreeCurrentLimit = 0;
         angleMotorIzone = 0.0;
-        angleMotorInverted = false;
+        angleMotorInverted = true;
         anglePidValues = null;
 
         encoderChannel = -1; // Invalid channel
