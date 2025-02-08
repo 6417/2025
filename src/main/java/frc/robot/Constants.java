@@ -78,12 +78,11 @@ public final class Constants {
         public static final double stopSpeedMotorTop = 0;
         public static final double stopSpeedPitch = 0;
 
-        public static final int neutralState = 0;
-        public static final int stationState = 1;
-        public static final int l1State = 2;
-        public static final int l2State = 3;
-        public static final int l3State = 4;
-        public static final int l4State = 5;
+        public static final int stationState = 0;
+        public static final int l1State = 1;
+        public static final int l2State = 2;
+        public static final int l3State = 3;
+        public static final int l4State = 4;
         
         public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
         public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
@@ -109,12 +108,23 @@ public final class Constants {
     public static LevelParameters[] parameters = new LevelParameters[6];
 
     static {
-        parameters[CoralDispenser.neutralState].name = "neutral";
         parameters[CoralDispenser.stationState].name = "station";
         parameters[CoralDispenser.l1State].name = "l1";
         parameters[CoralDispenser.l2State].name = "l2";
         parameters[CoralDispenser.l3State].name = "l3";
         parameters[CoralDispenser.l4State].name = "l4";
+
+        parameters[CoralDispenser.stationState].pitchAngle = Rotation2d.fromDegrees(0);
+        parameters[CoralDispenser.l1State].pitchAngle = Rotation2d.fromDegrees(0);
+        parameters[CoralDispenser.l2State].pitchAngle = Rotation2d.fromDegrees(0);
+        parameters[CoralDispenser.l3State].pitchAngle = Rotation2d.fromDegrees(0);
+        parameters[CoralDispenser.l4State].pitchAngle = Rotation2d.fromDegrees(0);
+        
+        parameters[CoralDispenser.stationState].height = 0;
+        parameters[CoralDispenser.l1State].height = 0;
+        parameters[CoralDispenser.l2State].height = 0;
+        parameters[CoralDispenser.l3State].height = 0;
+        parameters[CoralDispenser.l4State].height = 0;
     }
 
 
@@ -136,6 +146,12 @@ public final class Constants {
         public static final double resetEncoderPosition = 0;
         public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final double zeroingSpeed = 0.1;
+        public static double kS;
+        public static double kV;
+        public static double kDt;
+        public static double kMaxVelocity;
+        public static double kMaxAcceleration;
+        public static double kG;
     }
 
 
