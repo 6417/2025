@@ -1,18 +1,22 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.fridowpi.motors.FridoSparkMax;
+import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.Encoder;
+
 
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = new PidValues(0, 0, 0, 0); // p, i, d, f
             
-    private FridoSparkMax motorLeft;
-    private FridoSparkMax motorRight;
-    
+    private FridolinsMotor motorLeft;
+    private FridolinsMotor motorRight;
+
     public LiftingTowerSubsystem() {
         motorLeft = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
         motorRight = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
@@ -20,8 +24,14 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorLeft.follow(motorRight, DirectionType.invertMaster);
 
         motorRight.enableForwardLimitSwitch(Constants.LiftingTower.fdwLiftingTowePolarity, true);
-        
+
+        Encoder encoder = new Encoder(0, 1);
+        encoder.getDistance();
+
         motorRight.setPID(pidValues);
+
+        
+
     }
 
     public void resetEncoder() {
@@ -31,6 +41,8 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     public boolean isForwardLimitSwitchPressed() {
         return motorRight.isForwardLimitSwitchActive();
     }
+
+
 
     public void setPercent(double percent) {
         motorRight.set(percent);

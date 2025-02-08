@@ -8,9 +8,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.CoralAlgaeOutCommandGroup;
+import frc.robot.commands.CoralHeightPitchCommandGroup;
 import frc.robot.states.SuperStructureState;
 import frc.robot.swerve.FridoPathplanner;
+import frc.robot.commands.CoralIntake;
+import frc.robot.commands.AlgaeInCommandGroup;
 
 /**
  * Holds the data concerning input, which should be available
@@ -57,10 +62,13 @@ public class Controls implements Sendable {
     }
 
     public enum HubturmState {
-        LZERO,
         LONE,
         LTWO,
         LTHREE,
+        LFOUR,
+        STATION,
+        ALGAE1,
+        ALGAE2;
     }
 
     public enum GamePieceState {
@@ -73,29 +81,41 @@ public class Controls implements Sendable {
         OUTTAKE;
     }
 
-    private GamePieceState activePieceState = GamePieceState.ALGUE;
-    private IntakeState activeIntakeState = IntakeState.INTAKE;
+    private int liftingTowerState(HubturmState state) {
+        switch (state) {
+            case LONE:
+                return CoralDispenser.l1State;
+            case LTWO:
+                return CoralDispenser.l2State;
+            case LTHREE:
+                return CoralDispenser.l3State;
+            case LFOUR:
+                return CoralDispenser.l4State;
+            case STATION:
+                return CoralDispenser.stationState;
+            case ALGAE1:
+                return CoralDispenser.algae1State;
+            case ALGAE2:
+                return CoralDispenser.algae2State;
 
-    public void updateStateControlls() {
-        yButtonOperator.whileTrue(new InstantCommand(() -> {
-            if (activeIntakeState == IntakeState.INTAKE && activePieceState == GamePieceState.CORAL) {
-                // What happens if CoralIntakestate is Active and y is Pressed
-            } else if (activeIntakeState == IntakeState.INTAKE) {
-                // What happens if AlgueIntakestate is Active and y is Pressed
-            } else if (activePieceState == GamePieceState.CORAL) {
-                // What happens if CoralOuttakestate is Active and y is Pressed
-            } else {
-                // What happens if AlgueOuttakestate is Active and y is Pressed
-            }
-        }));
+            default:
+                return -1;
+        }
     }
 
-    public void setActiveIntakeState(IntakeState newIntakeState) {
-        activeIntakeState = newIntakeState;
-    }
+    private GamePieceState activePieceState = GamePieceState.CORAL;
+    private IntakeState activeIntakeState = IntakeState.OUTTAKE;
 
     public void setActivePieceState(GamePieceState newPieceState) {
         activePieceState = newPieceState;
+    }
+
+    public void updateStateControlls() {
+        // not used
+    }
+
+    public void setActiveIntakeState(IntakeState state) {
+        activeIntakeState = state;
     }
 
     public enum DriveSpeed {
@@ -148,35 +168,35 @@ public class Controls implements Sendable {
         yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
 
-        // aButtonOperator.onTrue(new InstantCommand(() ->
-        // setActivePieceState(GamePieceState.ALGUE)))
-        // .onFalse(new InstantCommand(() ->
-        // setActivePieceState(GamePieceState.CORAL)));
-
-        var x = HubturmState.LONE;
-        x.getClass();
-
-        HubturmState y = HubturmState.LONE;
-
-
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
-        yButtonOperator.onTrue(new InstantCommand(() -> {
-            //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LONE).getAngle());
-            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LONE).getHeight())
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
+        pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
+        pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
+        yButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LONE)));
+        bButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTWO)));
+        aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
+        xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
+
+        lbButtonOperator.onTrue(new InstantCommand(() -> {
+            setActivePieceState(GamePieceState.ALGUE);
         }));
-        bButtonOperator.onTrue(new InstantCommand(() -> {
-            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTWO).getAngle())
-            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTWO).getHeight())
+        rbButtonOperator.onTrue(new InstantCommand(() -> {
+            setActivePieceState(GamePieceState.CORAL);
         }));
-        aButtonOperator.onTrue(new InstantCommand(() -> {
-            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LTHREE).getAngle())
-            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LTHREE).getHeight())
-        }));
-        xButtonOperator.onTrue(new InstantCommand(() -> {
-            // CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LFOUR).getAngle())
-            // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LFOUR).getHeight())
-        }));
+
+        rtButtonDrive.onTrue(new CoralAlgaeOutCommandGroup());
+        
+        switch (activePieceState) {
+            case CORAL:
+                ltButtonDrive.onTrue(new CoralIntake());
+                break;
+
+            case ALGUE:
+                ltButtonDrive.onTrue(new AlgaeInCommandGroup());
+                break;
+        }
+
 
         //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));

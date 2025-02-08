@@ -8,7 +8,7 @@ import frc.robot.subsystems.CoralDispenserSubsystem;
 public class CoralIntake extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
 
-    private CoralIntake(CoralDispenserSubsystem coralDispenserSubsystem){
+    public CoralIntake(){
         this.coralDispenserSubsystem = null;//RobotContainer.coralDispenser;
         addRequirements(coralDispenserSubsystem);
     }
