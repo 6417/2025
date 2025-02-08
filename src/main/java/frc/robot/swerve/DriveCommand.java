@@ -19,14 +19,16 @@ public class DriveCommand extends Command {
 
     public void execute() {
 
-        var pitchOffsetRadians = Radians.convertFrom(0, Degrees);
+        //var pitchOffsetRadians = Radians.convertFrom(0, Degrees);
 
         var joystick = RobotContainer.controls.driveJoystick;
-        var xy = new Vector2(-joystick.getRawAxis(1), -joystick.getRawAxis(0));
-        xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
+        //var xy = new Vector2(-joystick.getRawAxis(1), -joystick.getRawAxis(0));
+        var x = -joystick.getRawAxis(1);
+        var y = -joystick.getRawAxis(0);
+        //xy = Vector2.fromRadians(xy.getAngleAsRadians() + pitchOffsetRadians).withLength(xy.magnitude()); // Turn
         var rot = -joystick.getRightX();
 
-        if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
+       /*  if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
             xy = xy.normalized().scaled(joystick.getRawAxis(4));
         }
 
@@ -39,8 +41,13 @@ public class DriveCommand extends Command {
          * }
          */
 
-        // Apply deadband
-        xy = applyDeadband(xy, Controls.deadBandDrive)
+        // Apply deadband4
+        x = applyDeadband(x, Controls.deadBandTurn);
+        y = applyDeadband(y, Controls.deadBandTurn);
+        rot = applyDeadband(rot, Controls.deadBandTurn);
+        var xy = new Vector2(x, y);
+
+        /*xy = applyDeadband(xy, Controls.deadBandDrive)
                 .scaled(RobotContainer.controls.getAccelerationSensitivity());
         rot = applyDeadband(rot, Controls.deadBandTurn)
                 * RobotContainer.controls.turnSensitivity;

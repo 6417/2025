@@ -64,6 +64,8 @@ public class Robot extends TimedRobot {
                         null);
             }
         });
+
+        RobotContainer.drive.resetModulesToAbsolute();
     }
 
     /**
@@ -119,6 +121,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         autoCommand.cancel();
+        RobotContainer.drive.resetModulesToAbsolute();
         RobotContainer.drive.stopMotors();
 
     }
@@ -126,6 +129,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        RobotContainer.drive.addVisionToOdometry();
     }
 
     @Override

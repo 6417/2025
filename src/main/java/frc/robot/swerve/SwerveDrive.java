@@ -193,6 +193,12 @@ public class SwerveDrive extends SubsystemBase {
 
     }
 
+    public void resetModulesToAbsolute(){
+        for (SwerveModule module : modules) {
+            module.resetToAbsolute();
+        }
+    }
+
     public void setIdleMode(IdleMode mode) {
         for (var module : modules) {
             module.setIdleMode(mode);

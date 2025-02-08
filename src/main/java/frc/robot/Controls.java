@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.states.SuperStructureState;
+import frc.robot.swerve.FridoPathplanner;
 
 /**
  * Holds the data concerning input, which should be available
@@ -123,7 +124,7 @@ public class Controls implements Sendable {
 
     public double turnSensitivity = 0.08;
 
-    public DriveOrientation driveOrientation = DriveOrientation.Forwards;
+    public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
     public void setActiveSpeedFactor(DriveSpeed speedFactor) {
@@ -158,7 +159,7 @@ public class Controls implements Sendable {
         HubturmState y = HubturmState.LONE;
 
 
-        burgerButtonOperator.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
+        burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         yButtonOperator.onTrue(new InstantCommand(() -> {
             //CoralDispenserSubsystem.setAngle(superstructureOnState(HubturmState.LONE).getAngle());
@@ -177,6 +178,9 @@ public class Controls implements Sendable {
             // LiftingTowerSubsystem.setHeight(superstructureOnState(HubturmState.LFOUR).getHeight())
         }));
 
+        //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
+        //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
+        yButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
