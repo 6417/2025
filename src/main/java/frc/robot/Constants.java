@@ -17,6 +17,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -46,8 +47,8 @@ public final class Constants {
     }
 
     public static final class Limelight {
-        public static final String limelightID = "limelight-drei";
-        public static final String limelightBackID = "limelight-vier";
+        public static final String limelightID = "limelight-vier";
+        public static final String limelightBackID = "limelight-drei";
 
         public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
                 22.0);
@@ -59,9 +60,9 @@ public final class Constants {
     }
 
     public static final class OffsetsToAprilTags {
-        public static final double[] offsetToAprilTagLeftToReef = { 0.5, 0.165, 0 };
-        public static final double[] offsetToAprilTagRightToReef = { 0.5, -0.165, 0 };
-        public static final double[] offsetToAprilTagCenterToReef = { 0.5, 0, 0 };
+        public static final double[] offsetToAprilTagLeftToReef = { 0.7, 0.165, 0 };
+        public static final double[] offsetToAprilTagRightToReef = { 0.7, -0.165, 0 };
+        public static final double[] offsetToAprilTagCenterToReef = { 0.7, 0, 0 };
     }
 
     public static final class CoralDispenser {
@@ -85,8 +86,8 @@ public final class Constants {
         public static final int algae1State = 5;
         public static final int algae2State = 6;
 
-        public static final PidValues PidValuesPitch = new PidValues(0, 0, 0,0);
-        public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0,0);
+        public static final PidValues PidValuesPitch = new PidValues(0, 0, 0, 0);
+        public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0, 0);
         public static final double intakeSpeed = -0.5;
         public static final double outtakeSpeed = 0.5;
 
@@ -95,13 +96,15 @@ public final class Constants {
         public static final double waitAfterAlgaeIntake = 0.3;
     }
 
-    public static final class LevelParameters implements Sendable{
+    public static final class LevelParameters implements Sendable {
         public String name;
         public Rotation2d pitchAngle;
         public double height;
+
         @Override
         public void initSendable(SendableBuilder builder) {
-            builder.addDoubleProperty("pitch angle [deg]", () -> pitchAngle.getDegrees(), (double angle) -> pitchAngle = Rotation2d.fromDegrees(angle));
+            builder.addDoubleProperty("pitch angle [deg]", () -> pitchAngle.getDegrees(),
+                    (double angle) -> pitchAngle = Rotation2d.fromDegrees(angle));
             builder.addDoubleProperty("height [m]", () -> height, (double h) -> height = h);
         }
     }
@@ -122,7 +125,7 @@ public final class Constants {
         parameters[CoralDispenser.l4State].pitchAngle = Rotation2d.fromDegrees(0);
         parameters[CoralDispenser.algae1State].pitchAngle = Rotation2d.fromDegrees(0);
         parameters[CoralDispenser.algae2State].pitchAngle = Rotation2d.fromDegrees(0);
-        
+
         parameters[CoralDispenser.stationState].height = 0;
         parameters[CoralDispenser.l1State].height = 0;
         parameters[CoralDispenser.l2State].height = 0;
@@ -132,12 +135,11 @@ public final class Constants {
         parameters[CoralDispenser.algae2State].height = 0;
     }
 
-
     public static final class ClimberSubsytem {
         public static final int climberMotorID = 59;
         public static final int coralMotorChangePitchID = 58;
 
-        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
+        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0, 0);
         public static final double resetPitchEncoderPosition = 0;
     }
 
@@ -147,7 +149,7 @@ public final class Constants {
 
         public static final double stopSpeed = 0;
 
-        public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0,0);
+        public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0, 0);
         public static final double resetEncoderPosition = 0;
         public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final double zeroingSpeed = 0.1;
@@ -159,7 +161,6 @@ public final class Constants {
         public static double kG;
     }
 
-
     public static final class SwerveDrive {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = false;
@@ -168,16 +169,17 @@ public final class Constants {
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.267;
         public static final double moduleYoffset = 0.267;
-        public static final double maxTurnSpeed = 15;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
+        public static final double maxTurnSpeed = 10;//12// Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI *
+                                                     // 2); // rps
 
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 1.038;
 
             defaultModuleConfig2024.driveGearboxRatio = 8.11;
-            defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 50;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.2, 0.00, 0);
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.15, 0.00, 0);
             defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.085, 0.118, 0.02);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
@@ -207,7 +209,7 @@ public final class Constants {
             configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
-            configs[LOC_FL].absEncoderOffset = 0.21;
+            configs[LOC_FL].absEncoderOffset = 0.831;
 
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
@@ -215,7 +217,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.156;
+            configs[LOC_FR].absEncoderOffset = 0.1617;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
@@ -223,7 +225,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.013;
+            configs[LOC_RL].absEncoderOffset = 0.0277;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
@@ -231,7 +233,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.985;
+            configs[LOC_RR].absEncoderOffset = 0.983;
         }
     }
 }

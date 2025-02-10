@@ -6,8 +6,10 @@ import static edu.wpi.first.units.Units.Radians;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.fridowpi.utils.Vector2;
 import frc.robot.RobotContainer;
+import frc.robot.Controls.DriveSpeed;
 import frc.robot.Constants;
 import frc.robot.Controls;
 
@@ -68,7 +70,13 @@ public class DriveCommand extends Command {
          */
 
         // Convert to velocity
-        xy.scale(Constants.SwerveDrive.maxSpeed);
+        if(joystick.rightStick().getAsBoolean()) {
+            RobotContainer.controls.setActiveSpeedFactor(DriveSpeed.SLOW);
+        } else{
+            RobotContainer.controls.setActiveSpeedFactor(DriveSpeed.FAST);
+        }
+
+        xy.scale(Constants.SwerveDrive.maxSpeed * RobotContainer.controls.speedFactors.get(RobotContainer.controls.getActiveSpeedFactor()));
         rot *= Constants.SwerveDrive.maxTurnSpeed;
         setChassisSpeeds(xy, rot);
     }

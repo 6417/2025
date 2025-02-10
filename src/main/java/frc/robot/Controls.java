@@ -130,7 +130,7 @@ public class Controls implements Sendable {
 
     public Map<DriveSpeed, Double> speedFactors = Map.of(
             DriveSpeed.DEFAULT_SPEED, 1.0,
-            DriveSpeed.FAST, 1.0,
+            DriveSpeed.FAST, 0.9,
             DriveSpeed.SLOW, 0.3);
     private DriveSpeed activeSpeedFactor = DriveSpeed.SLOW;
     private double accelerationSensitivity = speedFactors.get(activeSpeedFactor);
@@ -170,7 +170,7 @@ public class Controls implements Sendable {
 
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
+       /*  pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
         pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
         yButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LONE)));
@@ -196,11 +196,11 @@ public class Controls implements Sendable {
                 ltButtonDrive.onTrue(new AlgaeInCommandGroup());
                 break;
         }
-
+*/
 
         //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
-        yButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
+        aButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 

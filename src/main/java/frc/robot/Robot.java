@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
         FollowPathCommand.warmupCommand().schedule();
 
-        autoCommand = new WaitCommand(1);
+        autoCommand = new WaitCommand(15);
         
 
         //autoCommand = robotContainer.getAutoCommand();
@@ -107,11 +107,11 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         autoCommand = robotContainer.getAutoCommand();
 
-        if (autoCommand == null) {
-            autoCommand = new WaitCommand(1);
+        if (autoCommand != null) {
+            autoCommand.schedule();
         }
 
-        autoCommand.schedule();
+
     }
 
     /** This function is called periodically during autonomous. */
@@ -123,8 +123,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
-        
-        autoCommand.cancel();
+        if(autoCommand != null) autoCommand.cancel();
         robotContainer.drive.stopMotors();
         robotContainer.drive.resetModulesToAbsolute();
         robotContainer.gyro.setYaw(robotContainer.drive.getPose().getRotation().getDegrees());

@@ -101,7 +101,7 @@ public class SwerveDrive extends SubsystemBase {
     public void periodic() {
         updateOdometry();
         updateState();
-        System.out.println(RobotContainer.getGyroRotation2d().getDegrees());
+        //System.out.println(RobotContainer.getGyroRotation2d().getDegrees());
     }
 
     public void updateState() {

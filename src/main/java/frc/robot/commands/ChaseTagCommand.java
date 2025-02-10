@@ -75,16 +75,15 @@ public class ChaseTagCommand extends Command {
             }
             
             Pose3d robotPoseInTargetSpace = LimelightHelpers
-                    .toPose3D(LimelightHelpers.getBotPose_TargetSpace(ll));
-            // Find the tag we want to chase
-            double target = LimelightHelpers.getFiducialID(ll);
+                    .getTargetPose3d_RobotSpace(Constants.Limelight.limelightID);// Find the tag we want to chase
+            double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 
             // This is new target data, so recalculate the goal
             lastTarget = target;
 
-            double xDistance = -robotPoseInTargetSpace.getZ() - offset[0];
-            double yDistance = robotPoseInTargetSpace.getX() - offset[1];
-            double rRotation = robotPoseInTargetSpace.getRotation().getY() - offset[2];
+            double xDistance = robotPoseInTargetSpace.getZ() - offset[0];
+            double yDistance = -robotPoseInTargetSpace.getX() - offset[1];
+            double rRotation = -robotPoseInTargetSpace.getRotation().getY() - offset[2];
             // new Rotation2d();
             Pose2d goalPose = robotPose2d // robot pose in fieldspace
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
@@ -97,7 +96,7 @@ public class ChaseTagCommand extends Command {
             yController.setGoal(goalPose.getY());
             omegaController.setGoal(goalPose.getRotation().getRadians());
 
-            System.out.println("OmegaGoal" + omegaController.getGoal().toString());
+            System.out.println("xgoal: " + xController.atGoal());
         }
         
         if (lastTarget != -1) {
