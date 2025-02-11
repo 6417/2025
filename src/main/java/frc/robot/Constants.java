@@ -151,12 +151,11 @@ public final class Constants {
         public static final double resetEncoderPosition = 0;
         public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final double zeroingSpeed = 0.1;
-        public static double kS;
-        public static double kV;
-        public static double kDt;
-        public static double kMaxVelocity;
-        public static double kMaxAcceleration;
-        public static double kG;
+
+        public static double kMaxVelocity = 0;
+        public static double kMaxAcceleration = 0;
+        public static double kAllowedClosedLoopError = 0.01;
+        public static PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
     }
 
 
