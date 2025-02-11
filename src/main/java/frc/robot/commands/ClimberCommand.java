@@ -5,19 +5,18 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimberSubsytem;
 
 public class ClimberCommand extends Command {
-    private final ClimberSubsytem ClimberSubsytem;
+    private final ClimberSubsytem climber;
     private final double position;
 
     ClimberCommand(double position) {
-        this.ClimberSubsytem = null;//RobotContainer.climber;
-        addRequirements(ClimberSubsytem);
+        this.climber = null;//RobotContainer.climber;
+        addRequirements(climber);
         this.position = position;
-
     }
 
     @Override
     public void initialize() {
-        ClimberSubsytem.setPosition(position);
+        climber.setPosition(position);
     }
 
     @Override

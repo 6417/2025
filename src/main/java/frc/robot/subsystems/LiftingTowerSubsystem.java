@@ -12,7 +12,6 @@ import frc.fridowpi.motors.FridolinsMotor.DirectionType;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 
-
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
             
@@ -22,7 +21,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     private FridoSparkMax motorRight;
 
     private MAXMotionConfig smartMotionConfig;
-
     
     public LiftingTowerSubsystem() {
         motorLeft = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);

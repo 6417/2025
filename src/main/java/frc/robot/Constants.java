@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
@@ -137,8 +138,17 @@ public final class Constants {
         public static final int climberMotorID = 59;
         public static final int coralMotorChangePitchID = 58;
 
-        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0,0);
         public static final double resetPitchEncoderPosition = 0;
+        public static final PidValues PidValuesOutClimberSubsystem = new PidValues(0, 0, 0, 0);
+        public static final PidValues PidValuesInClimberSubsystem = new PidValues(0, 0, 0, 0);
+        
+        public static final double kAllowedClosedLoopErrorOut = 0;
+        public static final double kMaxAccelerationOut = 0;
+        public static final double kMaxVelocityOut = 0;
+        
+        public static final double kAllowedClosedLoopErrorIn = 0;
+        public static final double kMaxAccelerationIn = 0;
+        public static final double kMaxVelocityIn = 0;
     }
 
     public static final class LiftingTower {
@@ -152,10 +162,10 @@ public final class Constants {
         public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final double zeroingSpeed = 0.1;
 
-        public static double kMaxVelocity = 0;
-        public static double kMaxAcceleration = 0;
-        public static double kAllowedClosedLoopError = 0.01;
-        public static PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
+        public static final double kMaxVelocity = 0;
+        public static final double kMaxAcceleration = 0;
+        public static final double kAllowedClosedLoopError = 0.01;
+        public static final PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
     }
 
 
