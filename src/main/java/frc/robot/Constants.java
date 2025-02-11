@@ -149,6 +149,9 @@ public final class Constants {
         public static final double kAllowedClosedLoopErrorIn = 0;
         public static final double kMaxAccelerationIn = 0;
         public static final double kMaxVelocityIn = 0;
+
+        public static final double positionFront = 0;
+        public static final double positionBack = 0;
     }
 
     public static final class LiftingTower {

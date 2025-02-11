@@ -3,20 +3,34 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimberSubsytem;
+import frc.robot.Controls.Climberstate;
 
 public class ClimberCommand extends Command {
     private final ClimberSubsytem climber;
     private final double position;
+    private final Climberstate state;
 
-    ClimberCommand(double position) {
+    public ClimberCommand(double position, Climberstate state) {
         this.climber = null;//RobotContainer.climber;
         addRequirements(climber);
         this.position = position;
+        this.state = state;
     }
 
     @Override
     public void initialize() {
-        climber.setPosition(position);
+        switch (state) {
+            case kForward:
+                climber.setPositionForward(position);
+                break;
+            
+            case kBack:
+                climber.setPositionUnderLoad(position);
+                break;
+        
+            default:
+                break;
+        }
     }
 
     @Override

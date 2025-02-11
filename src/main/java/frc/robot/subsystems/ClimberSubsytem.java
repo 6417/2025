@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-import java.nio.channels.ClosedByInterruptException;
-
+import com.fasterxml.jackson.databind.ext.NioPathDeserializer;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.MAXMotionConfig;
@@ -46,7 +46,7 @@ public class ClimberSubsytem extends SubsystemBase {
         
         pidValuesIn.iZone.ifPresent(iZone -> motorConfig.closedLoop.iZone(iZone, ClosedLoopSlot.kSlot1));
 
-       
+        
         smartMotionConfig.allowedClosedLoopError(Constants.ClimberSubsytem.kAllowedClosedLoopErrorOut, ClosedLoopSlot.kSlot0);
         smartMotionConfig.maxAcceleration(Constants.ClimberSubsytem.kMaxAccelerationOut, ClosedLoopSlot.kSlot0);
         smartMotionConfig.maxVelocity(Constants.ClimberSubsytem.kMaxVelocityOut, ClosedLoopSlot.kSlot0);
@@ -57,7 +57,7 @@ public class ClimberSubsytem extends SubsystemBase {
         smartMotionConfig.maxVelocity(Constants.ClimberSubsytem.kMaxVelocityIn, ClosedLoopSlot.kSlot1);
         smartMotionConfig.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal, ClosedLoopSlot.kSlot1);
         
-        
+        climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot1);
         motorConfig.closedLoop.maxMotion.apply(smartMotionConfig);
       
         climberMotor.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
@@ -78,7 +78,13 @@ public class ClimberSubsytem extends SubsystemBase {
         climberMotor.set(speed);
     }
 
-    public void setPosition(double position) {
+    public void setPositionUnderLoad(double position) {
+        climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot1);
+        climberMotor.setPosition(position);
+
+    }
+    public void setPositionForward(double position) {
+        climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         climberMotor.setPosition(position);
     }
     

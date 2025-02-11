@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
 import frc.robot.states.SuperStructureState;
@@ -55,6 +56,11 @@ public class Controls implements Sendable {
     Trigger yButtonDrive = driveJoystick.y();
     Trigger windowsButtonDrive = driveJoystick.back();
     Trigger burgerButtonDrive = driveJoystick.start();
+
+    public enum Climberstate {
+        kForward,
+        kBack;
+    }
 
     public enum ControlMode {
         CONVENTIONAL,
@@ -170,6 +176,11 @@ public class Controls implements Sendable {
 
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
+        // climber; needs testing!
+        rtButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsytem.positionFront, Climberstate.kForward));
+        ltButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsytem.positionBack, Climberstate.kBack));
+
+        // liftingtower
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
         pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
@@ -178,6 +189,7 @@ public class Controls implements Sendable {
         aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
         xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
 
+        // coral handling
         lbButtonOperator.onTrue(new InstantCommand(() -> {
             setActivePieceState(GamePieceState.ALGUE);
         }));
