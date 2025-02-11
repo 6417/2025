@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.ext.NioPathDeserializer;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -87,6 +86,4 @@ public class ClimberSubsytem extends SubsystemBase {
         climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot0);
         climberMotor.setPosition(position);
     }
-    
-
 }

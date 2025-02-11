@@ -13,7 +13,6 @@ import frc.robot.commands.ChaseTagCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
-import frc.robot.states.SuperStructureState;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.commands.CoralIntake;
 import frc.robot.commands.AlgaeInCommandGroup;
@@ -27,9 +26,6 @@ public class Controls implements Sendable {
     // private ExampleSubsystem ss = new ExampleSubsystem();
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
     public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.operatorJoystickId);
-
-    public SuperStructureState superstructureOnState;
-
 
     Trigger ltButtonOperator = operatorJoystick.leftTrigger();
     Trigger rtButtonOperator = operatorJoystick.rightTrigger();
