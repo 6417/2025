@@ -173,8 +173,8 @@ public class Controls implements Sendable {
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         // climber; needs testing!
-        rtButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsytem.positionFront, Climberstate.kForward));
-        ltButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsytem.positionBack, Climberstate.kBack));
+        rtButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
+        ltButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
 
         // liftingtower
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));

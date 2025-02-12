@@ -134,24 +134,23 @@ public final class Constants {
     }
 
 
-    public static final class ClimberSubsytem {
+    public static final class ClimberSubsystem {
         public static final int climberMotorID = 59;
-        public static final int coralMotorChangePitchID = 58;
 
         public static final double resetPitchEncoderPosition = 0;
-        public static final PidValues PidValuesOutClimberSubsystem = new PidValues(0, 0, 0, 0);
-        public static final PidValues PidValuesInClimberSubsystem = new PidValues(0, 0, 0, 0);
+        public static PidValues PidValuesOutClimberSubsystem = new PidValues(0, 0, 0, 0);
+        public static PidValues PidValuesInClimberSubsystem = new PidValues(0, 0, 0, 0);
         
-        public static final double kAllowedClosedLoopErrorOut = 0;
-        public static final double kMaxAccelerationOut = 0;
-        public static final double kMaxVelocityOut = 0;
+        public static double kAllowedClosedLoopErrorOut = 0;
+        public static double kMaxAccelerationOut = 0;
+        public static double kMaxVelocityOut = 0;
         
-        public static final double kAllowedClosedLoopErrorIn = 0;
-        public static final double kMaxAccelerationIn = 0;
-        public static final double kMaxVelocityIn = 0;
+        public static double kAllowedClosedLoopErrorIn = 0;
+        public static double kMaxAccelerationIn = 0;
+        public static double kMaxVelocityIn = 0;
 
-        public static final double positionFront = 0;
-        public static final double positionBack = 0;
+        public static double positionFront = 0;
+        public static double positionBack = 0;
     }
 
     public static final class LiftingTower {

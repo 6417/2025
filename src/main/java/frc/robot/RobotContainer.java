@@ -13,7 +13,7 @@ import frc.robot.subsystems.CoralDispenserSubsystem;
 import frc.robot.subsystems.LiftingTowerSubsystem;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.swerve.SwerveDrive;
-import frc.robot.subsystems.ClimberSubsytem;
+import frc.robot.subsystems.ClimberSubsystem;
 
 public class RobotContainer {
     public static final SwerveDrive drive;
@@ -23,7 +23,7 @@ public class RobotContainer {
     public static final FridoPathplanner pathplanner;
     private static final SendableChooser<Command> autoChooser;
     
-        //public static final ClimberSubsytem climber = new ClimberSubsytem();
+        //public static final ClimberSubsystem climber = new ClimberSubsystem();
         //public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
         //public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
     
