@@ -10,6 +10,7 @@ public class CoralIntake extends Command {
 
     public CoralIntake(){
         this.coralDispenserSubsystem = null;//RobotContainer.coralDispenser;
+        if (coralDispenserSubsystem != null)
         addRequirements(coralDispenserSubsystem);
     }
 

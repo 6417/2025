@@ -26,6 +26,7 @@ public class TowerManualControl extends Command {
         if (input < 0.0)
             input *= Math.abs(Constants.LiftingTower.zeroingSpeed);
 
+        System.out.println(input);
         tower.setPercent(input);
     }
 

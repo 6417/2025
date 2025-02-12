@@ -107,9 +107,12 @@ public final class Constants {
         }
     }
 
-    public static LevelParameters[] parameters = new LevelParameters[6];
+    public static LevelParameters[] parameters = new LevelParameters[7];
 
     static {
+        for (int i = 0; i < parameters.length; i++)
+            parameters[i] = new LevelParameters();
+
         parameters[CoralDispenser.stationState].name = "station";
         parameters[CoralDispenser.l1State].name = "l1";
         parameters[CoralDispenser.l2State].name = "l2";
@@ -158,7 +161,7 @@ public final class Constants {
         public static final int liftingTowerLeftId = 30;
         public static final int liftingTowerRightId = 31;
 
-        public static final double zeroingSpeed = -0.01;
+        public static final double zeroingSpeed = -0.1;
         public static final double resetEncoderPosition = 0;
         public static final LimitSwitchPolarity towerBottomSwitchPolarity = LimitSwitchPolarity.kNormallyClosed;
 
@@ -167,7 +170,7 @@ public final class Constants {
         public static final double kAllowedClosedLoopError = 0.01;
         public static final PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
                                                                              
-        public static final double softLimitTopPos = 10.0;
+        public static final double softLimitTopPos = 161.0;
     }
 
     public static final class SwerveDrive {

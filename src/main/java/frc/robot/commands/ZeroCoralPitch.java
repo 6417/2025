@@ -10,6 +10,7 @@ public class ZeroCoralPitch extends Command {
 
     private ZeroCoralPitch(){
         this.coralDispenserSubsystem = null;//RobotContainer.coralDispenser;
+        if (coralDispenserSubsystem != null)
         addRequirements(coralDispenserSubsystem);
     }
 

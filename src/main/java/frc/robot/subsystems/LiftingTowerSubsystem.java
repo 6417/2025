@@ -6,9 +6,11 @@ import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor.DirectionType;
+import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 
@@ -25,8 +27,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     public LiftingTowerSubsystem() {
         motorSlave = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
         motorMaster = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
-
-        motorSlave.follow(motorMaster, DirectionType.invertMaster);
 
         motorConfig = new SparkMaxConfig();
         smartMotionConfig = new MAXMotionConfig();
@@ -49,6 +49,21 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorConfig.closedLoop.maxMotion.apply(smartMotionConfig);
 
         motorMaster.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters,
+                PersistMode.kPersistParameters);
+
+        motorMaster.setIdleMode(IdleMode.kCoast);
+        motorSlave.setIdleMode(IdleMode.kCoast);
+        motorMaster.setInverted(true);
+
+        SparkMaxConfig limitConfig = new SparkMaxConfig();
+        limitConfig.softLimit
+        .forwardSoftLimit(Constants.LiftingTower.softLimitTopPos).forwardSoftLimitEnabled(true);
+
+        motorSlave.follow(motorMaster, DirectionType.invertMaster);
+
+        motorMaster.asSparkMax().configure(limitConfig, ResetMode.kNoResetSafeParameters,
+                PersistMode.kPersistParameters);
+        motorSlave.asSparkMax().configure(limitConfig, ResetMode.kNoResetSafeParameters,
                 PersistMode.kPersistParameters);
     }
 
@@ -85,5 +100,12 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
     public void stopMotors() {
         motorMaster.stopMotor();
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("masterTicks", motorMaster::getEncoderTicks, null);
+        builder.addDoubleProperty("masterVel", motorMaster::getEncoderVelocity, null);
+        builder.addBooleanProperty("masterRevSwitch", this::isBottomSwitchPressed, null);
     }
 }

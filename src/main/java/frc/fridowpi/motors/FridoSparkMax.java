@@ -193,12 +193,12 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public boolean isForwardLimitSwitchActive() {
-        return motorProxy.configAccessor.limitSwitch.getForwardLimitSwitchEnabled();
+        return motorProxy.getForwardLimitSwitch().isPressed();
     }
 
     @Override
     public boolean isReverseLimitSwitchActive() {
-        return motorProxy.configAccessor.limitSwitch.getReverseLimitSwitchEnabled();
+        return motorProxy.getReverseLimitSwitch().isPressed();
     }
 
     @Override

@@ -25,7 +25,7 @@ public class RobotContainer {
     
     // public static final ClimberSubsystem climber = new ClimberSubsystem();
     // public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
-    public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
+    public static final LiftingTowerSubsystem liftingTower;
     
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
@@ -33,9 +33,11 @@ public class RobotContainer {
             drive = new SwerveDrive(Constants.SwerveDrive.configs);
             controls = new Controls();
             pathplanner = new FridoPathplanner(drive);
-    
+            liftingTower = new LiftingTowerSubsystem();
+
             autoChooser = AutoBuilder.buildAutoChooser();
             SmartDashboard.putData("Auto", autoChooser);
+            SmartDashboard.putData(liftingTower);
             SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
 
