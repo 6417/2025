@@ -55,6 +55,7 @@ public class Controls implements Sendable {
 
     public enum Climberstate {
         kForward,
+        kSteady,
         kBack;
     }
 
@@ -163,9 +164,9 @@ public class Controls implements Sendable {
     }
 
     public Controls() {
-        rtButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        rbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
-        ltButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
         yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
@@ -173,8 +174,9 @@ public class Controls implements Sendable {
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         // climber; needs testing!
-        rtButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
-        ltButtonOperator.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
+        xButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
+        bButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
+        aButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
 
         // liftingtower
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));

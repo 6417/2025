@@ -27,7 +27,9 @@ public class ClimberCommand extends Command {
             case kBack:
                 climber.setPositionUnderLoad(position);
                 break;
-        
+
+            case kSteady:
+                climber.setPositionForward(position);
             default:
                 break;
         }

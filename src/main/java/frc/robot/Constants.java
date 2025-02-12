@@ -135,22 +135,23 @@ public final class Constants {
 
 
     public static final class ClimberSubsystem {
-        public static final int climberMotorID = 59;
+        public static final int climberMotorID = 20;
 
         public static final double resetPitchEncoderPosition = 0;
-        public static PidValues PidValuesOutClimberSubsystem = new PidValues(0, 0, 0, 0);
+        public static PidValues PidValuesOutClimberSubsystem = new PidValues(0.05, 0, 0.6, 0);
         public static PidValues PidValuesInClimberSubsystem = new PidValues(0, 0, 0, 0);
         
-        public static double kAllowedClosedLoopErrorOut = 0;
-        public static double kMaxAccelerationOut = 0;
-        public static double kMaxVelocityOut = 0;
+        public static double kAllowedClosedLoopErrorOut = 0.5;
+        public static double kMaxAccelerationOut = 60000;
+        public static double kMaxVelocityOut = 6000; // in rpm
         
         public static double kAllowedClosedLoopErrorIn = 0;
         public static double kMaxAccelerationIn = 0;
         public static double kMaxVelocityIn = 0;
 
-        public static double positionFront = 0;
-        public static double positionBack = 0;
+        public static double positionFront = -40;
+        public static double positionBack = 60;
+        public static double positionSteady = -20; // TODO: test
     }
 
     public static final class LiftingTower {
