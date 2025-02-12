@@ -23,9 +23,9 @@ public class RobotContainer {
     public static final FridoPathplanner pathplanner;
     private static final SendableChooser<Command> autoChooser;
     
-        //public static final ClimberSubsystem climber = new ClimberSubsystem();
-        //public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
-        //public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
+    // public static final ClimberSubsystem climber = new ClimberSubsystem();
+    // public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
+    public static final LiftingTowerSubsystem liftingTower = new LiftingTowerSubsystem();
     
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
@@ -46,7 +46,7 @@ public class RobotContainer {
         return Rotation2d.fromDegrees(angle);
     }
     
-    public Command getAutoCommand(){
+    public static Command getAutoCommand(){
         return autoChooser.getSelected();
     }
 }

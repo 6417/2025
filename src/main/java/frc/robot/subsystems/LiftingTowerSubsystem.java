@@ -14,27 +14,31 @@ import frc.robot.Constants;
 
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
-            
+
     private SparkMaxConfig motorConfig;
 
-    private FridoSparkMax motorLeft;
-    private FridoSparkMax motorRight;
+    private FridoSparkMax motorSlave;
+    private FridoSparkMax motorMaster;
 
     private MAXMotionConfig smartMotionConfig;
-    
+
     public LiftingTowerSubsystem() {
-        motorLeft = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
-        motorRight = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
-        
-        motorLeft.follow(motorRight, DirectionType.invertMaster);
+        motorSlave = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
+        motorMaster = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
+
+        motorSlave.follow(motorMaster, DirectionType.invertMaster);
 
         motorConfig = new SparkMaxConfig();
         smartMotionConfig = new MAXMotionConfig();
 
-        motorRight.enableForwardLimitSwitch(Constants.LiftingTower.fdwLiftingTowePolarity, true);
+        motorMaster.enableReverseLimitSwitch(Constants.LiftingTower.towerBottomSwitchPolarity, true);
 
-        motorConfig.closedLoop.p(pidValues.kP).i(pidValues.kI).d(pidValues.kD).outputRange(pidValues.peakOutputReverse,
-        pidValues.peakOutputForward).velocityFF(pidValues.kF.orElse(0.0));
+        motorConfig.closedLoop.p(pidValues.kP)
+                .i(pidValues.kI)
+                .d(pidValues.kD)
+                .outputRange(pidValues.peakOutputReverse, pidValues.peakOutputForward)
+                .velocityFF(pidValues.kF.orElse(0.0));
+
         pidValues.iZone.ifPresent(iZone -> motorConfig.closedLoop.iZone(iZone));
 
         smartMotionConfig.allowedClosedLoopError(Constants.LiftingTower.kAllowedClosedLoopError);
@@ -43,35 +47,43 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         smartMotionConfig.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
 
         motorConfig.closedLoop.maxMotion.apply(smartMotionConfig);
-      
-        motorRight.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
+        motorMaster.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
     public void resetEncoder() {
-        motorRight.setEncoderPosition(Constants.LiftingTower.resetEncoderPosition);
+        motorMaster.setEncoderPosition(Constants.LiftingTower.resetEncoderPosition);
     }
 
-    public boolean isForwardLimitSwitchPressed() {
-        return motorRight.isForwardLimitSwitchActive();
+    public boolean isBottomSwitchPressed() {
+        return motorMaster.isReverseLimitSwitchActive();
     }
 
     public void setPercent(double percent) {
-        motorRight.set(percent);
+        motorMaster.set(Math.max(Constants.LiftingTower.zeroingSpeed, percent));
     }
-    
-    public void setMotorSpeed(double speed) {
-        if (speed < -1.0 || speed > 1.0) {
-            throw new IllegalArgumentException("Set speed between -1.0 and 1.0");
-        }
 
-        motorRight.set(speed);
+    @Override
+    public void periodic() {
+        if (isBottomSwitchPressed()) {
+            resetEncoder();
+        }
+    }
+
+    public void setMotorSpeed(double speed) {
+        motorMaster.set(speed);
     }
 
     public void setHeight(double position) {
-        motorRight.setPosition(position);
+        motorMaster.setPosition(
+                Math.max(0.0,
+                        Math.min(
+                                position,
+                                Constants.LiftingTower.softLimitTopPos)));
     }
 
     public void stopMotors() {
-        motorRight.set(Constants.LiftingTower.stopSpeed);
+        motorMaster.stopMotor();
     }
 }

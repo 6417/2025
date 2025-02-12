@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.TowerManualControl;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -22,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
  */
 public class Robot extends TimedRobot {
     private Command autoCommand;
-    private final RobotContainer robotContainer;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -30,14 +30,13 @@ public class Robot extends TimedRobot {
      * initialization code.
      */
     public Robot() {
-        robotContainer = new RobotContainer();
         FollowPathCommand.warmupCommand().schedule();
 
         autoCommand = new WaitCommand(1);
         
 
         //autoCommand = robotContainer.getAutoCommand();
-        robotContainer.gyro.reset();
+        RobotContainer.gyro.reset();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
         Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
             @Override
@@ -65,7 +64,7 @@ public class Robot extends TimedRobot {
             }
         });
 
-        robotContainer.drive.resetModulesToAbsolute();
+        RobotContainer.drive.resetModulesToAbsolute();
     }
 
     /**
@@ -105,7 +104,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        autoCommand = robotContainer.getAutoCommand();
+        autoCommand = RobotContainer.getAutoCommand();
 
         if (autoCommand == null) {
             autoCommand = new WaitCommand(1);
@@ -117,7 +116,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        robotContainer.drive.addVisionToOdometry();
+        RobotContainer.drive.addVisionToOdometry();
     }
 
     @Override
@@ -125,9 +124,9 @@ public class Robot extends TimedRobot {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         
         autoCommand.cancel();
-        robotContainer.drive.stopMotors();
-        robotContainer.drive.resetModulesToAbsolute();
-        robotContainer.gyro.setYaw(robotContainer.drive.getPose().getRotation().getDegrees());
+        RobotContainer.drive.stopMotors();
+        RobotContainer.drive.resetModulesToAbsolute();
+        RobotContainer.gyro.setYaw(RobotContainer.drive.getPose().getRotation().getDegrees());
     }
 
     /** This function is called periodically during operator control. */
@@ -136,10 +135,16 @@ public class Robot extends TimedRobot {
         //robotContainer.drive.addVisionToOdometry();
     }
 
+    Command manualTowerControl;
     @Override
     public void testInit() {
-        // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
+        
+        if (manualTowerControl == null)
+            manualTowerControl = new TowerManualControl(RobotContainer.liftingTower);
+
+        if (!manualTowerControl.isScheduled())
+            manualTowerControl.schedule();
     }
 
     /** This function is called periodically during test mode. */
