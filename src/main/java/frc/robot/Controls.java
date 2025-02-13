@@ -206,7 +206,6 @@ public class Controls implements Sendable {
                 ltButtonDrive.onTrue(new AlgaeInCommandGroup());
                 break;
         }
-*/
 
         //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
