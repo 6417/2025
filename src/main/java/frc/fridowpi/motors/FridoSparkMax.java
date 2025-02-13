@@ -222,7 +222,7 @@ public class FridoSparkMax implements FridolinsMotor {
 
     @Override
     public void setEncoderPosition(double position) {
-        System.out.println("neo reset to: " + position);
+        // System.out.println("neo reset to: " + position);
         encoder.setPosition(position);
     }
 

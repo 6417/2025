@@ -23,7 +23,7 @@ public class RobotContainer {
     public static final FridoPathplanner pathplanner;
     private static final SendableChooser<Command> autoChooser;
     
-    // public static final ClimberSubsystem climber = new ClimberSubsystem();
+    public static final ClimberSubsystem climber = new ClimberSubsystem();
     // public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
     public static final LiftingTowerSubsystem liftingTower;
     

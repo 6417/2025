@@ -83,6 +83,9 @@ public class ClimberSubsystem extends SubsystemBase {
         climberMotor.set(speed);
     }
 
+    public void setPercentage(double percentage) {
+    }
+
     public void resetEncoder() {
         climberMotor.setEncoderPosition(Constants.ClimberSubsystem.resetPitchEncoderPosition);
     }

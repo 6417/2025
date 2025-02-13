@@ -73,8 +73,8 @@ public class ChaseTagCommand extends Command {
             }
             
             Pose3d robotPoseInTargetSpace = LimelightHelpers
-                    .getTargetPose3d_RobotSpace(Constants.Limelight.limelightID);// Find the tag we want to chase
-            double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
+                    .toPose3D(LimelightHelpers.getBotPose_TargetSpace(ll));// Find the tag we want to chase
+            double target = LimelightHelpers.getFiducialID(ll);
 
             // This is new target data, so recalculate the goal
             lastTarget = target;
@@ -85,6 +85,7 @@ public class ChaseTagCommand extends Command {
             // new Rotation2d();
             Pose2d goalPose = robotPose2d // robot pose in fieldspace
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
+
 
             // returns the target pose in field space, calculatet by adding the target pose 
             // in robot space to the robot pose in field space}
