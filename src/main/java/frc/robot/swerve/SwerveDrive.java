@@ -64,7 +64,7 @@ public class SwerveDrive extends SubsystemBase {
                 VecBuilder.fill(0.02, 0.02, 0.1),
                 VecBuilder.fill(0.1, 0.1, 0.1));
 
-        setDefaultCommand(new DriveCommand(this));
+        //setDefaultCommand(new DriveCommand(this));
 
         // odometryThread = new Thread(this::updateOdometryThread);
         // odometryThread.start();

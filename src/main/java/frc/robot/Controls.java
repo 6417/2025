@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
-import frc.robot.states.SuperStructureState;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.commands.CoralIntake;
 import frc.robot.commands.AlgaeInCommandGroup;
@@ -26,9 +26,6 @@ public class Controls implements Sendable {
     // private ExampleSubsystem ss = new ExampleSubsystem();
     public CommandXboxController driveJoystick = new CommandXboxController(Constants.Joystick.driveJoystickId);
     public CommandXboxController operatorJoystick = new CommandXboxController(Constants.Joystick.operatorJoystickId);
-
-    public SuperStructureState superstructureOnState;
-
 
     Trigger ltButtonOperator = operatorJoystick.leftTrigger();
     Trigger rtButtonOperator = operatorJoystick.rightTrigger();
@@ -55,6 +52,12 @@ public class Controls implements Sendable {
     Trigger yButtonDrive = driveJoystick.y();
     Trigger windowsButtonDrive = driveJoystick.back();
     Trigger burgerButtonDrive = driveJoystick.start();
+
+    public enum Climberstate {
+        kForward,
+        kSteady,
+        kBack;
+    }
 
     public enum ControlMode {
         CONVENTIONAL,
@@ -161,16 +164,22 @@ public class Controls implements Sendable {
     }
 
     public Controls() {
-        rtButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        rbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
-        ltButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
         yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
 
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
-       /*  pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
+        // climber; needs testing!
+        xButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
+        bButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
+        aButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
+
+        // liftingtower
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
         pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
         yButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LONE)));
@@ -178,6 +187,7 @@ public class Controls implements Sendable {
         aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
         xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
 
+        // coral handling
         lbButtonOperator.onTrue(new InstantCommand(() -> {
             setActivePieceState(GamePieceState.ALGUE);
         }));

@@ -29,7 +29,6 @@ public class ZeroLiftingTower extends Command {
 
     @Override
     public boolean isFinished() {
-        return LiftingTowerSubsystem.isForwardLimitSwitchPressed();
+        return LiftingTowerSubsystem.isBottomSwitchPressed();
     }
-    
 }

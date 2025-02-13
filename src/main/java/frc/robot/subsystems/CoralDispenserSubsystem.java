@@ -17,7 +17,7 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     public CoralDispenserSubsystem() {
         coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
         
-        coralMotorChangePitch = new FridoSparkMax(Constants.ClimberSubsytem.coralMotorChangePitchID);
+        coralMotorChangePitch = new FridoSparkMax(Constants.CoralDispenser.coralMotorBottomID);
         coralMotorChangePitch.asSparkMax().getAbsoluteEncoder();
         coralMotorChangePitch.setPID(pidValuesPitch);
 

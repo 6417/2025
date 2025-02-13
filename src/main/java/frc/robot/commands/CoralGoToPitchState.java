@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 
 public class CoralGoToPitchState extends Command {
@@ -11,6 +10,7 @@ public class CoralGoToPitchState extends Command {
 
     CoralGoToPitchState(Rotation2d angle){
         this.coralDispenserSubsystem = null;//RobotContainer.coralDispenser;
+         if (coralDispenserSubsystem != null)
         addRequirements(coralDispenserSubsystem);
         this.angle = angle;
 

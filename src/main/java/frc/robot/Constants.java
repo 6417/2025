@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
@@ -109,9 +110,12 @@ public final class Constants {
         }
     }
 
-    public static LevelParameters[] parameters = new LevelParameters[6];
+    public static LevelParameters[] parameters = new LevelParameters[7];
 
     static {
+        for (int i = 0; i < parameters.length; i++)
+            parameters[i] = new LevelParameters();
+
         parameters[CoralDispenser.stationState].name = "station";
         parameters[CoralDispenser.l1State].name = "l1";
         parameters[CoralDispenser.l2State].name = "l2";
@@ -135,30 +139,41 @@ public final class Constants {
         parameters[CoralDispenser.algae2State].height = 0;
     }
 
-    public static final class ClimberSubsytem {
-        public static final int climberMotorID = 59;
-        public static final int coralMotorChangePitchID = 58;
 
-        public static final PidValues PidValuesClimberSubsystem = new PidValues(0, 0, 0, 0);
+    public static final class ClimberSubsystem {
+        public static final int climberMotorID = 20;
+
         public static final double resetPitchEncoderPosition = 0;
+        public static PidValues PidValuesOutClimberSubsystem = new PidValues(0.05, 0, 0.6, 0);
+        public static PidValues PidValuesInClimberSubsystem = new PidValues(0, 0, 0, 0);
+        
+        public static double kAllowedClosedLoopErrorOut = 0.5;
+        public static double kMaxAccelerationOut = 60000;
+        public static double kMaxVelocityOut = 6000; // in rpm
+        
+        public static double kAllowedClosedLoopErrorIn = 0;
+        public static double kMaxAccelerationIn = 0;
+        public static double kMaxVelocityIn = 0;
+
+        public static double positionFront = -40;
+        public static double positionBack = 60;
+        public static double positionSteady = -20; // TODO: test
     }
 
     public static final class LiftingTower {
         public static final int liftingTowerLeftId = 30;
         public static final int liftingTowerRightId = 31;
 
-        public static final double stopSpeed = 0;
-
-        public static final PidValues PidValuesLiftingTower = new PidValues(0, 0, 0, 0);
+        public static final double zeroingSpeed = -0.1;
         public static final double resetEncoderPosition = 0;
-        public static final LimitSwitchPolarity fdwLiftingTowePolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double zeroingSpeed = 0.1;
-        public static double kS;
-        public static double kV;
-        public static double kDt;
-        public static double kMaxVelocity;
-        public static double kMaxAcceleration;
-        public static double kG;
+        public static final LimitSwitchPolarity towerBottomSwitchPolarity = LimitSwitchPolarity.kNormallyClosed;
+
+        public static final double kMaxVelocity = 0;
+        public static final double kMaxAcceleration = 0;
+        public static final double kAllowedClosedLoopError = 0.01;
+        public static final PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
+                                                                             
+        public static final double softLimitTopPos = 161.0;
     }
 
     public static final class SwerveDrive {
