@@ -21,6 +21,7 @@ public class RobotContainer {
     // public static final AHRS gyroNavx; 
     public static final Pigeon2 gyro;
     public static final FridoPathplanner pathplanner;
+    public static final ClimberSubsystem climber;
     private static final SendableChooser<Command> autoChooser;
     pu
     
@@ -35,6 +36,7 @@ public class RobotContainer {
             controls = new Controls();
             pathplanner = new FridoPathplanner(drive);
             liftingTower = new LiftingTowerSubsystem();
+            climber = new ClimberSubsystem();
 
             autoChooser = AutoBuilder.buildAutoChooser();
             SmartDashboard.putData("Auto", autoChooser);

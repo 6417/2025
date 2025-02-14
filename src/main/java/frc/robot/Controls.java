@@ -4,6 +4,7 @@ import java.util.Map;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -16,6 +17,8 @@ import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.commands.CoralIntake;
+import frc.robot.commands.manualClimberControl;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.AlgaeInCommandGroup;
 
 /**
@@ -58,6 +61,7 @@ public class Controls implements Sendable {
         kForward,
         kSteady,
         kBack;
+        
     }
 
     public enum ControlMode {
@@ -171,6 +175,8 @@ public class Controls implements Sendable {
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
         yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+        
+        
 
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
@@ -187,6 +193,8 @@ public class Controls implements Sendable {
         bButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTWO)));
         aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
         xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
+
+        
 
         // coral handling
         lbButtonOperator.onTrue(new InstantCommand(() -> {
@@ -211,6 +219,7 @@ public class Controls implements Sendable {
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
         bButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
         aButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
+        // bButtonDrive.whileTrue(manualClimberControl(RobotContainer.climber, driveJoystick.getLeftY()));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
