@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Deposit Coral loaded already"
+            "pathName": "Left Deposit Coral loaded already"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "load Coral"
+            "pathName": "Left reload Coral"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "deposit loaded Coral"
+            "pathName": "left deposit reloaded Coral"
           }
         }
       ]

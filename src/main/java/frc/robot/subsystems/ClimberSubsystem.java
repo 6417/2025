@@ -107,6 +107,10 @@ public class ClimberSubsystem extends SubsystemBase {
         climberMotor.setPosition(position);
     }
 
+    public double getAmperage() {
+        return climberMotor.getOutputCurrent();
+    }
+
     @Override    
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("kP in", () -> Constants.ClimberSubsystem.PidValuesInClimberSubsystem.kP, 

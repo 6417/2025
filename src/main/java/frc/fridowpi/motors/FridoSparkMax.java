@@ -247,4 +247,8 @@ public class FridoSparkMax implements FridolinsMotor {
         return pidSetpoint;
     }
 
+    public double getOutputCurrent() {
+        return motorProxy.getOutputCurrent();
+    }
+
 }

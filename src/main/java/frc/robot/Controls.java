@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ClimberEncoderZero;
 import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
 import frc.robot.swerve.FridoPathplanner;
@@ -206,9 +207,9 @@ public class Controls implements Sendable {
                 ltButtonDrive.onTrue(new AlgaeInCommandGroup());
                 break;
         }
-
         //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
+        bButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
         aButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
