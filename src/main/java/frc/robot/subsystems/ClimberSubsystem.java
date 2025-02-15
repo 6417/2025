@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
+import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.Constants;
 
@@ -28,8 +29,10 @@ public class ClimberSubsystem extends SubsystemBase {
     public ClimberSubsystem() {
         climberMotor = new FridoSparkMax(Constants.ClimberSubsystem.climberMotorID);
 
-        climberMotor.setInverted(true);
-        
+        // climberMotor.setInverted(true);
+        climberMotor.setInverted(false);
+        climberMotor.setIdleMode(IdleMode.kBrake);
+
         reconfigure();
 
         InstantCommand resetEncoderToZero = new InstantCommand(()->{

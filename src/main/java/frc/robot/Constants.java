@@ -145,7 +145,7 @@ public final class Constants {
 
         public static final double resetPitchEncoderPosition = 0;
         public static PidValues PidValuesOutClimberSubsystem = new PidValues(0.05, 0, 0.6, 0);
-        public static PidValues PidValuesInClimberSubsystem = new PidValues(0, 0, 0, 0);
+        public static PidValues PidValuesInClimberSubsystem = new PidValues(0.05, 0, 0.2, 0);
         
         public static double kAllowedClosedLoopErrorOut = 0.5;
         public static double kMaxAccelerationOut = 60000;
@@ -155,9 +155,9 @@ public final class Constants {
         public static double kMaxAccelerationIn = 0;
         public static double kMaxVelocityIn = 0;
 
-        public static double positionFront = -40;
-        public static double positionBack = 60;
-        public static double positionSteady = -20; // TODO: test
+        public static double positionFront = 220;
+        public static double positionBack = 10;
+        public static double positionSteady = 150; // TODO: test
     }
 
     public static final class LiftingTower {

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.ClimberEncoderZero;
 import frc.robot.commands.TowerManualControl;
 
 /**
@@ -23,6 +24,7 @@ import frc.robot.commands.TowerManualControl;
  */
 public class Robot extends TimedRobot {
     private Command autoCommand;
+    private RobotContainer robotContainer;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -33,10 +35,10 @@ public class Robot extends TimedRobot {
         FollowPathCommand.warmupCommand().schedule();
 
         autoCommand = new WaitCommand(15);
-        
+        robotContainer = new RobotContainer();
 
         //autoCommand = robotContainer.getAutoCommand();
-        RobotContainer.gyro.reset();
+        //RobotContainer.gyro.reset();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
         Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
             @Override
@@ -64,7 +66,7 @@ public class Robot extends TimedRobot {
             }
         });
 
-        RobotContainer.drive.resetModulesToAbsolute();
+        //RobotContainer.drive.resetModulesToAbsolute();
     }
 
     /**
@@ -116,7 +118,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        RobotContainer.drive.addVisionToOdometry();
+        //RobotContainer.drive.addVisionToOdometry();
     }
 
     @Override
@@ -124,9 +126,11 @@ public class Robot extends TimedRobot {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         
         autoCommand.cancel();
-        RobotContainer.drive.stopMotors();
+        // new ClimberEncoderZero(RobotContainer.climber).schedule();
+        
+        /*RobotContainer.drive.stopMotors();
         RobotContainer.drive.resetModulesToAbsolute();
-        RobotContainer.gyro.setYaw(RobotContainer.drive.getPose().getRotation().getDegrees());
+        RobotContainer.gyro.setYaw(RobotContainer.drive.getPose().getRotation().getDegrees());*/
     }
 
     /** This function is called periodically during operator control. */
@@ -139,12 +143,12 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
-        
+        /* 
         if (manualTowerControl == null)
             manualTowerControl = new TowerManualControl(RobotContainer.liftingTower);
 
         if (!manualTowerControl.isScheduled())
-            manualTowerControl.schedule();
+            manualTowerControl.schedule();*/
     }
 
     /** This function is called periodically during test mode. */

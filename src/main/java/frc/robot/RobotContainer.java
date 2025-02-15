@@ -22,26 +22,24 @@ public class RobotContainer {
     public static final Pigeon2 gyro;
     public static final FridoPathplanner pathplanner;
     public static final ClimberSubsystem climber;
-    private static final SendableChooser<Command> autoChooser;
-    pu
-    
-    public static final ClimberSubsystem climber = new ClimberSubsystem();
-    // public static final CoralDispenserSubsystem coralDispenser = new CoralDispenserSubsystem();
+    //private static final SendableChooser<Command> autoChooser;
+    public static final CoralDispenserSubsystem coralDispenser;
     public static final LiftingTowerSubsystem liftingTower;
     
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
-            gyro = new Pigeon2(Constants.Gyro.gyroId);
-            drive = new SwerveDrive(Constants.SwerveDrive.configs);
-            controls = new Controls();
-            pathplanner = new FridoPathplanner(drive);
-            liftingTower = new LiftingTowerSubsystem();
+            gyro = null; //new Pigeon2(Constants.Gyro.gyroId);
+            drive = null; // new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
+            controls = new Controls();
+            pathplanner = null; //new FridoPathplanner(drive);
+            liftingTower = null;//new LiftingTowerSubsystem();
+            coralDispenser = null; //new CoralDispenserSubsystem();
 
-            autoChooser = AutoBuilder.buildAutoChooser();
-            SmartDashboard.putData("Auto", autoChooser);
-            SmartDashboard.putData(liftingTower);
-            SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
+            //autoChooser = AutoBuilder.buildAutoChooser();
+            //SmartDashboard.putData("Auto", autoChooser);
+            //SmartDashboard.putData(liftingTower);
+            //SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
 
     public static synchronized Rotation2d getGyroRotation2d() {
@@ -52,6 +50,6 @@ public class RobotContainer {
     }
     
     public static Command getAutoCommand(){
-        return autoChooser.getSelected();
+        return null; ///autoChooser.getSelected();
     }
 }

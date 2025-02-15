@@ -19,23 +19,23 @@ public class ClimberEncoderZero extends Command {
         timer.reset();
         timer.start();
         mIsFinished = false;
-      climber.setMotorSpeed(0.1);
+      climber.setMotorSpeed(-0.1);
     }
 
 
     @Override
     public void execute() {
-        if (timer.get() > 0.5 && climber.getAmperage() > 12) {
-            climber.setMotorSpeed(0);
-            climber.resetEncoder();
+        if (timer.get() > 0.5 && climber.getAmperage() > 0.04) {
             mIsFinished = true;
           }
+        System.out.println(climber.getAmperage());
     }
 
     public void end(boolean interrupted) {
-        timer.stop();
         climber.setMotorSpeed(0);
         System.out.println("ClimberEncoderZero ended");
+        timer.stop();
+        climber.resetEncoder();
     }
 
     @Override

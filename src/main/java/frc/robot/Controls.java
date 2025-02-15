@@ -169,22 +169,22 @@ public class Controls implements Sendable {
     }
 
     public Controls() {
-        rbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        /*rbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
         lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
         yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
-        
+        */
         
 
-        burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
+        //burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
         // climber; needs testing!
         xButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
         bButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
         aButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
-
+/* 
         // liftingtower
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
         pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
@@ -214,11 +214,11 @@ public class Controls implements Sendable {
             case ALGUE:
                 ltButtonDrive.onTrue(new AlgaeInCommandGroup());
                 break;
-        }
+        }*/
         //xButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path1m"));
         //bButtonDrive.onTrue(RobotContainer.pathplanner.getAutonomousSinglePathCommand("Path5m"));
-        bButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
-        aButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
+        yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
+        //aButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         // bButtonDrive.whileTrue(manualClimberControl(RobotContainer.climber, driveJoystick.getLeftY()));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
