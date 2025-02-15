@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Deposit preLoaded Coral"
+            "pathName": "Middle deposit preloaded Coral to right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle reload Coral"
+            "pathName": "reload Coral Right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle deposit reloaded Coral"
+            "pathName": "Deposit reloaded Coral Right"
           }
         }
       ]

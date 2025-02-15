@@ -29,8 +29,8 @@ public class ClimberSubsystem extends SubsystemBase {
     public ClimberSubsystem() {
         climberMotor = new FridoSparkMax(Constants.ClimberSubsystem.climberMotorID);
 
-        // climberMotor.setInverted(true);
         climberMotor.setInverted(false);
+
         climberMotor.setIdleMode(IdleMode.kBrake);
 
         reconfigure();

@@ -9,7 +9,7 @@ public class CoralAlgaeOuttake extends Command {
     private final CoralDispenserSubsystem coralSubsystem;
 
     public CoralAlgaeOuttake() {
-        this.coralSubsystem = null;//RobotContainer.coralDispenser;
+        this.coralSubsystem = null;
         if (coralSubsystem != null)
         addRequirements(coralSubsystem);
     }

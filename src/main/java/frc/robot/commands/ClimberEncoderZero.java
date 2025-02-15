@@ -28,7 +28,6 @@ public class ClimberEncoderZero extends Command {
         if (timer.get() > 0.5 && climber.getAmperage() > 0.04) {
             mIsFinished = true;
           }
-        System.out.println(climber.getAmperage());
     }
 
     public void end(boolean interrupted) {

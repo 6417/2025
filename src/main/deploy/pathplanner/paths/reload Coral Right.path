@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.94,
-        "y": 4.064
+        "x": 5.352749999999455,
+        "y": 2.85499999999863
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.805499999999999,
-        "y": 5.67275
+        "x": 5.791348998573708,
+        "y": 2.6905268675533165
       },
       "isLocked": false,
-      "linkedName": "preloaded Coral Deposited"
+      "linkedName": "preloaded Coral Deposited Right"
     },
     {
       "anchor": {
-        "x": 1.31625,
-        "y": 6.8525
+        "x": 1.2772500000000002,
+        "y": 1.1
       },
       "prevControl": {
-        "x": 1.9425593352113015,
-        "y": 6.477421777341251
+        "x": 1.063470315767705,
+        "y": 1.2296080499411213
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Middle Coral reloaded"
+      "linkedName": "Coral reloaded right"
     }
   ],
   "rotationTargets": [],
@@ -34,10 +34,10 @@
     {
       "fieldPosition": {
         "x": 0.84,
-        "y": 7.4
+        "y": 0.65
       },
       "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.12406947890819553,
+      "minWaypointRelativePos": 0.25,
       "maxWaypointRelativePos": 0.75,
       "name": "Point Towards Zone"
     }
@@ -53,13 +53,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": -128.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Right Stuff",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

@@ -7,19 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Path1m noDel"
+            "pathName": "Right deposit preloaded Coral"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Path"
+            "pathName": "reload Coral Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Deposit reloaded Coral Right"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Feed Forward Testing",
+  "folder": null,
   "choreoAuto": false
 }

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 import frc.robot.subsystems.LiftingTowerSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -22,6 +23,7 @@ public class RobotContainer {
     public static final Pigeon2 gyro;
     public static final FridoPathplanner pathplanner;
     public static final ClimberSubsystem climber;
+    public static final LEDSubsystem leds;
     //private static final SendableChooser<Command> autoChooser;
     public static final CoralDispenserSubsystem coralDispenser;
     public static final LiftingTowerSubsystem liftingTower;
@@ -29,6 +31,7 @@ public class RobotContainer {
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
             gyro = null; //new Pigeon2(Constants.Gyro.gyroId);
+            leds = new LEDSubsystem();
             drive = null; // new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
             controls = new Controls();
@@ -44,7 +47,6 @@ public class RobotContainer {
 
     public static synchronized Rotation2d getGyroRotation2d() {
         double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
-        //double angle = Utils.normalizeAngleRad(inverted * RobotContainer.gyro.getAngle() * Math.PI / 180.0);
         double angle = Math.IEEEremainder(inverted * gyro.getYaw().getValueAsDouble(), 360);
         return Rotation2d.fromDegrees(angle);
     }

@@ -65,8 +65,6 @@ public class Robot extends TimedRobot {
                         null);
             }
         });
-
-        //RobotContainer.drive.resetModulesToAbsolute();
     }
 
     /**
@@ -126,7 +124,6 @@ public class Robot extends TimedRobot {
         // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         
         autoCommand.cancel();
-        // new ClimberEncoderZero(RobotContainer.climber).schedule();
         
         /*RobotContainer.drive.stopMotors();
         RobotContainer.drive.resetModulesToAbsolute();

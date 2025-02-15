@@ -5,11 +5,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.LiftingTowerSubsystem;
 
 public class ZeroLiftingTower extends Command {
-    private final LiftingTowerSubsystem LiftingTowerSubsystem;
+    private final LiftingTowerSubsystem liftingTowerSubsystem;
 
-    private ZeroLiftingTower(LiftingTowerSubsystem LiftingTowerSubsystem){
-        this.LiftingTowerSubsystem = LiftingTowerSubsystem;
-        addRequirements(LiftingTowerSubsystem);
+    private ZeroLiftingTower(LiftingTowerSubsystem liftingTowerSubsystem){
+        this.liftingTowerSubsystem = liftingTowerSubsystem;
+        addRequirements(liftingTowerSubsystem);
     }
 
     @Override
@@ -18,17 +18,17 @@ public class ZeroLiftingTower extends Command {
 
     @Override
     public void execute() {
-        LiftingTowerSubsystem.setPercent(Constants.LiftingTower.zeroingSpeed);
+        liftingTowerSubsystem.setPercent(Constants.LiftingTower.zeroingSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        LiftingTowerSubsystem.stopMotors();
-        LiftingTowerSubsystem.resetEncoder();
+        liftingTowerSubsystem.stopMotors();
+        liftingTowerSubsystem.resetEncoder();
     }
 
     @Override
     public boolean isFinished() {
-        return LiftingTowerSubsystem.isBottomSwitchPressed();
+        return liftingTowerSubsystem.isBottomSwitchPressed();
     }
 }
