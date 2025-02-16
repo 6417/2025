@@ -35,8 +35,8 @@ public class FridoPathplanner {
                 drive::getChassisSpeeds,
                 drive::setChassisSpeeds,
                 new PPHolonomicDriveController(
-                        new PIDConstants(3.5, 0.0, 0.05),
-                        new PIDConstants(3, 0.0, 0.02)),
+                        new PIDConstants(1.7, 0.0, 0.02),
+                        new PIDConstants(2.5, 0.0, 0.05)),
                 config,
                 () -> {
 

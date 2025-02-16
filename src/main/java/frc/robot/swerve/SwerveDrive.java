@@ -60,8 +60,8 @@ public class SwerveDrive extends SubsystemBase {
                 RobotContainer.getGyroRotation2d(),
                 getModulePositions(),
                 new Pose2d(),
-                VecBuilder.fill(0.02, 0.02, 0.1),
-                VecBuilder.fill(0.1, 0.1, 0.1));
+                VecBuilder.fill(0.02, 0.02, 0.01),
+                VecBuilder.fill(0.1, 0.1, 0.01));
 
         setDefaultCommand(new DriveCommand(this));
 
@@ -138,17 +138,11 @@ public class SwerveDrive extends SubsystemBase {
         LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         
-        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightBackID,
-                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
 
         LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
                 .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems
         addLimeLightMeasurementToPoseEstimation(lime1);
 
-        // with rotation
-        LimelightHelpers.PoseEstimate lime2 = LimelightHelpers
-                .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID);
-        addLimeLightMeasurementToPoseEstimation(lime2);
     }
 
     private void addLimeLightMeasurementToPoseEstimation(LimelightHelpers.PoseEstimate lime) {

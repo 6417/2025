@@ -23,26 +23,26 @@ public class RobotContainer {
     public static final Pigeon2 gyro;
     public static final FridoPathplanner pathplanner;
     public static final ClimberSubsystem climber;
-    public static final LEDSubsystem leds;
-    //private static final SendableChooser<Command> autoChooser;
+    //public static final LEDSubsystem leds;
+    private static final SendableChooser<Command> autoChooser;
     public static final CoralDispenserSubsystem coralDispenser;
     public static final LiftingTowerSubsystem liftingTower;
     
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
-            gyro = null; //new Pigeon2(Constants.Gyro.gyroId);
-            leds = new LEDSubsystem();
-            drive = null; // new SwerveDrive(Constants.SwerveDrive.configs);
+            gyro = new Pigeon2(Constants.Gyro.gyroId);
+            //leds = new LEDSubsystem();
+            drive = new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
             controls = new Controls();
-            pathplanner = null; //new FridoPathplanner(drive);
-            liftingTower = null;//new LiftingTowerSubsystem();
+            pathplanner = new FridoPathplanner(drive);
+            liftingTower = new LiftingTowerSubsystem();
             coralDispenser = null; //new CoralDispenserSubsystem();
 
-            //autoChooser = AutoBuilder.buildAutoChooser();
-            //SmartDashboard.putData("Auto", autoChooser);
-            //SmartDashboard.putData(liftingTower);
-            //SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
+            autoChooser = AutoBuilder.buildAutoChooser();
+            SmartDashboard.putData("Auto", autoChooser);
+            SmartDashboard.putData(liftingTower);
+            SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
 
     public static synchronized Rotation2d getGyroRotation2d() {
@@ -52,6 +52,6 @@ public class RobotContainer {
     }
     
     public static Command getAutoCommand(){
-        return null; ///autoChooser.getSelected();
+        return autoChooser.getSelected();
     }
 }

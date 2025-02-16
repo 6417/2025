@@ -34,7 +34,7 @@ public class ChaseTagCommand extends Command {
 
         xController.setTolerance(0.05);
         yController.setTolerance(0.05);
-        omegaController.setTolerance(Units.degreesToRadians(1));
+        omegaController.setTolerance(Units.degreesToRadians(5));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
 
         addRequirements(swerveDriveSubsystem);
@@ -52,42 +52,22 @@ public class ChaseTagCommand extends Command {
 
     @Override
     public void execute() {
+        
         Pose2d robotPose2d = swerveDriveSubsystem.getPose();
 
-        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1
-                || LimelightHelpers.getFiducialID(Constants.Limelight.limelightBackID) != -1) {
-
-            var ll = (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1)
-                    ? Constants.Limelight.limelightID
-                    : Constants.Limelight.limelightBackID;
-
-            if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightBackID) != -1
-                    && LimelightHelpers.getFiducialID(ll) != -1) {
-                LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
-                        .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has
-                                                                                      // problems with rotation
-                LimelightHelpers.PoseEstimate lime2 = LimelightHelpers
-                        .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightBackID);
-
-                if (lime1 != null && lime2 != null) {
-                    if (lime1.avgTagDist > lime2.avgTagDist) {
-                        ll = Constants.Limelight.limelightBackID;
-                    } else {
-                        ll = Constants.Limelight.limelightID;
-                    }
-                }
-            }
+        if (LimelightHelpers.getFiducialID(Constants.Limelight.limelightID) != -1) {
 
             Pose3d robotPoseInTargetSpace = LimelightHelpers
-                    .toPose3D(LimelightHelpers.getBotPose_TargetSpace(ll)); // Find the tag we want to chase
-            double target = LimelightHelpers.getFiducialID(ll);
+                    .toPose3D(LimelightHelpers.getBotPose_TargetSpace(Constants.Limelight.limelightID));
+            // Find the tag we want to chase
+            double target = LimelightHelpers.getFiducialID(Constants.Limelight.limelightID);
 
             // This is new target data, so recalculate the goal
             lastTarget = target;
 
-            double xDistance = robotPoseInTargetSpace.getZ() - offset[0];
-            double yDistance = -robotPoseInTargetSpace.getX() - offset[1];
-            double rRotation = -robotPoseInTargetSpace.getRotation().getY() - offset[2];
+            double xDistance = -robotPoseInTargetSpace.getZ() - offset[0];
+            double yDistance = robotPoseInTargetSpace.getX() - offset[1];
+            double rRotation = robotPoseInTargetSpace.getRotation().getY() - offset[2];
             // new Rotation2d();
             Pose2d goalPose = robotPose2d // robot pose in fieldspace
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
@@ -100,7 +80,8 @@ public class ChaseTagCommand extends Command {
             yController.setGoal(goalPose.getY());
             omegaController.setGoal(goalPose.getRotation().getRadians());
 
-            System.out.println("xgoal: " + xController.atGoal());
+            System.out.println("OmegaGoal" + omegaController.getGoal().toString());
+
         }
 
         if (lastTarget != -1) {

@@ -55,7 +55,6 @@ public final class Constants {
 
     public static final class Limelight {
         public static final String limelightID = "limelight-vier";
-        public static final String limelightBackID = "limelight-drei";
 
         public static final List<Double> aprilTagsForOuttakeStateTeamIsRed = Arrays.asList(17.0, 18.0, 19.0, 20.0, 21.0,
                 22.0);
@@ -179,7 +178,7 @@ public final class Constants {
         public static final double kAllowedClosedLoopError = 0.01;
         public static final PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
                                                                              
-        public static final double softLimitTopPos = 161.0;
+        public static final double softLimitTopPos = 69.0;
     }
 
     public static final class SwerveDrive {
@@ -195,19 +194,19 @@ public final class Constants {
 
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
-            defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 1.038;
+            defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 1.035;
 
-            defaultModuleConfig2024.driveGearboxRatio = 8.11;
-            defaultModuleConfig2024.driveMotorStallCurrentLimit = 50;
-            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.15, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.085, 0.118, 0.02);
+            defaultModuleConfig2024.driveGearboxRatio = 6.181;
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
+            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.08, 0.105, 0.00);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
             defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
             defaultModuleConfig2024.angleMotorIzone = 0.1;
-            defaultModuleConfig2024.anglePidValues = new PidValues(0.45, 0.0, 0.05);
+            defaultModuleConfig2024.anglePidValues = new PidValues(0.4, 0.0, 0.05);
 
             defaultModuleConfig2024.encoderThicksToRotationFalcon = 1;
             defaultModuleConfig2024.encoderVelocityToRPSFalcon = 1;
@@ -230,7 +229,7 @@ public final class Constants {
             configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
-            configs[LOC_FL].absEncoderOffset = 0.4915;
+            configs[LOC_FL].absEncoderOffset = 0.764;
 
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
@@ -238,7 +237,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.610;
+            configs[LOC_FR].absEncoderOffset = 0.083;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
@@ -246,7 +245,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.644;
+            configs[LOC_RL].absEncoderOffset = 0.443;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
@@ -254,7 +253,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.247;
+            configs[LOC_RR].absEncoderOffset = 0.698;
         }
     }
 }

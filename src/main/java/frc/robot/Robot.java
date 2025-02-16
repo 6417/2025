@@ -7,8 +7,10 @@ package frc.robot;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -25,6 +27,7 @@ import frc.robot.commands.TowerManualControl;
 public class Robot extends TimedRobot {
     private Command autoCommand;
     private RobotContainer robotContainer;
+    private PowerDistribution pdh;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -34,12 +37,13 @@ public class Robot extends TimedRobot {
     public Robot() {
         FollowPathCommand.warmupCommand().schedule();
 
-        autoCommand = new WaitCommand(15);
         robotContainer = new RobotContainer();
+        pdh = new PowerDistribution();
 
-        //autoCommand = robotContainer.getAutoCommand();
-        //RobotContainer.gyro.reset();
+        autoCommand = robotContainer.getAutoCommand();
+        RobotContainer.gyro.reset();
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
+        SmartDashboard.putData(pdh);
         Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
@@ -116,18 +120,19 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        //RobotContainer.drive.addVisionToOdometry();
+        RobotContainer.drive.addVisionToOdometry();
     }
 
     @Override
     public void teleopInit() {
-        // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
         
-        autoCommand.cancel();
+        if (autoCommand != null) {
+            autoCommand.cancel();
+        }
         
-        /*RobotContainer.drive.stopMotors();
+        RobotContainer.drive.stopMotors();
         RobotContainer.drive.resetModulesToAbsolute();
-        RobotContainer.gyro.setYaw(RobotContainer.drive.getPose().getRotation().getDegrees());*/
+        RobotContainer.gyro.setYaw(RobotContainer.drive.getPose().getRotation().getDegrees());
     }
 
     /** This function is called periodically during operator control. */
