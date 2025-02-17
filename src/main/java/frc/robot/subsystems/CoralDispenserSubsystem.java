@@ -15,14 +15,14 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     private PidValues pidValuesMotorTop = Constants.CoralDispenser.PidValuesMotorTop;
     
     public CoralDispenserSubsystem() {
-        coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
+        // coralMotorTop = new FridoSparkMax(Constants.CoralDispenser.coralMotorTopID);
         
         coralMotorChangePitch = new FridoSparkMax(Constants.CoralDispenser.coralMotorBottomID);
         coralMotorChangePitch.asSparkMax().getAbsoluteEncoder();
         coralMotorChangePitch.setPID(pidValuesPitch);
 
-        coralMotorTop.setPID(pidValuesMotorTop);
-        coralMotorTop.enableForwardLimitSwitch(Constants.CoralDispenser.fwdMotorTopPolarity, true);
+        // coralMotorTop.setPID(pidValuesMotorTop);
+        // coralMotorTop.enableForwardLimitSwitch(Constants.CoralDispenser.fwdMotorTopPolarity, true);
 
     }
 

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ClimberEncoderZero;
 import frc.robot.commands.TowerManualControl;
 
@@ -156,6 +157,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
+        RobotContainer.coralDispenser.setPitchPercent(0.07);
     }
 
     /** This function is called once when the robot is first started up. */

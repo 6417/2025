@@ -35,8 +35,8 @@ public class RobotContainer {
             drive = new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
             pathplanner = new FridoPathplanner(drive);
-            liftingTower = new LiftingTowerSubsystem();
-            coralDispenser = null; //new CoralDispenserSubsystem();
+            liftingTower =null; // new LiftingTowerSubsystem();
+            coralDispenser = new CoralDispenserSubsystem(); //new CoralDispenserSubsystem();
             controls = new Controls();
 
             autoChooser = AutoBuilder.buildAutoChooser();
