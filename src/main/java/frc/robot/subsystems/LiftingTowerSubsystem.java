@@ -33,6 +33,9 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
         motorMaster.enableReverseLimitSwitch(Constants.LiftingTower.towerBottomSwitchPolarity, true);
 
+        motorMaster.setIdleMode(IdleMode.kBrake);
+        motorSlave.setIdleMode(IdleMode.kBrake);
+
         motorConfig.closedLoop.p(pidValues.kP)
                 .i(pidValues.kI)
                 .d(pidValues.kD)
