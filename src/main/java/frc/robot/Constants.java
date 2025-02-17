@@ -153,10 +153,10 @@ public final class Constants {
         public static PidValues PidValuesInClimberSubsystem = new PidValues(0.05, 0, 0.2, 0);
         
         public static double kAllowedClosedLoopErrorOut = 0.5;
-        public static double kMaxAccelerationOut = 60000;
-        public static double kMaxVelocityOut = 6000; // in rpm
+        public static double kMaxAccelerationOut = 8000;
+        public static double kMaxVelocityOut = 3000; // in rpm
         
-        public static double kAllowedClosedLoopErrorIn = 0;
+        public static double kAllowedClosedLoopErrorIn = 0.5;
         public static double kMaxAccelerationIn = 0;
         public static double kMaxVelocityIn = 0;
 
@@ -176,7 +176,7 @@ public final class Constants {
         public static final double kMaxVelocity = 0;
         public static final double kMaxAcceleration = 0;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(0.058, 0, 0.05, 0); // TODO: test all values
                                                                              
         public static final double softLimitTopPos = 69.0;
     }
