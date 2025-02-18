@@ -102,11 +102,7 @@ public class Controls implements Sendable {
         return activePieceState;
     }
 
-    private IntakeState activeIntakeState = IntakeState.OUTTAKE; // default state
-
-    public IntakeState getActiveIntakeState() {
-        return activeIntakeState;
-    }
+    public IntakeState activeIntakeState = IntakeState.OUTTAKE; // default state
 
     private int liftingTowerStateInt(HubturmState state) {
         switch (state) {
@@ -136,9 +132,6 @@ public class Controls implements Sendable {
                 return -1;
         }
     }
-
-    private GamePieceState activePieceState = GamePieceState.CORAL;
-    public IntakeState activeIntakeState = IntakeState.OUTTAKE;
 
     public void setActivePieceState(GamePieceState newPieceState) {
         activePieceState = newPieceState;
@@ -251,13 +244,13 @@ public class Controls implements Sendable {
         aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
 
         // liftingtower
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
-        pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
-        pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
-        yButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LONE)));
-        bButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTWO)));
-        aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
-        xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
+        pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.ALGAE2)));
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
+        pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.ALGAE1)));
+        yButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LONE)));
+        bButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LTWO)));
+        aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LTHREE)));
+        xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LFOUR)));
 
         // coral handling
         lbButtonOperator.onTrue(new InstantCommand(() -> {
@@ -279,7 +272,7 @@ public class Controls implements Sendable {
                 break;
         }
 
-        // yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
+        yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
 
         aButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         bButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));

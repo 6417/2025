@@ -31,7 +31,7 @@ public class RobotContainer {
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
             gyro = new Pigeon2(Constants.Gyro.gyroId);
-            leds = new LEDSubsystem();
+            leds = null;//new LEDSubsystem();
             drive = new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
             pathplanner = new FridoPathplanner(drive);

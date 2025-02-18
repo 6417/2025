@@ -152,7 +152,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     public void synchronizeLEDsWithStates() {
         HubturmState hubturmState = RobotContainer.controls.getActiveLiftingTowerState();
-        IntakeState intakeState = RobotContainer.controls.getActiveIntakeState();
+        IntakeState intakeState = RobotContainer.controls.activeIntakeState;
         GamePieceState gamePieceState = RobotContainer.controls.getActivePieceState();
         switch (gamePieceState) {
             case ALGUE:
