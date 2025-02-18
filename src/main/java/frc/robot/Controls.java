@@ -17,7 +17,7 @@ import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
 import frc.robot.swerve.FridoPathplanner;
 import frc.robot.commands.CoralIntake;
-import frc.robot.commands.ManualClimberControl;
+import frc.robot.commands.manualClimberControl;
 import frc.robot.commands.TowerManualControl;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.commands.AlgaeInCommandGroup;

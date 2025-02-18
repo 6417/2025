@@ -3,6 +3,7 @@ package frc.fridowpi.motors;
 import java.util.Collection;
 import java.util.Optional;
 
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -163,6 +164,13 @@ public class FridoSparkMax implements FridolinsMotor {
         currentPidType = PidType.position;
         pidSetpoint = position;
         motorProxy.getClosedLoopController().setReference(position, ControlType.kPosition);
+    }
+
+    //Now added to test elevator and must be clean up later
+    public void setPositionWithFeedforward(double position, double feedForward) {
+        currentPidType = PidType.position;
+        pidSetpoint = position;
+        motorProxy.getClosedLoopController().setReference(position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedForward);
     }
 
     @Override

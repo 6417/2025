@@ -18,7 +18,7 @@ public class CoralGoToHeightState extends Command {
 
     @Override
     public void initialize() {
-        LiftingTowerSubsystem.setHeight(height);
+        //LiftingTowerSubsystem.setHeight(height);
     }
 
     @Override

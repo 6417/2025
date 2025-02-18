@@ -1,12 +1,19 @@
 package frc.robot.subsystems;
 
+import java.lang.management.MonitorInfo;
+
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter.Blue;
+
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor.DirectionType;
@@ -16,20 +23,27 @@ import frc.robot.Constants;
 
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
+    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0, 0, 0);
 
     private SparkMaxConfig motorConfig;
 
     private FridoSparkMax motorSlave;
     private FridoSparkMax motorMaster;
 
-    private MAXMotionConfig smartMotionConfig;
+    private double demandedHeight;
+    private TrapezoidProfile.State desiredState;
+
+    private TrapezoidProfile motionProfile;
+    private Timer timer;
+    private TrapezoidProfile.State startState;
+    private TrapezoidProfile.State endState;
+
 
     public LiftingTowerSubsystem() {
         motorSlave = new FridoSparkMax(Constants.LiftingTower.liftingTowerRightId);
         motorMaster = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
 
         motorConfig = new SparkMaxConfig();
-        smartMotionConfig = new MAXMotionConfig();
 
         motorMaster.enableReverseLimitSwitch(Constants.LiftingTower.towerBottomSwitchPolarity, true);
 
@@ -41,12 +55,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
         pidValues.iZone.ifPresent(iZone -> motorConfig.closedLoop.iZone(iZone));
 
-        smartMotionConfig.allowedClosedLoopError(Constants.LiftingTower.kAllowedClosedLoopError);
-        smartMotionConfig.maxAcceleration(Constants.LiftingTower.kMaxAcceleration);
-        smartMotionConfig.maxVelocity(Constants.LiftingTower.kMaxVelocity);
-        smartMotionConfig.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
-
-        motorConfig.closedLoop.maxMotion.apply(smartMotionConfig);
 
         motorMaster.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters,
                 PersistMode.kPersistParameters);
@@ -65,6 +73,13 @@ public class LiftingTowerSubsystem extends SubsystemBase {
                 PersistMode.kPersistParameters);
         motorSlave.asSparkMax().configure(limitConfig, ResetMode.kNoResetSafeParameters,
                 PersistMode.kPersistParameters);
+
+        demandedHeight = Constants.LiftingTower.resetEncoderPosition;
+
+        timer = new Timer();
+
+        timer.reset();
+        timer.start();
     }
 
     public void resetEncoder() {
@@ -84,18 +99,47 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         if (isBottomSwitchPressed()) {
             resetEncoder();
         }
+
+        runAutomatic();
     }
 
     public void setMotorSpeed(double speed) {
         motorMaster.set(speed);
     }
 
-    public void setHeight(double position) {
+    /*public void setHeight(double position) {
         motorMaster.setPosition(
                 Math.max(0.0,
                         Math.min(
                                 position,
                                 Constants.LiftingTower.softLimitTopPos)));
+    }*/
+
+    public void setHeight(double desiredPosition){
+        if(demandedHeight != desiredPosition){
+            demandedHeight = desiredPosition;
+            updateMotionProfile();
+        }
+    }
+
+    private void updateMotionProfile(){
+        startState = new TrapezoidProfile.State(motorMaster.getEncoderTicks(), motorMaster.getEncoderVelocity());
+        endState = new TrapezoidProfile.State(demandedHeight, 0.0);
+        motionProfile = new TrapezoidProfile(null);
+        timer.restart();
+    }
+
+    public void runAutomatic(){
+        double elapsedTime = timer.get();
+        if (motionProfile.isFinished(elapsedTime)) {
+          desiredState = new TrapezoidProfile.State(demandedHeight, 0.0);
+        } else {
+          desiredState = motionProfile.calculate(elapsedTime, startState, endState);
+        }
+    
+        double ff = feedforward.calculate(desiredState.velocity);
+
+        motorMaster.setPositionWithFeedforward(desiredState.position, ff);
     }
 
     public void stopMotors() {
@@ -104,8 +148,10 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("targetState Velocity", () -> desiredState.velocity, null);
+        builder.addDoubleProperty("currentState Velocity", motorMaster::getEncoderVelocity, null);
+        builder.addDoubleProperty("targetState Position", () -> desiredState.position, null);
         builder.addDoubleProperty("masterTicks", motorMaster::getEncoderTicks, null);
-        builder.addDoubleProperty("masterVel", motorMaster::getEncoderVelocity, null);
         builder.addBooleanProperty("masterRevSwitch", this::isBottomSwitchPressed, null);
     }
 }

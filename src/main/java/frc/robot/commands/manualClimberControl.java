@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimberSubsystem;
 
-public class ManualClimberControl extends Command {
+public class manualClimberControl extends Command {
     private final frc.robot.subsystems.ClimberSubsystem climber;
     private final Joystick joystick;
 
-    public ManualClimberControl(frc.robot.subsystems.ClimberSubsystem climber, Joystick joystick) {
+    public manualClimberControl(frc.robot.subsystems.ClimberSubsystem climber, Joystick joystick) {
         this.climber = climber;
         this.joystick = joystick;
         addRequirements(climber);
