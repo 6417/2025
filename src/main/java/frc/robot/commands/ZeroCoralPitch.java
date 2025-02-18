@@ -8,9 +8,8 @@ import frc.robot.subsystems.CoralDispenserSubsystem;
 public class ZeroCoralPitch extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
 
-    private ZeroCoralPitch(){
-        this.coralDispenserSubsystem = null;
-        if (coralDispenserSubsystem != null)
+    private ZeroCoralPitch(CoralDispenserSubsystem subsystem){
+        this.coralDispenserSubsystem = subsystem;
         addRequirements(coralDispenserSubsystem);
     }
 

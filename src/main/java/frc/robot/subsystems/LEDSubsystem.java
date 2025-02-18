@@ -4,12 +4,20 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.List;
 
 import javax.naming.Binding;
 
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -92,7 +100,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void algueIntakeLEDs() {
-        setLEDsInBlocks(3,0, algue, 3, noLight);
+        setLEDsInBlocks(3, 0, algue, 3, noLight);
         setData();
     }
 
@@ -102,21 +110,22 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void coralIntakeLEDs() {
-        setLEDsInBlocks(3,0, coral, 3, noLight);
+        setLEDsInBlocks(3, 0, coral, 3, noLight);
         setData();
     }
+
     public void coralL1OuttakeLEDs() {
-        setLEDsInBlocks(Constants.LEDs.ledBufferLength,0, coral, Constants.LEDs.ledBufferLength/4, noLight);
+        setLEDsInBlocks(Constants.LEDs.ledBufferLength, 0, coral, Constants.LEDs.ledBufferLength / 4, noLight);
         setData();
     }
 
     public void coralL2OuttakeLEDs() {
-        setLEDsInBlocks(Constants.LEDs.ledBufferLength,0, coral, 2*Constants.LEDs.ledBufferLength/4, noLight);
+        setLEDsInBlocks(Constants.LEDs.ledBufferLength, 0, coral, 2 * Constants.LEDs.ledBufferLength / 4, noLight);
         setData();
     }
 
     public void coralL3OuttakeLEDs() {
-        setLEDsInBlocks(Constants.LEDs.ledBufferLength,0, coral, 3*Constants.LEDs.ledBufferLength/4, noLight);
+        setLEDsInBlocks(Constants.LEDs.ledBufferLength, 0, coral, 3 * Constants.LEDs.ledBufferLength / 4, noLight);
         setData();
     }
 
@@ -130,15 +139,22 @@ public class LEDSubsystem extends SubsystemBase {
         setData();
     }
 
-
+    public void rainbowAnimationLEDs() {
+        LEDPattern rainbowPattern = LEDPattern.rainbow(255, 255);
+        Distance kLedSpacing = Distance.ofBaseUnits(1 / 120, Meters);
+        LEDPattern m_scrollingRainbow = rainbowPattern.scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
+    }
 
     public void normalLeds() {
         setAllLEDs(climb);
         setData();
     }
 
-    public void synchronizeLEDsWithStates(GamePieceState gamePieceState, IntakeState intakeState, HubturmState hubturmState) {
-        switch (gamePieceState) { //check on coraect
+    public void synchronizeLEDsWithStates() {
+        HubturmState hubturmState = RobotContainer.controls.getActiveLiftingTowerState();
+        IntakeState intakeState = RobotContainer.controls.getActiveIntakeState();
+        GamePieceState gamePieceState = RobotContainer.controls.getActivePieceState();
+        switch (gamePieceState) {
             case ALGUE:
                 if (intakeState == IntakeState.INTAKE) {
                     algueIntakeLEDs();

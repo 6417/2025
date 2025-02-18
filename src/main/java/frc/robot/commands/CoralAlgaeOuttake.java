@@ -8,10 +8,10 @@ import frc.robot.subsystems.CoralDispenserSubsystem;
 public class CoralAlgaeOuttake extends Command {
     private final CoralDispenserSubsystem coralSubsystem;
 
-    public CoralAlgaeOuttake() {
-        this.coralSubsystem = null;
+    public CoralAlgaeOuttake(CoralDispenserSubsystem subsystem) {
+        this.coralSubsystem = subsystem;
         if (coralSubsystem != null)
-        addRequirements(coralSubsystem);
+            addRequirements(coralSubsystem);
     }
 
     @Override

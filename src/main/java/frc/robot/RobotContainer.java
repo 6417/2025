@@ -23,7 +23,7 @@ public class RobotContainer {
     public static final Pigeon2 gyro;
     public static final FridoPathplanner pathplanner;
     public static final ClimberSubsystem climber;
-    //public static final LEDSubsystem leds;
+    public static final LEDSubsystem leds;
     private static final SendableChooser<Command> autoChooser;
     public static final CoralDispenserSubsystem coralDispenser;
     public static final LiftingTowerSubsystem liftingTower;
@@ -31,7 +31,7 @@ public class RobotContainer {
         static {
             // gyroNavx = new AHRS(Port.kMXP); /* old */
             gyro = new Pigeon2(Constants.Gyro.gyroId);
-            //leds = new LEDSubsystem();
+            leds = new LEDSubsystem();
             drive = new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
             pathplanner = new FridoPathplanner(drive);
