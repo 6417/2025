@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.109,
-        "y": 5.5264999999999995
+        "x": 5.45,
+        "y": 5.33
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.576676627788486,
-        "y": 5.662907705574071
+        "x": 5.014285714285714,
+        "y": 5.647927295918366
       },
       "isLocked": false,
-      "linkedName": "a9"
+      "linkedName": "deposit reloaded Coral"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 6.772836538461538
       },
       "prevControl": {
-        "x": 4.048467238862478,
-        "y": 5.883219912375074
+        "x": 4.113543282664793,
+        "y": 5.802737447625327
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "coral loaded"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
