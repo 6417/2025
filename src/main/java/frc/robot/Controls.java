@@ -62,7 +62,7 @@ public class Controls implements Sendable {
         kForward,
         kSteady,
         kBack;
-        
+
     }
 
     public enum ControlMode {
@@ -90,21 +90,46 @@ public class Controls implements Sendable {
         OUTTAKE;
     }
 
-    private int liftingTowerState(HubturmState state) {
+    private HubturmState liftingTowerState = HubturmState.STATION; // default state
+
+    public HubturmState getActiveLiftingTowerState() {
+        return liftingTowerState;
+    }
+
+    private GamePieceState activePieceState = GamePieceState.CORAL; // default state
+
+    public GamePieceState getActivePieceState() {
+        return activePieceState;
+    }
+
+    private IntakeState activeIntakeState = IntakeState.OUTTAKE; // default state
+
+    public IntakeState getActiveIntakeState() {
+        return activeIntakeState;
+    }
+
+    private int liftingTowerStateInt(HubturmState state) {
         switch (state) {
             case LONE:
+                liftingTowerState = HubturmState.LONE;
                 return CoralDispenser.l1State;
             case LTWO:
+                liftingTowerState = HubturmState.LTWO;
                 return CoralDispenser.l2State;
             case LTHREE:
+                liftingTowerState = HubturmState.LTHREE;
                 return CoralDispenser.l3State;
             case LFOUR:
+                liftingTowerState = HubturmState.LFOUR;
                 return CoralDispenser.l4State;
             case STATION:
+                liftingTowerState = HubturmState.STATION;
                 return CoralDispenser.stationState;
             case ALGAE1:
+                liftingTowerState = HubturmState.ALGAE1;
                 return CoralDispenser.algae1State;
             case ALGAE2:
+                liftingTowerState = HubturmState.ALGAE2;
                 return CoralDispenser.algae2State;
 
             default:
@@ -168,11 +193,58 @@ public class Controls implements Sendable {
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
         yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
-        
-        
 
-        burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
+        burgerButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.gyro.reset()));
 
+        /*
+         * climber: Tested on Friday!
+         * xButtonDrive.onTrue(new
+         * ClimberCommand(Constants.ClimberSubsystem.positionFront,
+         * Climberstate.kForward));
+         * bButtonDrive.onTrue(new
+         * ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
+         * aButtonDrive.onTrue(new
+         * ClimberCommand(Constants.ClimberSubsystem.positionSteady,
+         * Climberstate.kSteady));
+         * 
+         * // liftingtower
+         * pov0Operator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
+         * pov2Operator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
+         * pov6Operator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
+         * yButtonOperator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LONE)));
+         * bButtonOperator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTWO)));
+         * aButtonOperator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
+         * xButtonOperator.onTrue(new
+         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
+         * 
+         * 
+         * 
+         * // coral handling
+         * lbButtonOperator.onTrue(new InstantCommand(() -> {
+         * setActivePieceState(GamePieceState.ALGUE);
+         * }));
+         * rbButtonOperator.onTrue(new InstantCommand(() -> {
+         * setActivePieceState(GamePieceState.CORAL);
+         * }));
+         * 
+         * rtButtonDrive.onTrue(new CoralAlgaeOutCommandGroup());
+         * 
+         * switch (activePieceState) {
+         * case CORAL:
+         * ltButtonDrive.onTrue(new CoralIntake());
+         * break;
+         * 
+         * case ALGUE:
+         * ltButtonDrive.onTrue(new AlgaeInCommandGroup());
+         * break;
+         * }
+         */
         /* climber: Tested on Friday!*/
         xButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
         bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
@@ -207,9 +279,9 @@ public class Controls implements Sendable {
                 break;
         }
 
-        //yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
+        // yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
 
-        aButtonDrive.onTrue(new InstantCommand(()->RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
+        aButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         bButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
