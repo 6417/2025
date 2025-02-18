@@ -163,7 +163,7 @@ public final class Constants {
         public static double kMaxAccelerationIn = 0;
         public static double kMaxVelocityIn = 0;
 
-        public static double positionFront = 220;
+        public static double positionFront = 260;
         public static double positionBack = 10;
         public static double positionSteady = 150; // TODO: test
     }
@@ -179,7 +179,7 @@ public final class Constants {
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(0, 0, 0.0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(1.5, 0, 0.0, 0); // TODO: test all values
                                                                              
         public static final double softLimitTopPos = 72.0;
     }

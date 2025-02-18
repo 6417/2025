@@ -18,8 +18,8 @@ import frc.robot.Constants;
 
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
-    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0.12, 0.25, 0.1, 0.0);
-    private final TrapezoidProfile.Constraints constraints =  new TrapezoidProfile.Constraints(50, 100);
+    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0.12, 0.25, 0.126, 0.05);
+    private final TrapezoidProfile.Constraints constraints =  new TrapezoidProfile.Constraints(90, 200);
 
     private SparkMaxConfig motorConfig;
 
@@ -151,7 +151,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         builder.addDoubleProperty("targetState Velocity", () -> (desiredState.velocity * 60), null);
         builder.addDoubleProperty("currentState Velocity", motorMaster::getEncoderVelocity, null);
         builder.addDoubleProperty("targetState Position", () -> desiredState.position, null);
-        builder.addDoubleProperty("masterTicks", motorMaster::getEncoderTicks, null);
+        builder.addDoubleProperty("currentState Positon", motorMaster::getEncoderTicks, null);
         builder.addDoubleProperty("Total Time", () -> motionProfile.totalTime(), null);
         builder.addBooleanProperty("masterRevSwitch", this::isBottomSwitchPressed, null);
         builder.addBooleanProperty("isAtGoal", this::isAtDesiredHeight, null);

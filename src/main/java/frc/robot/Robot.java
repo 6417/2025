@@ -160,8 +160,8 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
         
         robotContainer.controls.aButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(5)));
-        robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(70)));
-        robotContainer.controls.xButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(42)));
+        robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(40)));
+        robotContainer.controls.xButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(70)));
         robotContainer.controls.bButtonOperator.whileTrue(new RunCommand(() -> robotContainer.liftingTower.stopMotors(), robotContainer.liftingTower));
         
 
