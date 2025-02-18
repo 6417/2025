@@ -1,14 +1,8 @@
 package frc.robot.subsystems;
 
-import java.lang.management.MonitorInfo;
-
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter.Blue;
-
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -24,6 +18,7 @@ import frc.robot.Constants;
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
     private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0, 0, 0);
+    private final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(0, 0);
 
     private SparkMaxConfig motorConfig;
 
@@ -100,20 +95,12 @@ public class LiftingTowerSubsystem extends SubsystemBase {
             resetEncoder();
         }
 
-        runAutomatic();
+        //runAutomatic(); //ONLY FOR TESTING LATER MUST BE REMOVED AND DONE BY COMMAND!!!
     }
 
     public void setMotorSpeed(double speed) {
         motorMaster.set(speed);
     }
-
-    /*public void setHeight(double position) {
-        motorMaster.setPosition(
-                Math.max(0.0,
-                        Math.min(
-                                position,
-                                Constants.LiftingTower.softLimitTopPos)));
-    }*/
 
     public void setHeight(double desiredPosition){
         if(demandedHeight != desiredPosition){
@@ -125,7 +112,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     private void updateMotionProfile(){
         startState = new TrapezoidProfile.State(motorMaster.getEncoderTicks(), motorMaster.getEncoderVelocity());
         endState = new TrapezoidProfile.State(demandedHeight, 0.0);
-        motionProfile = new TrapezoidProfile(null);
+        motionProfile = new TrapezoidProfile(constraints);
         timer.restart();
     }
 
@@ -146,6 +133,14 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorMaster.stopMotor();
     }
 
+    public double getHeight(){
+        return motorMaster.getEncoderTicks();
+    }
+
+    public boolean isAtDesiredHeight(){
+        return Math.abs(demandedHeight - motorMaster.getEncoderTicks()) <= 0.5;//Tolerance is for now 0.5 thicks later can be changed
+    }
+
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("targetState Velocity", () -> desiredState.velocity, null);
@@ -153,5 +148,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         builder.addDoubleProperty("targetState Position", () -> desiredState.position, null);
         builder.addDoubleProperty("masterTicks", motorMaster::getEncoderTicks, null);
         builder.addBooleanProperty("masterRevSwitch", this::isBottomSwitchPressed, null);
+        builder.addBooleanProperty("isAtGoal", this::isAtDesiredHeight, null);
     }
 }

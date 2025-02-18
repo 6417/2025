@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ClimberEncoderZero;
@@ -146,18 +148,23 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
-        /* 
-        if (manualTowerControl == null)
-            manualTowerControl = new TowerManualControl(RobotContainer.liftingTower);
+        
+        robotContainer.liftingTower.setHeight(robotContainer.liftingTower.getHeight());
 
-        if (!manualTowerControl.isScheduled())
-            manualTowerControl.schedule();*/
+        robotContainer.liftingTower.setDefaultCommand(new RunCommand(() -> robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));
+
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        RobotContainer.coralDispenser.setPitchPercent(0.07);
+        
+        robotContainer.controls.aButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(5)));
+        robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(75)));
+        robotContainer.controls.xButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(42)));
+        robotContainer.controls.bButtonOperator.whileTrue(new RunCommand(() -> robotContainer.liftingTower.stopMotors(), robotContainer.liftingTower));
+        
+
     }
 
     /** This function is called once when the robot is first started up. */

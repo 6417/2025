@@ -120,8 +120,7 @@ public class SwerveModule implements Sendable {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
-        builder.addDoubleProperty("angle motor angle [deg]",
-                () -> getRotation().getDegrees(), null);
+        builder.addDoubleProperty("angle motor angle [deg]", () -> getRotation().getDegrees(), null);
         builder.addDoubleProperty("state speed [mps]", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
         builder.addDoubleProperty("drive vel [mps]", () -> getVelocityMPS(), null);
