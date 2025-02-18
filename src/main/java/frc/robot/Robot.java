@@ -149,7 +149,7 @@ public class Robot extends TimedRobot {
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
         
-        robotContainer.liftingTower.setHeight(robotContainer.liftingTower.getHeight());
+        robotContainer.liftingTower.setHeight(5);
 
         robotContainer.liftingTower.setDefaultCommand(new RunCommand(() -> robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));
 
@@ -160,7 +160,7 @@ public class Robot extends TimedRobot {
     public void testPeriodic() {
         
         robotContainer.controls.aButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(5)));
-        robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(75)));
+        robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(70)));
         robotContainer.controls.xButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(42)));
         robotContainer.controls.bButtonOperator.whileTrue(new RunCommand(() -> robotContainer.liftingTower.stopMotors(), robotContainer.liftingTower));
         

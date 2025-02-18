@@ -178,10 +178,10 @@ public final class Constants {
 
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
-        public static final double kAllowedClosedLoopError = 0.5;
-        public static final PidValues pidValues = new PidValues(0.058, 0, 0.05, 0); // TODO: test all values
+        public static final double kAllowedClosedLoopError = 0.01;
+        public static final PidValues pidValues = new PidValues(0, 0, 0.0, 0); // TODO: test all values
                                                                              
-        public static final double softLimitTopPos = 69.0;
+        public static final double softLimitTopPos = 72.0;
     }
 
     public static final class SwerveDrive {

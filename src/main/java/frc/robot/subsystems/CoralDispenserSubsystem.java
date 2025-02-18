@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor;
@@ -64,5 +65,10 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     public void setPitch(double pitch) {
         Rotation2d rotation = Rotation2d.fromDegrees(pitch);
         coralMotorChangePitch.setPosition(rotation.getRotations());
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("Abs Encoder Coral Dispenser", () -> coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition(), null);
     }
 }
