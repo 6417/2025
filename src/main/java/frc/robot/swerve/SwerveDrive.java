@@ -16,7 +16,6 @@ import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
-import frc.robot.Controls.IntakeState;
 
 
 public class SwerveDrive extends SubsystemBase {
@@ -64,21 +63,6 @@ public class SwerveDrive extends SubsystemBase {
                 VecBuilder.fill(0.1, 0.1, 0.01));
 
         setDefaultCommand(new DriveCommand(this));
-
-        // odometryThread = new Thread(this::updateOdometryThread);
-        // odometryThread.start();
-    }
-
-    public synchronized void updateOdometryThread() {
-        while (true) {
-            updateOdometry();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
@@ -99,20 +83,6 @@ public class SwerveDrive extends SubsystemBase {
 
     public void periodic() {
         updateOdometry();
-        updateState();
-        //System.out.println(RobotContainer.getGyroRotation2d().getDegrees());
-    }
-
-    public void updateState() {
-        if (Constants.Limelight.aprilTagsForIntakeStateTeamIsRed
-                .contains(LimelightHelpers.getFiducialID(Constants.Limelight.limelightID))) {
-            RobotContainer.controls.setActiveIntakeState(IntakeState.INTAKE);
-        }
-        if (Constants.Limelight.aprilTagsForOuttakeStateTeamIsBlue
-                .contains(LimelightHelpers.getFiducialID(Constants.Limelight.limelightID))) {
-            RobotContainer.controls.setActiveIntakeState(IntakeState.OUTTAKE);
-        }
-        RobotContainer.controls.updateStateControlls();
     }
 
     public Pose2d getPose() {
@@ -132,9 +102,6 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void addVisionToOdometry() {
-
-        boolean doRejectUpdate = false;
-
         LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         
@@ -152,7 +119,6 @@ public class SwerveDrive extends SubsystemBase {
         // TODO: tune these values
         final double farDist = 2;
         final double maxRotationSpeed = 350;
-        final double narrowAngleThreshold = 5.0;
 
         final boolean isRobotSpinningFast = Math
                 .abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > maxRotationSpeed;

@@ -8,10 +8,10 @@ public class CoralGoToPitchState extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
     private final Rotation2d angle;
 
-    CoralGoToPitchState(Rotation2d angle){
-        this.coralDispenserSubsystem = null;
-         if (coralDispenserSubsystem != null)
-        addRequirements(coralDispenserSubsystem);
+    CoralGoToPitchState(CoralDispenserSubsystem subsystem, Rotation2d angle){
+        this.coralDispenserSubsystem = subsystem;
+        if (coralDispenserSubsystem != null)
+            addRequirements(coralDispenserSubsystem);
         this.angle = angle;
 
     }

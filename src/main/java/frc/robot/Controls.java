@@ -113,18 +113,10 @@ public class Controls implements Sendable {
     }
 
     private GamePieceState activePieceState = GamePieceState.CORAL;
-    private IntakeState activeIntakeState = IntakeState.OUTTAKE;
+    public IntakeState activeIntakeState = IntakeState.OUTTAKE;
 
     public void setActivePieceState(GamePieceState newPieceState) {
         activePieceState = newPieceState;
-    }
-
-    public void updateStateControlls() {
-        // not used
-    }
-
-    public void setActiveIntakeState(IntakeState state) {
-        activeIntakeState = state;
     }
 
     public enum DriveSpeed {
@@ -181,10 +173,10 @@ public class Controls implements Sendable {
 
         burgerButtonDrive.onTrue(new InstantCommand(()-> RobotContainer.gyro.reset()));
 
-        /* climber: Tested on Friday!
-        xButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
-        bButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
-        aButtonDrive.onTrue(new ClimberCommand(Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
+        /* climber: Tested on Friday!*/
+        xButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
+        bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
+        aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
 
         // liftingtower
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
@@ -194,8 +186,6 @@ public class Controls implements Sendable {
         bButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTWO)));
         aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
         xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
-
-        
 
         // coral handling
         lbButtonOperator.onTrue(new InstantCommand(() -> {
@@ -209,13 +199,13 @@ public class Controls implements Sendable {
         
         switch (activePieceState) {
             case CORAL:
-                ltButtonDrive.onTrue(new CoralIntake());
+                ltButtonDrive.onTrue(new CoralIntake(RobotContainer.coralDispenser));
                 break;
 
             case ALGUE:
                 ltButtonDrive.onTrue(new AlgaeInCommandGroup());
                 break;
-        }*/
+        }
 
         //yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
 
