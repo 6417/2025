@@ -34,10 +34,10 @@ public class RobotContainer {
             //leds = new LEDSubsystem();
             drive = new SwerveDrive(Constants.SwerveDrive.configs);
             climber = new ClimberSubsystem();
-            controls = new Controls();
             pathplanner = new FridoPathplanner(drive);
-            liftingTower = new LiftingTowerSubsystem();
-            coralDispenser = null; //new CoralDispenserSubsystem();
+            liftingTower =null; // new LiftingTowerSubsystem();
+            coralDispenser = new CoralDispenserSubsystem(); //new CoralDispenserSubsystem();
+            controls = new Controls();
 
             autoChooser = AutoBuilder.buildAutoChooser();
             SmartDashboard.putData("Auto", autoChooser);

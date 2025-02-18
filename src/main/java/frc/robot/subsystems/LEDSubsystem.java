@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.Controls.GamePieceState;
+import frc.robot.Controls.HubturmState;
+import frc.robot.Controls.IntakeState;
 
 public class LEDSubsystem extends SubsystemBase {
     private static LEDSubsystem instance;
@@ -130,6 +135,42 @@ public class LEDSubsystem extends SubsystemBase {
     public void normalLeds() {
         setAllLEDs(climb);
         setData();
+    }
+
+    public void synchronizeLEDsWithStates(GamePieceState gamePieceState, IntakeState intakeState, HubturmState hubturmState) {
+        switch (gamePieceState) { //check on coraect
+            case ALGUE:
+                if (intakeState == IntakeState.INTAKE) {
+                    algueIntakeLEDs();
+                } else {
+                    algueOuttakeLEDs();
+                }
+                break;
+            case CORAL:
+                if (intakeState == IntakeState.INTAKE) {
+                    coralIntakeLEDs();
+                } else {
+                    switch (hubturmState) {
+                        case LONE:
+                            coralL1OuttakeLEDs();
+                            break;
+                        case LTWO:
+                            coralL2OuttakeLEDs();
+                            break;
+                        case LTHREE:
+                            coralL3OuttakeLEDs();
+                            break;
+                        case LFOUR:
+                            coralL4OuttakeLEDs();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }

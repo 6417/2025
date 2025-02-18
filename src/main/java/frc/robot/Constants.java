@@ -72,8 +72,8 @@ public final class Constants {
     }
 
     public static final class CoralDispenser {
-        public static final int coralMotorTopID = 40;
-        public static final int coralMotorBottomID = 41;
+        public static final int coralMotorTopID = 41;
+        public static final int coralMotorBottomID = 40;
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
@@ -84,6 +84,9 @@ public final class Constants {
         public static final double stopSpeedMotorTop = 0;
         public static final double stopSpeedPitch = 0;
 
+        public static double kMaxAccelerationPitch = 50000;
+        public static double kMaxVelocityPitch = 8000; // in rpm
+
         public static final int stationState = 0;
         public static final int l1State = 1;
         public static final int l2State = 2;
@@ -92,7 +95,7 @@ public final class Constants {
         public static final int algae1State = 5;
         public static final int algae2State = 6;
 
-        public static final PidValues PidValuesPitch = new PidValues(0, 0, 0, 0);
+        public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
         public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0, 0);
         public static final double intakeSpeed = -0.5;
         public static final double outtakeSpeed = 0.5;
@@ -173,10 +176,10 @@ public final class Constants {
         public static final double resetEncoderPosition = 0;
         public static final LimitSwitchPolarity towerBottomSwitchPolarity = LimitSwitchPolarity.kNormallyClosed;
 
-        public static final double kMaxVelocity = 0;
-        public static final double kMaxAcceleration = 0;
-        public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(0, 0, 0, 0); // TODO: test all values
+        public static final double kMaxVelocity = 3000;
+        public static final double kMaxAcceleration = 8000;
+        public static final double kAllowedClosedLoopError = 0.5;
+        public static final PidValues pidValues = new PidValues(0.058, 0, 0.05, 0); // TODO: test all values
                                                                              
         public static final double softLimitTopPos = 69.0;
     }

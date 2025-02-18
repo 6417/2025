@@ -51,8 +51,8 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorMaster.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters,
                 PersistMode.kPersistParameters);
 
-        motorMaster.setIdleMode(IdleMode.kCoast);
-        motorSlave.setIdleMode(IdleMode.kCoast);
+        motorMaster.setIdleMode(IdleMode.kBrake);
+        motorSlave.setIdleMode(IdleMode.kBrake);
         motorMaster.setInverted(true);
 
         SparkMaxConfig limitConfig = new SparkMaxConfig();
