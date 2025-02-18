@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ClimberSubsystem;
 
 public class manualClimberControl extends Command {
     private final frc.robot.subsystems.ClimberSubsystem climber;

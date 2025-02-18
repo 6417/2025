@@ -5,20 +5,20 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.LiftingTowerSubsystem;
 
 public class CoralGoToHeightState extends Command {
-    private final LiftingTowerSubsystem LiftingTowerSubsystem;
+    private final LiftingTowerSubsystem liftingTowerSubsystem;
     private final double height;
 
-    CoralGoToHeightState(double height){
-        this.LiftingTowerSubsystem = null;
-        if (LiftingTowerSubsystem != null)
-        addRequirements(LiftingTowerSubsystem);
+    CoralGoToHeightState(LiftingTowerSubsystem subsystem, double height){
+        this.liftingTowerSubsystem = subsystem;
+        if (liftingTowerSubsystem != null)
+            addRequirements(liftingTowerSubsystem);
         this.height = height;
 
     }
 
     @Override
     public void initialize() {
-        //LiftingTowerSubsystem.setHeight(height);
+        liftingTowerSubsystem.setHeight(height);
     }
 
     @Override

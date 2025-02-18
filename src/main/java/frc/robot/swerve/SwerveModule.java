@@ -67,7 +67,7 @@ public class SwerveModule implements Sendable {
         double desiredVelocity = (desiredState.speedMetersPerSecond / config.wheelCircumference)
                 * config.driveGearboxRatio
                 * config.encoderVelocityToRPSFalcon;
-        driveMotor.setVelocity(desiredVelocity); //
+        driveMotor.setVelocity(desiredVelocity);
 
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (config.maxSpeed * 0.01))
                 ? lastAngle

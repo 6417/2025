@@ -10,8 +10,8 @@ public class ClimberCommand extends Command {
     private final double position;
     private final Climberstate state;
 
-    public ClimberCommand(double position, Climberstate state) {
-        this.climber = RobotContainer.climber;
+    public ClimberCommand(ClimberSubsystem subsystem, double position, Climberstate state) {
+        this.climber = subsystem;
         addRequirements(climber);
 
         this.position = position;
