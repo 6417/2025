@@ -65,7 +65,7 @@ public class FridoPathplanner {
     }
     
     // only to test; don't use
-    public Command getAutonomousSinglePathCommand(String fileName) {
+    public Command getFollowPathCommand(String fileName) {
 
         // return new PathPlannerAuto("Example Auto");
         try {

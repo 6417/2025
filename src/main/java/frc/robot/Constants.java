@@ -77,11 +77,11 @@ public final class Constants {
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double pitchMotorForwardLimit = 0;
-        public static final double pitchMotorReverseForwardLimit = 60;
+        public static final double pitchMotorForwardLimit = 3;
+        public static final double pitchMotorReverseForwardLimit = 75;
         public static final double zeroingSpeed = 0.1;
-        public static final double kArmGearRatio = 50;
-        public static final double angularOffset = 0;
+        public static final double kArmGearRatio = 50 * (37/9);
+        public static final double angularOffset = 0; // It is setted on REVClient 
 
         public static final double stopSpeedMotorTop = 0;
         public static final double stopSpeedPitch = 0;
@@ -164,8 +164,8 @@ public final class Constants {
         public static double kMaxAccelerationIn = 60000;
         public static double kMaxVelocityIn = 6000;
 
-        public static double positionFront = 260;
-        public static double positionBack = 40; //Adjusted the prevent robot to tip over wegen des Schwerpunkts - Wiedercalibration wird angefordert
+        public static double positionFront = 255;
+        public static double positionBack = 40; //Adjusted to prevent robot to tip over wegen des Schwerpunkts - Wiedercalibration wird angefordert
         public static double positionSteady = 180; 
     }
 
@@ -180,7 +180,7 @@ public final class Constants {
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(1.5, 0, 0.0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(1.7, 0, 0.0, 0); // TODO: test all values
                                                                              
         public static final double softLimitTopPos = 72.0;
     }
@@ -201,10 +201,10 @@ public final class Constants {
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 1.035;
 
             defaultModuleConfig2024.driveGearboxRatio = 6.181;
-            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;   
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
             defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.08, 0.105, 0.00);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0.0);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;

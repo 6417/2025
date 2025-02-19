@@ -1,12 +1,15 @@
 package frc.robot.subsystems;
 
 
+import org.opencv.core.Mat;
+
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor;
@@ -45,8 +48,8 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        System.out.println(coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition()*360);
-        
+        SmartDashboard.putNumber("Absolute Rotation", getAbsoluteRotation() * 360);
+        SmartDashboard.putNumber("Motor Encoder Thicks", coralMotorChangePitch.getEncoderTicks());
     }
 
 
@@ -56,7 +59,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public void resetPitchEncoder() {
-        coralMotorChangePitch.setEncoderPosition((coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition() - Constants.CoralDispenser.angularOffset) * Constants.CoralDispenser.kArmGearRatio);
+        coralMotorChangePitch.setEncoderPosition(getAbsoluteRotation() * Constants.CoralDispenser.kArmGearRatio);
+    }
+
+    public double getAbsoluteRotation(){
+        return coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition() - Constants.CoralDispenser.angularOffset;
     }
 
     public boolean isForwardLimitSwitchPressedMotorTop() {
@@ -89,7 +96,8 @@ public class CoralDispenserSubsystem extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("Abs Encoder Coral Dispenser", () -> coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition(), null);
+        builder.addDoubleProperty("Abs Encoder Coral Dispenser", () -> getAbsoluteRotation() * 360, null);
+        builder.addDoubleProperty("Motor Encoder Coral Dispenser", () -> coralMotorChangePitch.getEncoderTicks(), null);
         super.initSendable(builder);
     }
 }

@@ -44,9 +44,12 @@ public class Robot extends TimedRobot {
         pdh = new PowerDistribution();
 
         autoCommand = robotContainer.getAutoCommand();
-        RobotContainer.gyro.reset();
+        robotContainer.gyro.reset();
+        robotContainer.drive.resetModulesToAbsolute();
+        robotContainer.coralDispenser.resetPitchEncoder();
+
         Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
-        SmartDashboard.putData(pdh);
+        //SmartDashboard.putData(pdh);
         Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
             @Override
             public void initSendable(SendableBuilder builder) {
@@ -111,7 +114,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        autoCommand = RobotContainer.getAutoCommand();
+        robotContainer.coralDispenser.resetPitchEncoder();
+        autoCommand = robotContainer.getAutoCommand();
 
         if (autoCommand != null) {
             autoCommand.schedule();
@@ -123,7 +127,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        RobotContainer.drive.addVisionToOdometry();
+        robotContainer.drive.addVisionToOdometry();
     }
 
     @Override
@@ -133,9 +137,9 @@ public class Robot extends TimedRobot {
             autoCommand.cancel();
         }
         
-        RobotContainer.drive.stopMotors();
-        RobotContainer.drive.resetModulesToAbsolute();
-        RobotContainer.gyro.setYaw(RobotContainer.drive.getPose().getRotation().getDegrees());
+        robotContainer.drive.stopMotors();
+        robotContainer.drive.resetModulesToAbsolute();
+        robotContainer.gyro.setYaw(robotContainer.drive.getPose().getRotation().getDegrees());
     }
 
     /** This function is called periodically during operator control. */
@@ -144,26 +148,24 @@ public class Robot extends TimedRobot {
         //robotContainer.drive.addVisionToOdometry();
     }
 
-    Command manualTowerControl;
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
-        
+        /* 
         robotContainer.liftingTower.setHeight(5);
-
-        robotContainer.liftingTower.setDefaultCommand(new RunCommand(() -> robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));
+        robotContainer.liftingTower.setDefaultCommand(new RunCommand(() -> robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));*/
 
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        
+        /* 
         robotContainer.controls.aButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(5)));
         robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(40)));
         robotContainer.controls.xButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(70)));
-        robotContainer.controls.bButtonOperator.whileTrue(new RunCommand(() -> robotContainer.liftingTower.stopMotors(), robotContainer.liftingTower));
-        
+        robotContainer.controls.bButtonOperator.whileTrue(new RunCommand(() -> robotContainer.liftingTower.stopMotors(), robotContainer.liftingTower));*/
+
 
     }
 

@@ -146,8 +146,6 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void resetOdoemetry(Pose2d newPose) {
-        //RobotContainer.gyro.reset();
-        //RobotContainer.gyro.setYaw(newPose.getRotation().getDegrees());
         poseEstimator.resetPosition(RobotContainer.getGyroRotation2d(), getModulePositions(), newPose);
     }
 

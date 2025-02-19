@@ -6,7 +6,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.fridowpi.sensors.AnalogEncoder;
-import frc.fridowpi.utils.Vector2;
 import frc.robot.Utils;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
@@ -47,20 +46,6 @@ public class SwerveModule implements Sendable {
         angleMotor.setEncoderPosition(position);
     }
 
-/*    public Rotation2d angleToTargetAngle(Rotation2d angle) {
-        Vector2 moduleRot = Vector2.fromRadians(getRotation().getRadians());
-        Vector2 angleHeading = Vector2.fromRadians(angle.getRadians());
-        double angleDelta = Math.acos(moduleRot.dot(angleHeading));
-
-        // doesn'tt seem to be used in the old code
-        // if (currentRotationInverted)
-        // angleDelta = Math.PI * 2 + angleDelta;
-
-        double steeringDirection = Math.signum(moduleRot.cross(angleHeading));
-        return Rotation2d.fromRotations(getRotation().getRotations()
-                + steeringDirection * (angleDelta / (Math.PI * 2)));
-    }
-*/
     public void setDesiredState(SwerveModuleState desiredState) {
         desiredState = CTREModuleState.optimize(desiredState, getRotation());
 
@@ -75,7 +60,6 @@ public class SwerveModule implements Sendable {
 
         lastAngle = angle;
 
-        //angleMotor.setPosition(lastAngle.getRotations() * config.angleGearboxRatio);
         double motorPos = angleMotor.getEncoderTicks() / config.angleGearboxRatio;
         double delta = Utils.wrap(lastAngle.getRotations() - motorPos);
         angleMotor.setPosition((motorPos + delta) * config.angleGearboxRatio);
@@ -119,11 +103,9 @@ public class SwerveModule implements Sendable {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleProperty("angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
+        builder.addDoubleProperty("Angle motor ticks", () -> angleMotor.getEncoderTicks(), null);
         builder.addDoubleProperty("angle motor angle [deg]", () -> getRotation().getDegrees(), null);
-        builder.addDoubleProperty("state speed [mps]", () -> getState().speedMetersPerSecond, null);
-        builder.addDoubleProperty("drive vel [rps]", () -> getVelocityRPS(), null);
-        builder.addDoubleProperty("drive vel [mps]", () -> getVelocityMPS(), null);
+        builder.addDoubleProperty("drive vel [mps]", () -> getState().speedMetersPerSecond, null);
         builder.addDoubleProperty("abs encoder raw", () -> absoluteEncoder.getRaw(), null);
         builder.addDoubleProperty("abs encoder value", () -> absoluteEncoder.get(), null);
         builder.addDoubleProperty("last angle [deg]", () -> lastAngle.getDegrees(), null);

@@ -1,12 +1,8 @@
 package frc.robot.swerve;
 
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Radians;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.fridowpi.utils.Vector2;
 import frc.robot.RobotContainer;
 import frc.robot.Controls.DriveSpeed;
@@ -30,16 +26,7 @@ public class DriveCommand extends Command {
 
        /*  if (RobotContainer.controls.controlMode == Controls.ControlMode.SEPARATE_ACCELERATION) {
             xy = xy.normalized().scaled(joystick.getRawAxis(4));
-        }
-
-        // Brake if input is 0
-        /*
-         * if (xy.magnitude() < Controls.deadBandDrive
-         * && Math.abs(rot) < Controls.deadBandTurn) {
-         * drive.stopAllMotors();
-         * return;
-         * }
-         */
+        }*/
 
         // Apply deadband4
         x = applyDeadband(x, Controls.deadBandTurn);
@@ -47,11 +34,7 @@ public class DriveCommand extends Command {
         rot = applyDeadband(rot, Controls.deadBandTurn);
         var xy = new Vector2(x, y);
 
-        /*xy = applyDeadband(xy, Controls.deadBandDrive)
-                .scaled(RobotContainer.controls.getAccelerationSensitivity());
-        rot = applyDeadband(rot, Controls.deadBandTurn)
-                * RobotContainer.controls.turnSensitivity;
-
+       
         // Apply slew rate
         /*
          * if (Controls.isSlewRateLimited()) {
