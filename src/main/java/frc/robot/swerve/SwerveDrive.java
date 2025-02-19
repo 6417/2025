@@ -24,7 +24,7 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveDrivePoseEstimator poseEstimator;
 
     public LimelightHelpers.PoseEstimate mt2;
-    private AccelerationLimiter accelLimiter = new AccelerationLimiter(30, 0.267);
+    private AccelerationLimiter accelLimiter = new AccelerationLimiter(75, 0.267);
 
     ChassisSpeeds lastSpeeds = new ChassisSpeeds();
 
@@ -72,7 +72,7 @@ public class SwerveDrive extends SubsystemBase {
 
         long timeNow = System.currentTimeMillis();
         if (lastSetpointTime > 0) {
-            speeds = accelLimiter.constrain(lastSpeeds, speeds, timeNow - lastSetpointTime);
+            speeds = accelLimiter.constrain(lastSpeeds, speeds, ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
         }
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
