@@ -6,13 +6,10 @@ import frc.robot.subsystems.CoralDispenserSubsystem;
 
 public class CoralGoToPitchState extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
-    private final Rotation2d angle;
+    private final double angle;
 
-    //Lets make eveything with Encoder Thicks, it will be much easy, i command it out bcs without 
-    //converstion factor it is gonna damage system
-
-    CoralGoToPitchState(CoralDispenserSubsystem subsystem, Rotation2d angle){
-        this.coralDispenserSubsystem = null; //subsystem;
+    CoralGoToPitchState(CoralDispenserSubsystem subsystem, double angle){
+        this.coralDispenserSubsystem = subsystem; //subsystem;
         if (coralDispenserSubsystem != null)
             addRequirements(coralDispenserSubsystem);
         this.angle = angle;
@@ -21,22 +18,20 @@ public class CoralGoToPitchState extends Command {
 
     @Override
     public void initialize() {
-        coralDispenserSubsystem.setPitch(angle.getDegrees());
+        coralDispenserSubsystem.setPitch(angle);
     }
 
     @Override
     public void execute() {
-        
     }
 
     @Override
     public void end(boolean interrupted) {
-
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return coralDispenserSubsystem.isAtDesiredPitch();
     }
     
 }

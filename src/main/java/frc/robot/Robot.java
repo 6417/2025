@@ -151,6 +151,9 @@ public class Robot extends TimedRobot {
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
+
+       
+
         /* 
         robotContainer.liftingTower.setHeight(5);
         robotContainer.liftingTower.setDefaultCommand(new RunCommand(() -> robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));*/
@@ -160,13 +163,8 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-        /* 
-        robotContainer.controls.aButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(5)));
-        robotContainer.controls.yButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(40)));
-        robotContainer.controls.xButtonOperator.onTrue(new InstantCommand(() -> robotContainer.liftingTower.setHeight(70)));
-        robotContainer.controls.bButtonOperator.whileTrue(new RunCommand(() -> robotContainer.liftingTower.stopMotors(), robotContainer.liftingTower));*/
-
-
+         
+        
     }
 
     /** This function is called once when the robot is first started up. */

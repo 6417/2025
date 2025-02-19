@@ -7,9 +7,8 @@ import frc.robot.RobotContainer;
 
 public class CoralHeightPitchCommandGroup extends ParallelCommandGroup {
     public CoralHeightPitchCommandGroup(int state) {
-        addCommands(new CoralGoToHeightState(RobotContainer.liftingTower, Constants.parameters[state].height), new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.parameters[state].pitchAngle), new InstantCommand(() -> {
-            RobotContainer.leds.synchronizeLEDsWithStates();
-        }));
+        addCommands(new CoralGoToHeightState(RobotContainer.liftingTower, Constants.parameters[state].height),
+                new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.parameters[state].pitchAngle));
     }
 
 }

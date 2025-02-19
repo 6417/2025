@@ -86,8 +86,9 @@ public final class Constants {
         public static final double stopSpeedMotorTop = 0;
         public static final double stopSpeedPitch = 0;
 
-        public static double kMaxAccelerationPitch = 50000;
-        public static double kMaxVelocityPitch = 8000; // in rpm
+        public static double kMaxAcceleration = 50000;
+        public static double kMaxVelocity = 8000; // in rpm
+        public static double kAllowedClosedLoopError = 0.7;
 
         public static final int stationState = 0;
         public static final int l1State = 1;
@@ -108,13 +109,13 @@ public final class Constants {
 
     public static final class LevelParameters implements Sendable {
         public String name;
-        public Rotation2d pitchAngle;
+        public double pitchAngle;
         public double height;
 
         @Override
         public void initSendable(SendableBuilder builder) {
-            builder.addDoubleProperty("pitch angle [deg]", () -> pitchAngle.getDegrees(),
-                    (double angle) -> pitchAngle = Rotation2d.fromDegrees(angle));
+            builder.addDoubleProperty("pitch angle [ticks]", () -> pitchAngle,
+                    (double angle) -> pitchAngle = angle);
             builder.addDoubleProperty("height [m]", () -> height, (double h) -> height = h);
         }
     }
@@ -131,21 +132,21 @@ public final class Constants {
         parameters[CoralDispenser.l3State].name = "l3";
         parameters[CoralDispenser.l4State].name = "l4";
 
-        parameters[CoralDispenser.stationState].pitchAngle = Rotation2d.fromDegrees(0);
-        parameters[CoralDispenser.l1State].pitchAngle = Rotation2d.fromDegrees(0);
-        parameters[CoralDispenser.l2State].pitchAngle = Rotation2d.fromDegrees(0);
-        parameters[CoralDispenser.l3State].pitchAngle = Rotation2d.fromDegrees(0);
-        parameters[CoralDispenser.l4State].pitchAngle = Rotation2d.fromDegrees(0);
-        parameters[CoralDispenser.algae1State].pitchAngle = Rotation2d.fromDegrees(0);
-        parameters[CoralDispenser.algae2State].pitchAngle = Rotation2d.fromDegrees(0);
+        parameters[CoralDispenser.stationState].pitchAngle = 24;
+        parameters[CoralDispenser.l1State].pitchAngle = 60;
+        parameters[CoralDispenser.l2State].pitchAngle = 50;
+        parameters[CoralDispenser.l3State].pitchAngle = 50;
+        parameters[CoralDispenser.l4State].pitchAngle = 65;
+        parameters[CoralDispenser.algae1State].pitchAngle = 43;
+        parameters[CoralDispenser.algae2State].pitchAngle = 43;
 
         parameters[CoralDispenser.stationState].height = 0;
         parameters[CoralDispenser.l1State].height = 0;
         parameters[CoralDispenser.l2State].height = 0;
-        parameters[CoralDispenser.l3State].height = 0;
-        parameters[CoralDispenser.l4State].height = 0;
-        parameters[CoralDispenser.algae1State].height = 0;
-        parameters[CoralDispenser.algae2State].height = 0;
+        parameters[CoralDispenser.l3State].height = 25;
+        parameters[CoralDispenser.l4State].height = 71;
+        parameters[CoralDispenser.algae1State].height = 3;
+        parameters[CoralDispenser.algae2State].height = 27;
     }
 
 
@@ -180,7 +181,7 @@ public final class Constants {
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(1.7, 0, 0.0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(1.5, 0, 0.0, 0); // TODO: test all values
                                                                              
         public static final double softLimitTopPos = 72.0;
     }

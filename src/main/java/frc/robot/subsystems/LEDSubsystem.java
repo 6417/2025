@@ -7,28 +7,18 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
-import java.util.List;
-
-import javax.naming.Binding;
-
-import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Controls.GamePieceState;
 import frc.robot.Controls.HubturmState;
 import frc.robot.Controls.IntakeState;
 
 public class LEDSubsystem extends SubsystemBase {
-    private static LEDSubsystem instance;
-
     private AddressableLED ledsRight;
     private AddressableLED ledsLeft;
 
@@ -52,7 +42,6 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    private static RGB algue = new RGB(0, 175, 140);
     private static RGB coral = new RGB(255, 242, 199);
     private static RGB climb = new RGB(255, 0, 0);
     private static RGB noLight = new RGB(0);
@@ -99,16 +88,6 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    public void algueIntakeLEDs() {
-        setLEDsInBlocks(3, 0, algue, 3, noLight);
-        setData();
-    }
-
-    public void algueOuttakeLEDs() {
-        setAllLEDs(algue);
-        setData();
-    }
-
     public void coralIntakeLEDs() {
         setLEDsInBlocks(3, 0, coral, 3, noLight);
         setData();
@@ -142,7 +121,8 @@ public class LEDSubsystem extends SubsystemBase {
     public void rainbowAnimationLEDs() {
         LEDPattern rainbowPattern = LEDPattern.rainbow(255, 255);
         Distance kLedSpacing = Distance.ofBaseUnits(1 / 120, Meters);
-        LEDPattern m_scrollingRainbow = rainbowPattern.scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
+        LEDPattern m_scrollingRainbow = rainbowPattern
+                .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
     }
 
     public void normalLeds() {
@@ -153,40 +133,26 @@ public class LEDSubsystem extends SubsystemBase {
     public void synchronizeLEDsWithStates() {
         HubturmState hubturmState = RobotContainer.controls.getActiveLiftingTowerState();
         IntakeState intakeState = RobotContainer.controls.activeIntakeState;
-        GamePieceState gamePieceState = RobotContainer.controls.getActivePieceState();
-        switch (gamePieceState) {
-            case ALGUE:
-                if (intakeState == IntakeState.INTAKE) {
-                    algueIntakeLEDs();
-                } else {
-                    algueOuttakeLEDs();
-                }
-                break;
-            case CORAL:
-                if (intakeState == IntakeState.INTAKE) {
-                    coralIntakeLEDs();
-                } else {
-                    switch (hubturmState) {
-                        case LONE:
-                            coralL1OuttakeLEDs();
-                            break;
-                        case LTWO:
-                            coralL2OuttakeLEDs();
-                            break;
-                        case LTHREE:
-                            coralL3OuttakeLEDs();
-                            break;
-                        case LFOUR:
-                            coralL4OuttakeLEDs();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-            default:
-                break;
+
+        if (intakeState == IntakeState.INTAKE) {
+            coralIntakeLEDs();
+        } else {
+            switch (hubturmState) {
+                case LONE:
+                    coralL1OuttakeLEDs();
+                    break;
+                case LTWO:
+                    coralL2OuttakeLEDs();
+                    break;
+                case LTHREE:
+                    coralL3OuttakeLEDs();
+                    break;
+                case LFOUR:
+                    coralL4OuttakeLEDs();
+                    break;
+                default:
+                    break;
+            }
         }
     }
-
 }

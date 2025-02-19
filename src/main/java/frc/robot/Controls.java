@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -13,14 +12,9 @@ import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ClimberEncoderZero;
-import frc.robot.commands.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralHeightPitchCommandGroup;
-import frc.robot.swerve.FridoPathplanner;
 import frc.robot.commands.CoralIntake;
-import frc.robot.commands.manualClimberControl;
-import frc.robot.commands.TowerManualControl;
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.commands.AlgaeInCommandGroup;
+import frc.robot.commands.AutoScore;
 
 /**
  * Holds the data concerning input, which should be available
@@ -57,12 +51,12 @@ public class Controls implements Sendable {
     Trigger yButtonDrive = driveJoystick.y();
     Trigger windowsButtonDrive = driveJoystick.back();
     Trigger burgerButtonDrive = driveJoystick.start();
+    Trigger pov0Drive = driveJoystick.povUp();
 
     public enum Climberstate {
         kForward,
         kSteady,
         kBack;
-
     }
 
     public enum ControlMode {
@@ -80,11 +74,6 @@ public class Controls implements Sendable {
         ALGAE2;
     }
 
-    public enum GamePieceState {
-        CORAL,
-        ALGUE;
-    }
-
     public enum IntakeState {
         INTAKE,
         OUTTAKE;
@@ -94,12 +83,6 @@ public class Controls implements Sendable {
 
     public HubturmState getActiveLiftingTowerState() {
         return liftingTowerState;
-    }
-
-    private GamePieceState activePieceState = GamePieceState.CORAL; // default state
-
-    public GamePieceState getActivePieceState() {
-        return activePieceState;
     }
 
     public IntakeState activeIntakeState = IntakeState.OUTTAKE; // default state
@@ -131,10 +114,6 @@ public class Controls implements Sendable {
             default:
                 return -1;
         }
-    }
-
-    public void setActivePieceState(GamePieceState newPieceState) {
-        activePieceState = newPieceState;
     }
 
     public enum DriveSpeed {
@@ -184,89 +163,38 @@ public class Controls implements Sendable {
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
         lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        yButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        pov0Drive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
 
         burgerButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.gyro.reset()));
 
-        /* 
-         * // liftingtower
-         * pov0Operator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
-         * pov2Operator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE2)));
-         * pov6Operator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.ALGAE1)));
-         * yButtonOperator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LONE)));
-         * bButtonOperator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTWO)));
-         * aButtonOperator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LTHREE)));
-         * xButtonOperator.onTrue(new
-         * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.LFOUR)));
-         * 
-         * 
-         * 
-         * // coral handling
-         * lbButtonOperator.onTrue(new InstantCommand(() -> {
-         * setActivePieceState(GamePieceState.ALGUE);
-         * }));
-         * rbButtonOperator.onTrue(new InstantCommand(() -> {
-         * setActivePieceState(GamePieceState.CORAL);
-         * }));
-         * 
-         * rtButtonDrive.onTrue(new CoralAlgaeOutCommandGroup());
-         * 
-         * switch (activePieceState) {
-         * case CORAL:
-         * ltButtonDrive.onTrue(new CoralIntake());
-         * break;
-         * 
-         * case ALGUE:
-         * ltButtonDrive.onTrue(new AlgaeInCommandGroup());
-         * break;
-         * }
-         */
         /* climber: Tested on Friday!*/
         xButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
         bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
         aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
-
-        // liftingtower // TODO we wont be able to take Algeas instead we open our mechanismus and aprroac algea sideways. Therefore it would cool if our scoring state are working with this mech
-        pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.ALGAE2)));
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
-        pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.ALGAE1)));
-        yButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LONE)));
-        bButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LTWO)));
-        aButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LTHREE)));
-        xButtonOperator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.LFOUR)));
-
-        // coral handling
-        lbButtonOperator.onTrue(new InstantCommand(() -> {
-            setActivePieceState(GamePieceState.ALGUE);
-        }));
-        rbButtonOperator.onTrue(new InstantCommand(() -> {
-            setActivePieceState(GamePieceState.CORAL);
-        }));
-
-        rtButtonDrive.onTrue(new CoralAlgaeOutCommandGroup());
-        
-        switch (activePieceState) {
-            case CORAL:
-                ltButtonDrive.onTrue(new CoralIntake(RobotContainer.coralDispenser));
-                break;
-
-            case ALGUE:
-                ltButtonDrive.onTrue(new AlgaeInCommandGroup());
-                break;
-        }
-
         yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
 
-        aButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
-        bButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
 
+        // liftingtower 
+        pov2Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE2)));
+        pov6Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE1)));
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
+        pov4Operator.toggleOnTrue(new CoralIntake(RobotContainer.coralDispenser));
+
+         
+        yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));
+        bButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTWO)));
+        aButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTHREE)));
+        xButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LFOUR)));
+
+        // lbButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
+
+        // TODO: set speed regulation on drive controller for and rt
+
+        rtButtonDrive.whileTrue(new InstantCommand(
+            () -> {activeSpeedFactor = DriveSpeed.SLOW;})).or(rtButtonDrive.whileFalse(new InstantCommand(
+            () -> {activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;})));
+        
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 

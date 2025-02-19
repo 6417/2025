@@ -9,6 +9,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridoSparkMax;
 import frc.fridowpi.motors.FridolinsMotor.DirectionType;
@@ -78,6 +79,8 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         timer.start();
 
         updateMotionProfile();
+
+        setDefaultCommand(new RunCommand(() -> runAutomatic(), this));
     }
 
     public void resetEncoder() {
