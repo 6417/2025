@@ -10,7 +10,6 @@ import frc.robot.Constants;
 import frc.robot.Controls;
 
 public class DriveCommand extends Command {
-
     public DriveCommand(SwerveDrive drive) {
         addRequirements(drive);
     }

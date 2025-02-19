@@ -13,10 +13,10 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
+import frc.fridowpi.utils.AccelerationLimiter;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
-
 
 public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] modules;
@@ -24,6 +24,7 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveDrivePoseEstimator poseEstimator;
 
     public LimelightHelpers.PoseEstimate mt2;
+    private AccelerationLimiter accelLimiter = new AccelerationLimiter(30, 0.267);
 
     ChassisSpeeds lastSpeeds = new ChassisSpeeds();
 
@@ -65,8 +66,14 @@ public class SwerveDrive extends SubsystemBase {
         setDefaultCommand(new DriveCommand(this));
     }
 
+    long lastSetpointTime = -1;
     public void setChassisSpeeds(ChassisSpeeds speeds) {
-        speeds = ChassisSpeeds.discretize(speeds, 0.02); //remove the skew
+        speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
+
+        long timeNow = System.currentTimeMillis();
+        if (lastSetpointTime > 0) {
+            speeds = accelLimiter.constrain(lastSpeeds, speeds, timeNow - lastSetpointTime);
+        }
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
@@ -74,6 +81,7 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setDesiredState(moduleStates[i]);
         }
         lastSpeeds = speeds;
+        lastSetpointTime = timeNow;
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -122,8 +130,11 @@ public class SwerveDrive extends SubsystemBase {
 
         final boolean isRobotSpinningFast = Math
                 .abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > maxRotationSpeed;
-        final boolean isTagInNarrowAngle = true;/* Math
-                .abs(RobotContainer.getGyroRotation2d().getDegrees() - lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;*/
+        final boolean isTagInNarrowAngle = true;/*
+                                                 * Math
+                                                 * .abs(RobotContainer.getGyroRotation2d().getDegrees() -
+                                                 * lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;
+                                                 */
         if (isRobotSpinningFast || !isTagInNarrowAngle) {
             // if our angular velocity is greater than 720 degrees
             // per second, ignore vision updates
@@ -156,7 +167,7 @@ public class SwerveDrive extends SubsystemBase {
 
     }
 
-    public void resetModulesToAbsolute(){
+    public void resetModulesToAbsolute() {
         for (SwerveModule module : modules) {
             module.resetToAbsolute();
         }
