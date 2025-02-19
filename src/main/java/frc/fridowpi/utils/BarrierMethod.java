@@ -46,8 +46,8 @@ public class BarrierMethod<N extends Num> {
             Vector<N> gradFx,
             double alpha,
             double beta) {
-        assert 0 < alpha && alpha < 0.5;
-        assert 0 < beta && beta < 1.0;
+        assert 0 < alpha && alpha < 0.5 : "invalid value alpha";
+        assert 0 < beta && beta < 1.0 : "invalid value beta";
 
         double t = 1.0;
         final double stepNorm = step.norm();
@@ -107,7 +107,7 @@ public class BarrierMethod<N extends Num> {
 
     public double eps = 1e-4;
     public double alpha = 0.1;
-    public double beta = 0.5;
+    public double beta = 0.7;
     public double mu = 50.0;
 
     private Func<N> f0;
@@ -135,8 +135,8 @@ public class BarrierMethod<N extends Num> {
 
     public int numConstrs() {
         int m = constrs.size();
-        assert m == gradConstrs.size();
-        assert m == hessConstrs.size();
+        assert m == gradConstrs.size() : "gradConstrs size mismatch";
+        assert m == hessConstrs.size() : "hessConstrs size mismatch";
         return m;
     }
 
