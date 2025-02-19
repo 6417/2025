@@ -8,8 +8,11 @@ public class CoralGoToPitchState extends Command {
     private final CoralDispenserSubsystem coralDispenserSubsystem;
     private final Rotation2d angle;
 
+    //Lets make eveything with Encoder Thicks, it will be much easy, i command it out bcs without 
+    //converstion factor it is gonna damage system
+
     CoralGoToPitchState(CoralDispenserSubsystem subsystem, Rotation2d angle){
-        this.coralDispenserSubsystem = subsystem;
+        this.coralDispenserSubsystem = null; //subsystem;
         if (coralDispenserSubsystem != null)
             addRequirements(coralDispenserSubsystem);
         this.angle = angle;

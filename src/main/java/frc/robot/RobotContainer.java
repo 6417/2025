@@ -36,8 +36,10 @@ public class RobotContainer {
             climber = new ClimberSubsystem();
             pathplanner = new FridoPathplanner(drive);
             liftingTower = new LiftingTowerSubsystem();
-            coralDispenser = null; //new CoralDispenserSubsystem();
+            coralDispenser = new CoralDispenserSubsystem();
             controls = new Controls();
+
+            //TODO Registired Commands Try everything with only changing the angle of coral handler
 
             autoChooser = AutoBuilder.buildAutoChooser();
             SmartDashboard.putData("Auto", autoChooser);

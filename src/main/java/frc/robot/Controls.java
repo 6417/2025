@@ -189,17 +189,7 @@ public class Controls implements Sendable {
 
         burgerButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.gyro.reset()));
 
-        /*
-         * climber: Tested on Friday!
-         * xButtonDrive.onTrue(new
-         * ClimberCommand(Constants.ClimberSubsystem.positionFront,
-         * Climberstate.kForward));
-         * bButtonDrive.onTrue(new
-         * ClimberCommand(Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
-         * aButtonDrive.onTrue(new
-         * ClimberCommand(Constants.ClimberSubsystem.positionSteady,
-         * Climberstate.kSteady));
-         * 
+        /* 
          * // liftingtower
          * pov0Operator.onTrue(new
          * CoralHeightPitchCommandGroup(liftingTowerState(HubturmState.STATION)));
@@ -243,7 +233,7 @@ public class Controls implements Sendable {
         bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
         aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
 
-        // liftingtower
+        // liftingtower // TODO we wont be able to take Algeas instead we open our mechanismus and aprroac algea sideways. Therefore it would cool if our scoring state are working with this mech
         pov2Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.ALGAE2)));
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.ALGAE1)));
@@ -276,6 +266,7 @@ public class Controls implements Sendable {
 
         aButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.drive.resetModulesToAbsolute()).withTimeout(0.01));
         bButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
+
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 

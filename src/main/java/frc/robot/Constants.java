@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
 import frc.robot.swerve.ModuleConfig;
@@ -66,20 +65,23 @@ public final class Constants {
     }
 
     public static final class OffsetsToAprilTags {
+        //This values must be calibrated to value that we can both score and see the april tag.(And obviously when we are in allience zone)
         public static final double[] offsetToAprilTagLeftToReef = { 0.7, 0.165, 0 };
         public static final double[] offsetToAprilTagRightToReef = { 0.7, -0.165, 0 };
         public static final double[] offsetToAprilTagCenterToReef = { 0.7, 0, 0 };
     }
 
     public static final class CoralDispenser {
-        public static final int coralMotorTopID = 41;
-        public static final int coralMotorBottomID = 40;
+        public static final int CoralEndEffectorMotorID = 50;
+        public static final int coralPitchMotorID = 40;
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double resetPitchEncoderPosition = 0;
-        public static final double resetMotorTopEncoderPosition = 0;
+        public static final double pitchMotorForwardLimit = 0;
+        public static final double pitchMotorReverseForwardLimit = 60;
         public static final double zeroingSpeed = 0.1;
+        public static final double kArmGearRatio = 50;
+        public static final double angularOffset = 0;
 
         public static final double stopSpeedMotorTop = 0;
         public static final double stopSpeedPitch = 0;
@@ -95,13 +97,12 @@ public final class Constants {
         public static final int algae1State = 5;
         public static final int algae2State = 6;
 
-        public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
-        public static final PidValues PidValuesMotorTop = new PidValues(0, 0, 0, 0);
+        //TODO Check this calibration one more time
+        public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0); 
         public static final double intakeSpeed = -0.5;
         public static final double outtakeSpeed = 0.5;
 
         public static final double waitAfterOuttake = 0.3;
-        public static final double zeroingPosition = 0;
         public static final double waitAfterAlgaeIntake = 0.3;
     }
 
@@ -158,14 +159,14 @@ public final class Constants {
         public static double kAllowedClosedLoopErrorOut = 0.5;
         public static double kMaxAccelerationOut = 60000;
         public static double kMaxVelocityOut = 6000; // in rpm
-        
-        public static double kAllowedClosedLoopErrorIn = 0;
-        public static double kMaxAccelerationIn = 0;
-        public static double kMaxVelocityIn = 0;
+        // TODO: Remove two different PID because we dont need it 
+        public static double kAllowedClosedLoopErrorIn = 0.5;
+        public static double kMaxAccelerationIn = 60000;
+        public static double kMaxVelocityIn = 6000;
 
         public static double positionFront = 260;
-        public static double positionBack = 10;
-        public static double positionSteady = 150; // TODO: test
+        public static double positionBack = 40; //Adjusted the prevent robot to tip over wegen des Schwerpunkts - Wiedercalibration wird angefordert
+        public static double positionSteady = 180; 
     }
 
     public static final class LiftingTower {
