@@ -34,5 +34,4 @@ public class CoralGoToHeightState extends Command {
     public boolean isFinished() {
         return liftingTowerSubsystem.isAtDesiredHeight();
     }
-    
 }

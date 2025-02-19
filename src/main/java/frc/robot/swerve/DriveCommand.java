@@ -49,12 +49,12 @@ public class DriveCommand extends Command {
          * }
          */
 
-        // Convert to velocity
+        /*// Convert to velocity
         if(joystick.rightStick().getAsBoolean()) {
             RobotContainer.controls.setActiveSpeedFactor(DriveSpeed.SLOW);
         } else{
             RobotContainer.controls.setActiveSpeedFactor(DriveSpeed.FAST);
-        }
+        }*/
 
         xy.scale(Constants.SwerveDrive.maxSpeed * RobotContainer.controls.speedFactors.get(RobotContainer.controls.getActiveSpeedFactor()));
         rot *= Constants.SwerveDrive.maxTurnSpeed;

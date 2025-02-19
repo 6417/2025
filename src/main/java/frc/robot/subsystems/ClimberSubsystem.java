@@ -27,7 +27,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private MAXMotionConfig smartMotionConfig;
     
     public ClimberSubsystem() {
-        climberMotor = new FridoSparkMax(Constants.ClimberSubsystem.climberMotorID);
+        climberMotor =  new FridoSparkMax(Constants.ClimberSubsystem.climberMotorID);
 
         climberMotor.setInverted(false);
 

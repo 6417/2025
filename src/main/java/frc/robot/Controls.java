@@ -2,9 +2,12 @@ package frc.robot;
 
 import java.util.Map;
 
+import edu.wpi.first.wpilibj2.command.Commands;
+
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -189,12 +192,11 @@ public class Controls implements Sendable {
 
         // lbButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
 
-        // TODO: set speed regulation on drive controller for and rt
+        rtButtonDrive.whileTrue(Commands.startEnd(
+            () -> {activeSpeedFactor = DriveSpeed.SLOW;},
+            () -> {activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;}
+        ));
 
-        rtButtonDrive.whileTrue(new InstantCommand(
-            () -> {activeSpeedFactor = DriveSpeed.SLOW;})).or(rtButtonDrive.whileFalse(new InstantCommand(
-            () -> {activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;})));
-        
         Shuffleboard.getTab("Drive").add("Controls", this);
     }
 
