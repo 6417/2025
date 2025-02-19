@@ -1,23 +1,22 @@
-package frc.robot.commands;
+package frc.robot.commands.CoralAlgae;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Controls.IntakeState;
 
-public class CoralAlgaeOutCommandGroup extends SequentialCommandGroup {
-    public CoralAlgaeOutCommandGroup() {
+public class AlgaeInCommandGroup extends SequentialCommandGroup {
+    public AlgaeInCommandGroup() {
         addCommands(
             new CoralAlgaeOuttake(RobotContainer.coralDispenser), new WaitCommand(Constants.CoralDispenser.waitAfterOuttake),
             new InstantCommand(() -> {
-                RobotContainer.controls.activeIntakeState = IntakeState.OUTTAKE;
+                RobotContainer.controls.activeIntakeState = IntakeState.INTAKE;
             }),
             new InstantCommand(() -> {
                 RobotContainer.coralDispenser.stopMotorTop();
-            })
+            })  
         );
     }
 

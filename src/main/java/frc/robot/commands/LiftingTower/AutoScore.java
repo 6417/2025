@@ -1,6 +1,7 @@
-package frc.robot.commands;
+package frc.robot.commands.LiftingTower;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.CoralAlgae.CoralAlgaeOutCommandGroup;
 
 public class AutoScore extends SequentialCommandGroup {
     public AutoScore(int state) {

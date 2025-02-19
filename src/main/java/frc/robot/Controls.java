@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
-import frc.robot.commands.ClimberCommand;
-import frc.robot.commands.ClimberEncoderZero;
-import frc.robot.commands.CoralHeightPitchCommandGroup;
-import frc.robot.commands.CoralIntake;
-import frc.robot.commands.AutoScore;
+import frc.robot.commands.Climber.ClimberCommand;
+import frc.robot.commands.Climber.ClimberEncoderZero;
+import frc.robot.commands.CoralAlgae.CoralIntake;
+import frc.robot.commands.LiftingTower.AutoScore;
+import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
 
 /**
  * Holds the data concerning input, which should be available
