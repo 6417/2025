@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.986794609269292,
-        "y": 2.7294305708340145
+        "x": 7.490356586252581,
+        "y": 2.255862416339441
       },
       "isLocked": false,
       "linkedName": null
@@ -20,28 +20,17 @@
         "y": 2.85499999999863
       },
       "prevControl": {
-        "x": 6.3122147480122806,
-        "y": 2.312548035130969
+        "x": 6.3396824521207105,
+        "y": 3.0088649917648516
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "preloaded Coral Deposited Right"
+      "linkedName": "Deposited preloaded Coral Right"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [
-    {
-      "fieldPosition": {
-        "x": 4.94,
-        "y": 3.3
-      },
-      "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.2749379652605429,
-      "maxWaypointRelativePos": 0.75,
-      "name": "Point Towards Zone"
-    }
-  ],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.5,

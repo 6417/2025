@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Deposit Coral loaded already"
+            "pathName": "Right deposit preloaded Coral"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left reload Coral"
+            "pathName": "Reload 1st Coral Right"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "left deposit reloaded 1st Coral"
+            "pathName": "Deposit reloaded 1st Coral Right"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left reload Coral 2nd"
+            "pathName": "Reload 2nd Coral Right"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Deposit 2nd Loaded Coral"
+            "pathName": "Deposit reloaded 2nd Coral Right"
           }
         }
       ]

@@ -13,13 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "reload Coral Right"
+            "pathName": "Reload 1st Coral Right"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Deposit reloaded Coral Right"
+            "pathName": "Deposit reloaded 1st Coral Right"
           }
         }
       ]

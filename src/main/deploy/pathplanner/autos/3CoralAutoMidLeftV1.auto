@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Deposit Coral loaded already"
+            "pathName": "Middle Deposit preLoaded Coral to Left"
           }
         },
         {
@@ -32,6 +32,30 @@
           "type": "path",
           "data": {
             "pathName": "left deposit reloaded 1st Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left reload Coral 2nd"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Deposit 2nd Loaded Coral"
           }
         }
       ]

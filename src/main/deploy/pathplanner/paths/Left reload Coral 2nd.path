@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.45,
-        "y": 5.33
+        "x": 5.4304303278688515,
+        "y": 5.325665983606557
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.014285714285714,
-        "y": 5.647927295918366
+        "x": 4.9947160421545655,
+        "y": 5.643593279524923
       },
       "isLocked": false,
-      "linkedName": "deposit reloaded Coral"
+      "linkedName": "Deposited reloaded 1 Coral Left"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "coral reloaded Left"
     }
   ],
   "rotationTargets": [],

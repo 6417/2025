@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.437,
-        "y": 6.773
+        "x": 1.4371153846153844,
+        "y": 6.772836538461538
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4370000000000003,
-        "y": 6.773
+        "x": 2.2425745296163964,
+        "y": 6.1011989905183
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "coral reloaded Left"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 4.155580357142856
       },
       "prevControl": {
-        "x": 1.9026147959183675,
-        "y": 4.155580357142856
+        "x": 2.685641275396325,
+        "y": 4.279767680941506
       },
       "nextControl": null,
       "isLocked": false,
