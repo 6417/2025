@@ -101,7 +101,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     // @SuppressWarnings("removal")
-    public synchronized void updateOdometry() {
+    public  void updateOdometry() {
         poseEstimator.update(
                 RobotContainer.getGyroRotation2d(),
                 new SwerveModulePosition[] {

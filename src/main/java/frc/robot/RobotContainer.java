@@ -70,7 +70,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
 
-    public static synchronized Rotation2d getGyroRotation2d() {
+    public static Rotation2d getGyroRotation2d() {
         double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
         double angle = Math.IEEEremainder(inverted * gyro.getYaw().getValueAsDouble(), 360);
         return Rotation2d.fromDegrees(angle);
