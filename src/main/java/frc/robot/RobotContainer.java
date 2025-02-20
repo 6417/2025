@@ -16,6 +16,7 @@ import frc.robot.swerve.FridoPathplanner;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.Controls.HubturmState;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.CoralAlgae.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
@@ -54,6 +55,8 @@ public class RobotContainer {
         namedCommands.put("AutoScoreL4", new AutoScore(controls.liftingTowerStateInt(HubturmState.LFOUR)));
         namedCommands.put("StationLevel", new CoralHeightPitchCommandGroup(controls.liftingTowerStateInt(HubturmState.STATION)));
         namedCommands.put("CoralInput", new CoralIntake(coralDispenser));
+        namedCommands.put("LiftingTowerL4", new CoralHeightPitchCommandGroup(controls.liftingTowerStateInt(HubturmState.LFOUR)));
+        namedCommands.put("CoralOutput", new CoralAlgaeOutCommandGroup());
 
         namedCommands.put("RightChaseTag", new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));

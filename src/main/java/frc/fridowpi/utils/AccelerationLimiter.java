@@ -170,7 +170,7 @@ public class AccelerationLimiter {
         for (int i = 0; i < 4; i++) {
             Matrix<N2, N2> rotMat = MatBuilder.fill(Nat.N2(), Nat.N2(),
                     Math.cos(0.5 * Math.PI * i), -Math.sin(0.5 * Math.PI * i),
-                    Math.sin(0.5 * Math.PI * i), Math.cos(0.5 * Math.PI));
+                    Math.sin(0.5 * Math.PI * i), Math.cos(0.5 * Math.PI * i));
 
             Vector<N2> r = new Vector<N2>(rotMat.times(rVec));
             var constr = accelConstraint(r, currentVel, dt);

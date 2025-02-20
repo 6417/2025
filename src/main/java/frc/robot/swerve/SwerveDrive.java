@@ -28,7 +28,7 @@ public class SwerveDrive extends SubsystemBase {
     // I made a mistake by a factor of 10 when I considered the force, the
     // accelration should
     // be roughly 10 m / s^2 and not 75.
-    private AccelerationLimiter accelLimiter = new AccelerationLimiter(9, 0.267);
+    private AccelerationLimiter accelLimiter = new AccelerationLimiter(20, 0.267);
 
     ChassisSpeeds lastSpeeds = new ChassisSpeeds();
 
@@ -79,7 +79,7 @@ public class SwerveDrive extends SubsystemBase {
         long timeNow = System.currentTimeMillis();
         if (lastSetpointTime > 0) {
             speeds = accelLimiter.constrain(lastMeasuredSpeeds, speeds,
-                    ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
+                        ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
         }
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
