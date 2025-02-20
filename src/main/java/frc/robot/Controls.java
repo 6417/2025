@@ -90,7 +90,7 @@ public class Controls implements Sendable {
 
     public IntakeState activeIntakeState = IntakeState.OUTTAKE; // default state
 
-    private int liftingTowerStateInt(HubturmState state) {
+    public int liftingTowerStateInt(HubturmState state) {
         switch (state) {
             case LONE:
                 liftingTowerState = HubturmState.LONE;

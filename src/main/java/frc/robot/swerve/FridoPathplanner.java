@@ -10,6 +10,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import java.util.Map;
+
 public class FridoPathplanner {
     private SwerveDrive drive;
     
@@ -52,6 +54,10 @@ public class FridoPathplanner {
 
     public void registerCommand(String name, Command command) {
         NamedCommands.registerCommand(name, command);
+    }
+
+    public void registerCommand(Map<String, Command> namedCommands) {
+        NamedCommands.registerCommands(namedCommands);
     }
 
     public Command getAutoCommandGroup(String fileName) {
