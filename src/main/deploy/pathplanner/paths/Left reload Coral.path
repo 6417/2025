@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.576676627788486,
-        "y": 5.662907705574071
+        "x": 4.087985473128121,
+        "y": 5.845661076713882
       },
       "isLocked": false,
-      "linkedName": "a9"
+      "linkedName": "Deposited preloaded Coral Left"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 6.772836538461538
       },
       "prevControl": {
-        "x": 4.048467238862478,
-        "y": 5.883219912375074
+        "x": 3.6057168142626774,
+        "y": 6.04639287857254
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "coral loaded"
+      "linkedName": "coral reloaded Left"
     }
   ],
   "rotationTargets": [],
