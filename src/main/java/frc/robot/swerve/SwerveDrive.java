@@ -25,7 +25,8 @@ public class SwerveDrive extends SubsystemBase {
 
     public LimelightHelpers.PoseEstimate mt2;
 
-    // I made a mistake by a factor of 10 when I considered the force, the accelration should 
+    // I made a mistake by a factor of 10 when I considered the force, the
+    // accelration should
     // be roughly 10 m / s^2 and not 75.
     private AccelerationLimiter accelLimiter = new AccelerationLimiter(9, 0.267);
 
@@ -69,13 +70,16 @@ public class SwerveDrive extends SubsystemBase {
         setDefaultCommand(new DriveCommand(this));
     }
 
+    ChassisSpeeds lastMeasuredSpeeds = new ChassisSpeeds();
     long lastSetpointTime = -1;
+
     public void setChassisSpeeds(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
 
         long timeNow = System.currentTimeMillis();
         if (lastSetpointTime > 0) {
-            speeds = accelLimiter.constrain(lastSpeeds, speeds, ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
+            speeds = accelLimiter.constrain(lastMeasuredSpeeds, speeds,
+                    ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
         }
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
@@ -85,6 +89,7 @@ public class SwerveDrive extends SubsystemBase {
         }
         lastSpeeds = speeds;
         lastSetpointTime = timeNow;
+        lastMeasuredSpeeds = getChassisSpeeds();
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -115,7 +120,6 @@ public class SwerveDrive extends SubsystemBase {
     public void addVisionToOdometry() {
         LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        
 
         LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
                 .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems
