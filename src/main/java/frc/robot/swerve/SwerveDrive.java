@@ -24,7 +24,10 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveDrivePoseEstimator poseEstimator;
 
     public LimelightHelpers.PoseEstimate mt2;
-    private AccelerationLimiter accelLimiter = new AccelerationLimiter(75, 0.267);
+
+    // I made a mistake by a factor of 10 when I considered the force, the accelration should 
+    // be roughly 10 m / s^2 and not 75.
+    private AccelerationLimiter accelLimiter = new AccelerationLimiter(9, 0.267);
 
     ChassisSpeeds lastSpeeds = new ChassisSpeeds();
 
