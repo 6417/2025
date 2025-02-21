@@ -19,13 +19,13 @@ public class ClimberEncoderZero extends Command {
         timer.reset();
         timer.start();
         mIsFinished = false;
-      climber.setMotorSpeed(-0.1);
+        climber.setMotorSpeed(-0.1);
     }
 
 
     @Override
     public void execute() {
-        if (timer.get() > 0.5 && climber.getAmperage() > 0.04) {
+        if (timer.get() > 0.5 && climber.getAmperage() > 0.025) {
             mIsFinished = true;
           }
     }

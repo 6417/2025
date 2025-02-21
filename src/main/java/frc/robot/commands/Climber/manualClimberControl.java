@@ -15,7 +15,7 @@ public class manualClimberControl extends Command {
 
     @Override
     public void execute() {
-        climber.setSpeed(joystick.getRawAxis(1));
+        climber.setMotorSpeed(joystick.getRawAxis(1));
     }
 
     @Override
@@ -25,7 +25,7 @@ public class manualClimberControl extends Command {
     
     @Override
     public void end(boolean interrupted) {
-        climber.setSpeed(0);
+        climber.setMotorSpeed(0);
     }
     
 }

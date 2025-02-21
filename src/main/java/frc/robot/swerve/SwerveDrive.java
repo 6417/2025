@@ -75,21 +75,22 @@ public class SwerveDrive extends SubsystemBase {
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
-
+        /* 
         long timeNow = System.currentTimeMillis();
         if (lastSetpointTime > 0) {
             speeds = accelLimiter.constrain(lastMeasuredSpeeds, speeds,
                         ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
-        }
+        }*/
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
         for (int i = 0; i < 4; i++) {
             modules[i].setDesiredState(moduleStates[i]);
         }
-        lastSpeeds = speeds;
-        lastSetpointTime = timeNow;
-        lastMeasuredSpeeds = getChassisSpeeds();
+        
+        //lastSpeeds = speeds;
+        //lastSetpointTime = timeNow;
+        //lastMeasuredSpeeds = getChassisSpeeds();
     }
 
     public ChassisSpeeds getChassisSpeeds() {

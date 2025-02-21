@@ -59,17 +59,17 @@ public class RobotContainer {
         namedCommands.put("CoralOutput", new CoralAlgaeOutCommandGroup());
 
         namedCommands.put("RightChaseTag", new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
+                Constants.OffsetsToAprilTags.offsetToAprilTagRight));
         namedCommands.put("LeftChaseTag", new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        namedCommands.put("MidChaseTag", new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+                Constants.OffsetsToAprilTags.offsetToAprilTagLeft));
+        
 
         pathplanner.registerCommand(namedCommands);
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto", autoChooser);
         SmartDashboard.putData(liftingTower);
+        SmartDashboard.putData(coralDispenser);
         SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
 

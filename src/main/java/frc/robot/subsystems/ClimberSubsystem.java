@@ -75,18 +75,10 @@ public class ClimberSubsystem extends SubsystemBase {
         smartMotionConfig.maxVelocity(Constants.ClimberSubsystem.kMaxVelocityIn, ClosedLoopSlot.kSlot1);
         smartMotionConfig.positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal, ClosedLoopSlot.kSlot1);
         
-        climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot1);
         motorConfig.closedLoop.maxMotion.apply(smartMotionConfig);
       
         climberMotor.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
-    }
-
-    public void setSpeed(double speed) {
-        climberMotor.set(speed);
-    }
-
-    public void setPercentage(double percentage) {
     }
 
     public void resetEncoder() {
@@ -103,7 +95,6 @@ public class ClimberSubsystem extends SubsystemBase {
     public void setPositionUnderLoad(double position) {
         climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot1);
         climberMotor.setPosition(position);
-
     }
     public void setPositionForward(double position) {
         climberMotor.asSparkMax().getClosedLoopController().setReference(0, ControlType.kPosition, ClosedLoopSlot.kSlot0);

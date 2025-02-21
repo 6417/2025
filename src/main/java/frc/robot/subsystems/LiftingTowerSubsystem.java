@@ -5,6 +5,8 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,9 +21,10 @@ import frc.robot.Constants;
 
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
-    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0.12, 0.25, 0.126, 0.05);
+    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0.12, 0.25, 0.128, 0.05);
     private final TrapezoidProfile.Constraints constraints =  new TrapezoidProfile.Constraints(90, 200);
 
+    private Debouncer debouncer;
     private SparkMaxConfig motorConfig;
 
     private FridoSparkMax motorSlave;
@@ -41,6 +44,8 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         motorMaster = new FridoSparkMax(Constants.LiftingTower.liftingTowerLeftId);
 
         motorConfig = new SparkMaxConfig();
+
+        debouncer = new Debouncer(0.1, DebounceType.kRising);
 
         motorMaster.enableReverseLimitSwitch(Constants.LiftingTower.towerBottomSwitchPolarity, true);
 
@@ -79,8 +84,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         timer.start();
 
         updateMotionProfile();
-
-        setDefaultCommand(new RunCommand(() -> runAutomatic(), this));
     }
 
     public void resetEncoder() {
@@ -97,11 +100,11 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (isBottomSwitchPressed()) {
+        if (debouncer.calculate(isBottomSwitchPressed())) {
             resetEncoder();
         }
 
-        //runAutomatic(); //ONLY FOR TESTING LATER MUST BE REMOVED AND DONE BY COMMAND!!!
+        runAutomatic(); //ONLY FOR TESTING LATER MUST BE REMOVED AND DONE BY COMMAND!!!
     }
 
     public void setMotorSpeed(double speed) {
@@ -146,7 +149,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     }
 
     public boolean isAtDesiredHeight(){
-        return Math.abs(demandedHeight - motorMaster.getEncoderTicks()) <= 0.7;//Tolerance is for now 0.5 thicks later can be changed
+        return Math.abs(demandedHeight - motorMaster.getEncoderTicks()) <= 1.5;//Tolerance is for now 0.5 thicks later can be changed
     }
 
     @Override

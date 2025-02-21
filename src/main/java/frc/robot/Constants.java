@@ -16,6 +16,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.fridowpi.motors.FridolinsMotor.LimitSwitchPolarity;
 import frc.fridowpi.motors.utils.PidValues;
+import frc.robot.subsystems.CoralDispenserSubsystem;
 import frc.robot.swerve.ModuleConfig;
 
 /**
@@ -66,9 +67,9 @@ public final class Constants {
 
     public static final class OffsetsToAprilTags {
         //This values must be calibrated to value that we can both score and see the april tag.(And obviously when we are in allience zone)
-        public static final double[] offsetToAprilTagLeftToReef = { 0.7, 0.165, 0 };
-        public static final double[] offsetToAprilTagRightToReef = { 0.7, -0.165, 0 };
-        public static final double[] offsetToAprilTagCenterToReef = { 0.7, 0, 0 };
+        public static final double[] offsetToAprilTagRight = { 0.4,  0.2 + 0.1, 0 };
+        public static final double[] offsetToAprilTagLeft = { 0.4, -0.2 + 0.15, 0 };
+        public static final double[] offsetToAprilTagCenter = { 0.4, 0.0 + 0.15, 0 };
     }
 
     public static final class CoralDispenser {
@@ -77,8 +78,8 @@ public final class Constants {
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double pitchMotorForwardLimit = 3;
-        public static final double pitchMotorReverseForwardLimit = 75;
+        public static final double pitchMotorForwardLimit = 1;
+        public static final double pitchMotorReverseForwardLimit = 70;
         public static final double zeroingSpeed = 0.1;
         public static final double kArmGearRatio = 50 * (37/9);
         public static final double angularOffset = 0; // It is setted on REVClient 
@@ -88,7 +89,7 @@ public final class Constants {
 
         public static double kMaxAcceleration = 50000;
         public static double kMaxVelocity = 8000; // in rpm
-        public static double kAllowedClosedLoopError = 0.7;
+        public static double kAllowedClosedLoopError = 1;
 
         public static final int stationState = 0;
         public static final int l1State = 1;
@@ -98,10 +99,12 @@ public final class Constants {
         public static final int algae1State = 5;
         public static final int algae2State = 6;
 
-        //TODO Check this calibration one more time
+        public static final double pitchUp = 1;
+        public static final double pitchDown = 70;
+
         public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0); 
-        public static final double intakeSpeed = -0.5;
-        public static final double outtakeSpeed = 0.5;
+        public static final double intakeSpeed = -0.8;
+        public static final double outtakeSpeed = 0.6;
 
         public static final double waitAfterOuttake = 0.3;
         public static final double waitAfterAlgaeIntake = 0.3;
@@ -132,11 +135,11 @@ public final class Constants {
         parameters[CoralDispenser.l3State].name = "l3";
         parameters[CoralDispenser.l4State].name = "l4";
 
-        parameters[CoralDispenser.stationState].pitchAngle = 24;
-        parameters[CoralDispenser.l1State].pitchAngle = 60;
-        parameters[CoralDispenser.l2State].pitchAngle = 50;
-        parameters[CoralDispenser.l3State].pitchAngle = 50;
-        parameters[CoralDispenser.l4State].pitchAngle = 65;
+        parameters[CoralDispenser.stationState].pitchAngle = 36;
+        parameters[CoralDispenser.l1State].pitchAngle = 60  ;
+        parameters[CoralDispenser.l2State].pitchAngle = 50 + 3;
+        parameters[CoralDispenser.l3State].pitchAngle = 50 + 3;
+        parameters[CoralDispenser.l4State].pitchAngle = 65 + 3;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
 
@@ -165,8 +168,8 @@ public final class Constants {
         public static double kMaxAccelerationIn = 60000;
         public static double kMaxVelocityIn = 6000;
 
-        public static double positionFront = 255;
-        public static double positionBack = 40; //Adjusted to prevent robot to tip over wegen des Schwerpunkts - Wiedercalibration wird angefordert
+        public static double positionFront = 235;
+        public static double positionBack = 80; //Adjusted to prevent robot to tip over wegen des Schwerpunkts - Wiedercalibration wird angefordert
         public static double positionSteady = 180; 
     }
 
@@ -181,7 +184,7 @@ public final class Constants {
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(1.5, 0, 0.0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(2, 0, 0.0, 0); // TODO: test all values
                                                                              
         public static final double softLimitTopPos = 72.0;
     }

@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CoralDispenser;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.StopAllMotors;
 import frc.robot.commands.Climber.ClimberCommand;
-import frc.robot.commands.Climber.ClimberEncoderZero;
+import frc.robot.commands.Climber.ClimberEncoderZeroGroup;
 import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
@@ -163,11 +164,11 @@ public class Controls implements Sendable {
 
     public Controls() {
         rbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagLeftToReef));
+                Constants.OffsetsToAprilTags.offsetToAprilTagRight));
         lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagRightToReef));
-        pov0Drive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagCenterToReef));
+                Constants.OffsetsToAprilTags.offsetToAprilTagLeft));
+        //pov0Drive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+        //        Constants.OffsetsToAprilTags.offsetToAprilTagCenter));
 
         burgerButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.gyro.reset()));
 
@@ -175,7 +176,7 @@ public class Controls implements Sendable {
         xButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
         bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
         aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
-        yButtonDrive.onTrue(new ClimberEncoderZero(RobotContainer.climber));
+        yButtonDrive.onTrue(new ClimberEncoderZeroGroup());
 
 
         // liftingtower 
@@ -191,6 +192,8 @@ public class Controls implements Sendable {
         xButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LFOUR)));
 
         // lbButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
+
+        burgerButtonOperator.toggleOnTrue(new StopAllMotors());
 
         rtButtonDrive.whileTrue(Commands.startEnd(
             () -> {activeSpeedFactor = DriveSpeed.SLOW;},

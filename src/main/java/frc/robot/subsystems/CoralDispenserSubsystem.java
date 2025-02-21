@@ -69,10 +69,12 @@ public class CoralDispenserSubsystem extends SubsystemBase {
 
     }
 
+    @Override
     public void periodic() {
         SmartDashboard.putNumber("Absolute Rotation", getAbsoluteRotation() * 360);
         SmartDashboard.putNumber("Motor Encoder Thicks", coralMotorChangePitch.getEncoderTicks());
         SmartDashboard.putBoolean("Is at goal Encoder Thicks", isAtDesiredPitch());
+        SmartDashboard.putBoolean("LimitSwitch", isForwardLimitSwitchPressedMotorTop());
     }
 
 
@@ -90,7 +92,7 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public boolean isForwardLimitSwitchPressedMotorTop() {
-        return coralMotorTop.isForwardLimitSwitchActive();
+        return !coralMotorTop.isForwardLimitSwitchActive();
     }
 
     public void setMotorTopSpeed(double speed) {
@@ -127,6 +129,7 @@ public class CoralDispenserSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Abs Encoder Coral Dispenser", () -> getAbsoluteRotation() * 360, null);
         builder.addDoubleProperty("Motor Encoder Coral Dispenser", () -> coralMotorChangePitch.getEncoderTicks(), null);
         builder.addBooleanProperty("is at desired pitch", () -> this.isAtDesiredPitch(), null);
+        builder.addDoubleProperty("desired pitch", () -> desiredPitch, null);
         super.initSendable(builder);
     }
 }
