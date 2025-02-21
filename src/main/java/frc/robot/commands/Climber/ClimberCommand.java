@@ -23,14 +23,17 @@ public class ClimberCommand extends Command {
         switch (state) {
             case kForward:
                 climber.setPositionForward(position);
+                RobotContainer.leds.climbLEDs();                
                 break;
             
             case kBack:
                 climber.setPositionUnderLoad(position);
+                RobotContainer.leds.climbLEDs();
                 break;
 
             case kSteady:
                 climber.setPositionForward(position);
+                RobotContainer.leds.climbLEDs();
             default:
                 break;
         }
