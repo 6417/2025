@@ -99,7 +99,7 @@ public final class Constants {
         public static final int algae1State = 5;
         public static final int algae2State = 6;
 
-        public static final double pitchUp = 1;
+        public static final double pitchUp = 20;
         public static final double pitchDown = 70;
 
         public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0); 
