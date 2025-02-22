@@ -19,6 +19,7 @@ import frc.robot.commands.Climber.ClimberEncoderZeroGroup;
 import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
+import frc.robot.commands.CoralAlgae.IntakeGroup;
 
 /**
  * Holds the data concerning input, which should be available
@@ -183,7 +184,7 @@ public class Controls implements Sendable {
         pov2Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE2)));
         pov6Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE1)));
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
-        pov4Operator.toggleOnTrue(new CoralIntake(RobotContainer.coralDispenser));
+        pov4Operator.toggleOnTrue(new IntakeGroup());
 
          
         yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));

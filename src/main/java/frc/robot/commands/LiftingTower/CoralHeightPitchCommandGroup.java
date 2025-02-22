@@ -6,10 +6,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class CoralHeightPitchCommandGroup extends SequentialCommandGroup {
+public class CoralHeightPitchCommandGroup extends ParallelCommandGroup {
     public CoralHeightPitchCommandGroup(int state) {
-        addCommands(new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.CoralDispenser.pitchUp),            
+        addCommands(            
             new CoralGoToHeightState(RobotContainer.liftingTower, Constants.parameters[state].height),
-            new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.parameters[state].pitchAngle));
+            new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.parameters[state].pitchAngle)
+        );
     }
 }

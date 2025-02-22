@@ -60,8 +60,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
             .outputRange(pidValuesPitch.peakOutputReverse, pidValuesPitch.peakOutputForward, ClosedLoopSlot.kSlot0)
             .velocityFF(pidValuesPitch.kF.orElse(0.0), ClosedLoopSlot.kSlot0);
 
+        motorConfig.smartCurrentLimit(30, 30);
+
         coralMotorChangePitch.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
+        
         resetPitchEncoder();
 
         // coralMotorTop.setPID(pidValuesMotorTop);

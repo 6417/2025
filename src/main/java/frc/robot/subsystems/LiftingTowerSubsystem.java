@@ -104,7 +104,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
             resetEncoder();
         }
 
-        //runAutomatic(); //ONLY FOR TESTING LATER MUST BE REMOVED AND DONE BY COMMAND!!!
+        runAutomatic(); //ONLY FOR TESTING LATER MUST BE REMOVED AND DONE BY COMMAND!!!
     }
 
     public void setMotorSpeed(double speed) {

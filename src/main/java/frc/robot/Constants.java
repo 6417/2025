@@ -68,9 +68,9 @@ public final class Constants {
     public static final class OffsetsToAprilTags {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
-        public static final double[] offsetToAprilTagRight = { 0.4, 0.2 + 0.1, 0 };
-        public static final double[] offsetToAprilTagLeft = { 0.4, -0.2 + 0.15, 0 };
-        public static final double[] offsetToAprilTagCenter = { 0.4, 0.0 + 0.15, 0 };
+        public static final double[] offsetToAprilTagRight = { 0.6, 0.2 + 0.05, 0 };
+        public static final double[] offsetToAprilTagLeft = { 0.6, -0.2 + 0.10, 0 };
+        public static final double[] offsetToAprilTagCenter = { 0.6, 0.0 + 0.15, 0 };
     }
 
     public static final class CoralDispenser {
@@ -79,8 +79,8 @@ public final class Constants {
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double pitchMotorForwardLimit = 1;
-        public static final double pitchMotorReverseForwardLimit = 70;
+        public static final double pitchMotorForwardLimit = 70;
+        public static final double pitchMotorReverseForwardLimit = 1;
         public static final double zeroingSpeed = 0.1;
         public static final double kArmGearRatio = 50 * (37 / 9);
         public static final double angularOffset = 0; // It is setted on REVClient
@@ -138,16 +138,16 @@ public final class Constants {
 
         parameters[CoralDispenser.stationState].pitchAngle = 36;
         parameters[CoralDispenser.l1State].pitchAngle = 60;
-        parameters[CoralDispenser.l2State].pitchAngle = 50 + 3;
-        parameters[CoralDispenser.l3State].pitchAngle = 50 + 3;
-        parameters[CoralDispenser.l4State].pitchAngle = 65 + 3;
+        parameters[CoralDispenser.l2State].pitchAngle = 42;
+        parameters[CoralDispenser.l3State].pitchAngle = 50;
+        parameters[CoralDispenser.l4State].pitchAngle = 57;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
 
         parameters[CoralDispenser.stationState].height = 0;
         parameters[CoralDispenser.l1State].height = 0;
         parameters[CoralDispenser.l2State].height = 0;
-        parameters[CoralDispenser.l3State].height = 25;
+        parameters[CoralDispenser.l3State].height = 27;
         parameters[CoralDispenser.l4State].height = 71;
         parameters[CoralDispenser.algae1State].height = 3;
         parameters[CoralDispenser.algae2State].height = 27;
