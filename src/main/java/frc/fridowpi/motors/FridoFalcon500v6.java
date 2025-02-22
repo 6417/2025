@@ -15,6 +15,7 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
@@ -31,6 +32,7 @@ import frc.fridowpi.motors.utils.PidValues;
  */
 public class FridoFalcon500v6 implements FridolinsMotor {
 	TalonFX motorProxy;
+	VoltageOut voltageOut = new VoltageOut(0);
 	MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
 	Optional<Integer> pidSlotIdx = Optional.empty();
 	TalonFXConfiguration config = new TalonFXConfiguration();
@@ -133,6 +135,10 @@ public class FridoFalcon500v6 implements FridolinsMotor {
 	@Override
 	public void setVelocity(double velocity) {
 		motorProxy.setControl(new VelocityVoltage(velocity));
+	}
+
+	public void setVoltage(double voltage) {
+		motorProxy.setControl(voltageOut.withOutput(voltage));
 	}
 
 	@Override

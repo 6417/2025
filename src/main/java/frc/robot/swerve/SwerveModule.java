@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.fridowpi.sensors.AnalogEncoder;
 import frc.robot.Utils;
 import frc.fridowpi.motors.FridolinsMotor;
@@ -60,10 +61,21 @@ public class SwerveModule implements Sendable {
 
         lastAngle = angle;
 
+        SmartDashboard.putNumber("Target chassis speed", desiredState.speedMetersPerSecond);
+
         double motorPos = angleMotor.getEncoderTicks() / config.angleGearboxRatio;
         double delta = Utils.wrap(lastAngle.getRotations() - motorPos);
         angleMotor.setPosition((motorPos + delta) * config.angleGearboxRatio);
     }
+
+    public void setDesiredState(double voltage) {
+        
+        driveMotor.setVoltage(voltage);
+
+        angleMotor.setPosition(0);
+    }
+
+
 
     public double getVelocityMPS() {
         return getVelocityRPS() * config.wheelCircumference;

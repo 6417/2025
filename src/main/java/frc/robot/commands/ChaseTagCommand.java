@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -32,9 +33,9 @@ public class ChaseTagCommand extends Command {
         this.offset = offset;
         this.swerveDriveSubsystem = swerveDriveSubsystem;
 
-        xController.setTolerance(0.05);
-        yController.setTolerance(0.05);
-        omegaController.setTolerance(Units.degreesToRadians(5));
+        xController.setTolerance(0.01);
+        yController.setTolerance(0.01);
+        omegaController.setTolerance(Units.degreesToRadians(3));
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
 
         addRequirements(swerveDriveSubsystem);
@@ -72,6 +73,9 @@ public class ChaseTagCommand extends Command {
             Pose2d goalPose = robotPose2d // robot pose in fieldspace
                     .plus(new Transform2d(xDistance, yDistance, Rotation2d.fromRadians(rRotation)));
 
+            SmartDashboard.putNumber("ChaseTag GoalPose X", goalPose.getX());
+            SmartDashboard.putNumber("ChaseTag GoalPose Y", goalPose.getY());
+
             // returns the target pose in field space, calculatet by adding the target pose
             // in robot space to the robot pose in field space}
 
@@ -79,6 +83,7 @@ public class ChaseTagCommand extends Command {
             xController.setGoal(goalPose.getX());
             yController.setGoal(goalPose.getY());
             omegaController.setGoal(goalPose.getRotation().getRadians());
+
 
             //System.out.println("OmegaGoal" + omegaController.getGoal().toString());
 

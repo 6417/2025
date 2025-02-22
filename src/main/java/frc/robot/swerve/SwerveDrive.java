@@ -1,5 +1,10 @@
 package frc.robot.swerve;
 
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volt;
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -9,9 +14,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 import frc.fridowpi.utils.AccelerationLimiter;
 import frc.robot.Constants;
@@ -38,6 +50,45 @@ public class SwerveDrive extends SubsystemBase {
     public static final int LOC_RR = 3;
 
     Thread odometryThread;
+    private final MutVoltage m_appliedVoltage = Volts.mutable(0);
+    private final MutDistance m_distance = Meters.mutable(0);
+    private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
+
+    private final SysIdRoutine m_sysIdRoutine =
+      new SysIdRoutine(
+          // Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
+          new SysIdRoutine.Config(),
+          new SysIdRoutine.Mechanism(
+              // Tell SysId how to plumb the driving voltage to the motors.
+              voltage -> {
+                m_appliedVoltage.mut_replace(voltage.in(Volts), Volts);
+                voltageDrive(voltage.in(Volts));
+              },
+              // Tell SysId how to record a frame of data for each motor on the mechanism being
+              // characterized.
+              log -> {
+                // Record a frame for the left motors.  Since these share an encoder, we consider
+                // the entire group to be one motor.
+                log.motor("drive")
+                    .voltage(
+                        m_appliedVoltage)
+                    .linearPosition(m_distance.mut_replace(getPose().getMeasureX().in(Meters), Meters))
+                    .linearVelocity(
+                        m_velocity.mut_replace(getChassisSpeeds().vxMetersPerSecond, MetersPerSecond));
+              },
+              // Tell SysId to make generated commands require this subsystem, suffix test state in
+              // WPILog with this subsystem's name ("drive")
+              this));
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutine.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutine.dynamic(direction);
+    }
+
+    Thread posEstimatorThread;
 
     public SwerveDrive(ModuleConfig[] configs) {
         String[] moduleNames = new String[4];
@@ -67,6 +118,9 @@ public class SwerveDrive extends SubsystemBase {
                 VecBuilder.fill(0.02, 0.02, 0.01),
                 VecBuilder.fill(0.1, 0.1, 0.01));
 
+        //posEstimatorThread = new Thread(this::updateOdometry);
+        //posEstimatorThread.start();
+
         setDefaultCommand(new DriveCommand(this));
     }
 
@@ -74,7 +128,8 @@ public class SwerveDrive extends SubsystemBase {
     long lastSetpointTime = -1;
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
-        speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
+        //speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
+        
         /* 
         long timeNow = System.currentTimeMillis();
         if (lastSetpointTime > 0) {
@@ -84,6 +139,8 @@ public class SwerveDrive extends SubsystemBase {
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.SwerveDrive.maxSpeed);
+
         for (int i = 0; i < 4; i++) {
             modules[i].setDesiredState(moduleStates[i]);
         }
@@ -91,6 +148,20 @@ public class SwerveDrive extends SubsystemBase {
         //lastSpeeds = speeds;
         //lastSetpointTime = timeNow;
         //lastMeasuredSpeeds = getChassisSpeeds();
+    }
+
+    public void voltageDrive(double voltage){
+        for (int i = 0; i < 4; i++) {
+            modules[i].setDesiredState(voltage);
+        }
+    }
+
+    public double getcharecterizedVelocity(){
+        double avareagevelocity = 0;
+        for (int i = 0; i < 4; i++) {
+           avareagevelocity+= modules[i].getVelocityMPS();
+        }
+        return avareagevelocity/4;
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -106,16 +177,15 @@ public class SwerveDrive extends SubsystemBase {
         return poseEstimator.getEstimatedPosition();
     }
 
-    // @SuppressWarnings("removal")
-    public  void updateOdometry() {
+    public synchronized void updateOdometry() {
         poseEstimator.update(
-                RobotContainer.getGyroRotation2d(),
-                new SwerveModulePosition[] {
-                        modules[LOC_FL].getPosition(),
-                        modules[LOC_FR].getPosition(),
-                        modules[LOC_RL].getPosition(),
-                        modules[LOC_RR].getPosition()
-                });
+            RobotContainer.getGyroRotation2d(),
+            new SwerveModulePosition[] {
+                    modules[LOC_FL].getPosition(),
+                    modules[LOC_FR].getPosition(),
+                    modules[LOC_RL].getPosition(),
+                    modules[LOC_RR].getPosition()
+            });
     }
 
     public void addVisionToOdometry() {

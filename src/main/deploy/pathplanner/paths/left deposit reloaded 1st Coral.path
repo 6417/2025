@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3556355475599817,
-        "y": 6.388604847333065
+        "x": 2.365280411764798,
+        "y": 6.409866089608864
       },
       "isLocked": false,
       "linkedName": "coral reloaded Left"
@@ -20,8 +20,8 @@
         "y": 5.325665983606557
       },
       "prevControl": {
-        "x": 3.3898364249371107,
-        "y": 6.088968141843737
+        "x": 3.3720852658693157,
+        "y": 6.095167406933931
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.5,
+    "maxVelocity": 2.25,
     "maxAcceleration": 2.75,
     "maxAngularVelocity": 400.0,
     "maxAngularAcceleration": 550.0,

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.75125,
-        "y": 4.015249999999999
+        "x": 4.4984375,
+        "y": 5.35904356060606
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.171237165501289,
-        "y": 3.760839998678245
+        "x": 2.7034630940790754,
+        "y": 4.322714604159126
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.352749999999455,
-        "y": 2.85499999999863
+        "x": 0.06941287878814215,
+        "y": 5.35904356060606
       },
       "prevControl": {
-        "x": 6.586383393743097,
-        "y": 3.450098530224251
+        "x": -0.930587121211857,
+        "y": 5.35904356060606
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Deposited preloaded Coral Right"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Right Stuff",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

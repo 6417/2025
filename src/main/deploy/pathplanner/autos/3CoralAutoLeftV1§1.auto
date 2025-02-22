@@ -11,9 +11,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "AutoScoreL4"
+            "waitTime": 1.5
           }
         },
         {
@@ -23,9 +23,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "CoralInput"
+            "waitTime": 1.5
           }
         },
         {
@@ -35,9 +35,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "AutoScoreL4"
+            "waitTime": 1.5
           }
         },
         {
@@ -47,21 +47,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "CoralInput"
+            "waitTime": 1.5
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Left Deposit 2nd Loaded Coral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoScoreL4"
           }
         }
       ]

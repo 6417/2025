@@ -44,7 +44,7 @@ public class CoralDispenserSubsystem extends SubsystemBase {
         limitConfig.softLimit
         .forwardSoftLimit(Constants.CoralDispenser.pitchMotorForwardLimit).forwardSoftLimitEnabled(true);
         limitConfig.softLimit
-        .forwardSoftLimit(Constants.CoralDispenser.pitchMotorReverseForwardLimit).reverseSoftLimitEnabled(true);
+        .reverseSoftLimit(Constants.CoralDispenser.pitchMotorReverseLimit).reverseSoftLimitEnabled(true);
 
         coralMotorChangePitch.asSparkMax().configure(limitConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -60,8 +60,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
             .outputRange(pidValuesPitch.peakOutputReverse, pidValuesPitch.peakOutputForward, ClosedLoopSlot.kSlot0)
             .velocityFF(pidValuesPitch.kF.orElse(0.0), ClosedLoopSlot.kSlot0);
 
+        motorConfig.smartCurrentLimit(0, 30);
+
         coralMotorChangePitch.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
+        
         resetPitchEncoder();
 
         // coralMotorTop.setPID(pidValuesMotorTop);

@@ -10,7 +10,7 @@
   "autoFolders": [
     "Feed Forward Testing"
   ],
-  "defaultMaxVel": 2.5,
+  "defaultMaxVel": 2.25,
   "defaultMaxAccel": 2.75,
   "defaultMaxAngVel": 400.0,
   "defaultMaxAngAccel": 550.0,

@@ -79,13 +79,14 @@ public class LEDSubsystem extends SubsystemBase {
                 }
             }
         }
-
+        setData();
     }
 
     private void setAllLEDs(RGB color) {
         for (int i = 0; i < Constants.LEDs.ledBufferLength; i++) {
             ledsBuffer.setRGB(i, color.red, color.green, color.blue);
         }
+        setData();
     }
 
     public void coralIntakeLEDs() {
@@ -113,26 +114,29 @@ public class LEDSubsystem extends SubsystemBase {
         setData();
     }
 
-    public void climbLEDs() {
-        setAllLEDs(climb);
-        setData();
-    }
-
+    
     public void rainbowAnimationLEDs() {
         LEDPattern rainbowPattern = LEDPattern.rainbow(255, 255);
         Distance kLedSpacing = Distance.ofBaseUnits(1 / 120, Meters);
         LEDPattern m_scrollingRainbow = rainbowPattern
-                .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
-    }
-
-    public void normalLeds() {
-        setAllLEDs(climb);
+        .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
+        m_scrollingRainbow.applyTo(ledsBuffer);
         setData();
     }
+    
+    public void climbLEDs() {
+        rainbowAnimationLEDs();
+    }
+    public void normalLeds() {
+        setAllLEDs(climb);
+    }
 
+    //TODO: Implement this method
     public void synchronizeLEDsWithStates() {
         HubturmState hubturmState = RobotContainer.controls.getActiveLiftingTowerState();
         IntakeState intakeState = RobotContainer.controls.activeIntakeState;
+
+        
 
         if (intakeState == IntakeState.INTAKE) {
             coralIntakeLEDs();
