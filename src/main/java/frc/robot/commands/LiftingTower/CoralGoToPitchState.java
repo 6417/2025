@@ -2,6 +2,7 @@ package frc.robot.commands.LiftingTower;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 
 public class CoralGoToPitchState extends Command {
@@ -12,6 +13,10 @@ public class CoralGoToPitchState extends Command {
         this.coralDispenserSubsystem = subsystem; //subsystem;
         if (coralDispenserSubsystem != null)
             addRequirements(coralDispenserSubsystem);
+            
+        assert Constants.CoralDispenser.pitchMotorReverseLimit <= angle;
+        assert Constants.CoralDispenser.pitchMotorForwardLimit >= angle;
+
         this.angle = angle;
 
     }

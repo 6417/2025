@@ -14,6 +14,6 @@ public class ClimberEncoderZeroGroup extends ParallelCommandGroup {
     public ClimberEncoderZeroGroup() {
         addCommands(new ClimberEncoderZero(RobotContainer.climber),            
             new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.CoralDispenser.pitchDown),
-            new CoralGoToHeightState(RobotContainer.liftingTower, 0.0));
+            new CoralGoToHeightState(RobotContainer.liftingTower, 1.0));
     }
 }

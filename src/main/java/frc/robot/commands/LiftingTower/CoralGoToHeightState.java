@@ -12,6 +12,7 @@ public class CoralGoToHeightState extends Command {
         this.liftingTowerSubsystem = subsystem;
         //if (liftingTowerSubsystem != null)
             //addRequirements(liftingTowerSubsystem);
+        assert height >= 1 : "[CoralGoToHeightState] height below soft limit requested";
         this.height = height;
 
     }

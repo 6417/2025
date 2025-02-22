@@ -79,8 +79,8 @@ public final class Constants {
         public static final LimitSwitchPolarity revPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
-        public static final double pitchMotorForwardLimit = 70;
-        public static final double pitchMotorReverseForwardLimit = 1;
+        public static final double pitchMotorForwardLimit = 68;
+        public static final double pitchMotorReverseLimit = 3;
         public static final double zeroingSpeed = 0.1;
         public static final double kArmGearRatio = 50 * (37 / 9);
         public static final double angularOffset = 0; // It is setted on REVClient
@@ -144,9 +144,9 @@ public final class Constants {
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
 
-        parameters[CoralDispenser.stationState].height = 0;
-        parameters[CoralDispenser.l1State].height = 0;
-        parameters[CoralDispenser.l2State].height = 0;
+        parameters[CoralDispenser.stationState].height = 1;
+        parameters[CoralDispenser.l1State].height = 1;
+        parameters[CoralDispenser.l2State].height = 1;
         parameters[CoralDispenser.l3State].height = 27;
         parameters[CoralDispenser.l4State].height = 71;
         parameters[CoralDispenser.algae1State].height = 3;
