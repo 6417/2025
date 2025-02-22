@@ -80,7 +80,7 @@ public final class Constants {
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final double pitchMotorForwardLimit = 68;
-        public static final double pitchMotorReverseLimit = 3;
+        public static final double pitchMotorReverseLimit = 5;
         public static final double zeroingSpeed = 0.1;
         public static final double kArmGearRatio = 50 * (37 / 9);
         public static final double angularOffset = 0; // It is setted on REVClient
@@ -99,8 +99,10 @@ public final class Constants {
         public static final int l4State = 4;
         public static final int algae1State = 5;
         public static final int algae2State = 6;
+        public static final int steadyState = 7;
 
-        public static final double pitchUp = 1;
+
+        public static final double pitchUp = 5;
         public static final double pitchDown = 70;
 
         public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
@@ -124,7 +126,7 @@ public final class Constants {
         }
     }
 
-    public static LevelParameters[] parameters = new LevelParameters[7];
+    public static LevelParameters[] parameters = new LevelParameters[8];
 
     static {
         for (int i = 0; i < parameters.length; i++)
@@ -135,6 +137,7 @@ public final class Constants {
         parameters[CoralDispenser.l2State].name = "l2";
         parameters[CoralDispenser.l3State].name = "l3";
         parameters[CoralDispenser.l4State].name = "l4";
+        parameters[CoralDispenser.steadyState].name = "SS";
 
         parameters[CoralDispenser.stationState].pitchAngle = 36;
         parameters[CoralDispenser.l1State].pitchAngle = 60;
@@ -143,14 +146,16 @@ public final class Constants {
         parameters[CoralDispenser.l4State].pitchAngle = 57;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
+        parameters[CoralDispenser.steadyState].pitchAngle = 20;
 
-        parameters[CoralDispenser.stationState].height = 1;
-        parameters[CoralDispenser.l1State].height = 1;
-        parameters[CoralDispenser.l2State].height = 1;
+        parameters[CoralDispenser.stationState].height = 3;
+        parameters[CoralDispenser.l1State].height = 3;
+        parameters[CoralDispenser.l2State].height = 3;
         parameters[CoralDispenser.l3State].height = 27;
         parameters[CoralDispenser.l4State].height = 71;
         parameters[CoralDispenser.algae1State].height = 3;
         parameters[CoralDispenser.algae2State].height = 27;
+        parameters[CoralDispenser.steadyState].height = 3;
     }
 
     public static final class ClimberSubsystem {
@@ -204,13 +209,13 @@ public final class Constants {
 
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
-            defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 1.035;
+            defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 0.977 * 1.058376;
 
             defaultModuleConfig2024.driveGearboxRatio = 6.181;
             defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.19, 0.18, 0.05);
+            defaultModuleConfig2024.drivePidValues = new PidValues(0.0, 0.00, 0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.184, 0.12, 0.0);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;

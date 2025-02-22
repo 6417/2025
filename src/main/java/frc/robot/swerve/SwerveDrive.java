@@ -88,6 +88,8 @@ public class SwerveDrive extends SubsystemBase {
         return m_sysIdRoutine.dynamic(direction);
     }
 
+    Thread posEstimatorThread;
+
     public SwerveDrive(ModuleConfig[] configs) {
         String[] moduleNames = new String[4];
         moduleNames[LOC_FR] = "Front Right";
@@ -116,6 +118,9 @@ public class SwerveDrive extends SubsystemBase {
                 VecBuilder.fill(0.02, 0.02, 0.01),
                 VecBuilder.fill(0.1, 0.1, 0.01));
 
+        //posEstimatorThread = new Thread(this::updateOdometry);
+        //posEstimatorThread.start();
+
         setDefaultCommand(new DriveCommand(this));
     }
 
@@ -123,7 +128,8 @@ public class SwerveDrive extends SubsystemBase {
     long lastSetpointTime = -1;
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
-        speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
+        //speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
+        
         /* 
         long timeNow = System.currentTimeMillis();
         if (lastSetpointTime > 0) {
@@ -132,6 +138,8 @@ public class SwerveDrive extends SubsystemBase {
         }*/
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.SwerveDrive.maxSpeed);
 
         for (int i = 0; i < 4; i++) {
             modules[i].setDesiredState(moduleStates[i]);
@@ -169,16 +177,15 @@ public class SwerveDrive extends SubsystemBase {
         return poseEstimator.getEstimatedPosition();
     }
 
-    // @SuppressWarnings("removal")
-    public  void updateOdometry() {
+    public synchronized void updateOdometry() {
         poseEstimator.update(
-                RobotContainer.getGyroRotation2d(),
-                new SwerveModulePosition[] {
-                        modules[LOC_FL].getPosition(),
-                        modules[LOC_FR].getPosition(),
-                        modules[LOC_RL].getPosition(),
-                        modules[LOC_RR].getPosition()
-                });
+            RobotContainer.getGyroRotation2d(),
+            new SwerveModulePosition[] {
+                    modules[LOC_FL].getPosition(),
+                    modules[LOC_FR].getPosition(),
+                    modules[LOC_RL].getPosition(),
+                    modules[LOC_RR].getPosition()
+            });
     }
 
     public void addVisionToOdometry() {

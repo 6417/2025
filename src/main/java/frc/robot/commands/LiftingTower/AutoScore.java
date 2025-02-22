@@ -10,7 +10,7 @@ public class AutoScore extends SequentialCommandGroup {
     public AutoScore(int state) {
         addCommands(new CoralHeightPitchCommandGroup(state), 
                     new CoralAlgaeOutCommandGroup().withTimeout(0.5),
-                    new CoralHeightPitchCommandGroup(1)
+                    new CoralHeightPitchCommandGroup(7)
                     //,new CoralGoToPitchState(RobotContainer.coralDispenser, Constants.CoralDispenser.pitchUp)
         );
     }

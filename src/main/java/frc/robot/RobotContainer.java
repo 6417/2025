@@ -82,6 +82,6 @@ public class RobotContainer {
     }
     
     public static Command getAutoCommand(){
-        return autoChooser.getSelected(); //new FeedForwardCharacterization(drive, true, new FeedForwardCharacterizationData("drive"), drive::voltageDrive, drive::getcharecterizedVelocity);
+        return autoChooser.getSelected();//new FeedForwardCharacterization(drive, true, new FeedForwardCharacterizationData("drive"), drive::voltageDrive, drive::getcharecterizedVelocity);
     }
 }
