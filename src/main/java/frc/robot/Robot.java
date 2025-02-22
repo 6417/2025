@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
      * initialization code.
      */
     public Robot() {
+        
         FollowPathCommand.warmupCommand().schedule();
 
         robotContainer = new RobotContainer();
@@ -74,6 +75,7 @@ public class Robot extends TimedRobot {
                         null);
             }
         });
+        
     }
 
     /**
@@ -163,7 +165,6 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
          
-        
     }
 
     /** This function is called once when the robot is first started up. */

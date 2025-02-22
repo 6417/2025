@@ -10,8 +10,8 @@
   "autoFolders": [
     "Feed Forward Testing"
   ],
-  "defaultMaxVel": 2.5,
-  "defaultMaxAccel": 2.75,
+  "defaultMaxVel": 2.0,
+  "defaultMaxAccel": 2.0,
   "defaultMaxAngVel": 400.0,
   "defaultMaxAngAccel": 550.0,
   "defaultNominalVoltage": 12.0,

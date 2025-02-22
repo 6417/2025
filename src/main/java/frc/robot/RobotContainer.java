@@ -16,6 +16,8 @@ import frc.robot.swerve.FridoPathplanner;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.Controls.HubturmState;
 import frc.robot.commands.ChaseTagCommand;
+import frc.robot.commands.FeedForwardCharacterization;
+import frc.robot.commands.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.robot.commands.CoralAlgae.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.LiftingTower.AutoScore;
@@ -80,6 +82,6 @@ public class RobotContainer {
     }
     
     public static Command getAutoCommand(){
-        return autoChooser.getSelected();
+        return autoChooser.getSelected(); //new FeedForwardCharacterization(drive, true, new FeedForwardCharacterizationData("drive"), drive::voltageDrive, drive::getcharecterizedVelocity);
     }
 }

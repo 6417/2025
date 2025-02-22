@@ -66,8 +66,9 @@ public final class Constants {
     }
 
     public static final class OffsetsToAprilTags {
-        //This values must be calibrated to value that we can both score and see the april tag.(And obviously when we are in allience zone)
-        public static final double[] offsetToAprilTagRight = { 0.4,  0.2 + 0.1, 0 };
+        // This values must be calibrated to value that we can both score and see the
+        // april tag.(And obviously when we are in allience zone)
+        public static final double[] offsetToAprilTagRight = { 0.4, 0.2 + 0.1, 0 };
         public static final double[] offsetToAprilTagLeft = { 0.4, -0.2 + 0.15, 0 };
         public static final double[] offsetToAprilTagCenter = { 0.4, 0.0 + 0.15, 0 };
     }
@@ -81,8 +82,8 @@ public final class Constants {
         public static final double pitchMotorForwardLimit = 1;
         public static final double pitchMotorReverseForwardLimit = 70;
         public static final double zeroingSpeed = 0.1;
-        public static final double kArmGearRatio = 50 * (37/9);
-        public static final double angularOffset = 0; // It is setted on REVClient 
+        public static final double kArmGearRatio = 50 * (37 / 9);
+        public static final double angularOffset = 0; // It is setted on REVClient
 
         public static final double stopSpeedMotorTop = 0;
         public static final double stopSpeedPitch = 0;
@@ -102,7 +103,7 @@ public final class Constants {
         public static final double pitchUp = 1;
         public static final double pitchDown = 70;
 
-        public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0); 
+        public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
         public static final double intakeSpeed = -0.8;
         public static final double outtakeSpeed = 0.6;
 
@@ -136,7 +137,7 @@ public final class Constants {
         parameters[CoralDispenser.l4State].name = "l4";
 
         parameters[CoralDispenser.stationState].pitchAngle = 36;
-        parameters[CoralDispenser.l1State].pitchAngle = 60  ;
+        parameters[CoralDispenser.l1State].pitchAngle = 60;
         parameters[CoralDispenser.l2State].pitchAngle = 50 + 3;
         parameters[CoralDispenser.l3State].pitchAngle = 50 + 3;
         parameters[CoralDispenser.l4State].pitchAngle = 65 + 3;
@@ -152,25 +153,25 @@ public final class Constants {
         parameters[CoralDispenser.algae2State].height = 27;
     }
 
-
     public static final class ClimberSubsystem {
         public static final int climberMotorID = 20;
 
         public static final double resetPitchEncoderPosition = 0;
         public static PidValues PidValuesOutClimberSubsystem = new PidValues(0.05, 0, 0.6, 0);
         public static PidValues PidValuesInClimberSubsystem = new PidValues(0.05, 0, 0.2, 0);
-        
+
         public static double kAllowedClosedLoopErrorOut = 0.5;
         public static double kMaxAccelerationOut = 60000;
         public static double kMaxVelocityOut = 6000; // in rpm
-        // TODO: Remove two different PID because we dont need it 
+        // TODO: Remove two different PID because we dont need it
         public static double kAllowedClosedLoopErrorIn = 0.5;
         public static double kMaxAccelerationIn = 60000;
         public static double kMaxVelocityIn = 6000;
 
         public static double positionFront = 235;
-        public static double positionBack = 80; //Adjusted to prevent robot to tip over wegen des Schwerpunkts - Wiedercalibration wird angefordert
-        public static double positionSteady = 180; 
+        public static double positionBack = 80; // Adjusted to prevent robot to tip over wegen des Schwerpunkts -
+                                                // Wiedercalibration wird angefordert
+        public static double positionSteady = 180;
     }
 
     public static final class LiftingTower {
@@ -185,7 +186,7 @@ public final class Constants {
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
         public static final PidValues pidValues = new PidValues(2, 0, 0.0, 0); // TODO: test all values
-                                                                             
+
         public static final double softLimitTopPos = 72.0;
     }
 
@@ -193,11 +194,12 @@ public final class Constants {
         public static ModuleConfig[] configs = new ModuleConfig[4];
         public static boolean isGyroInverted = false;
 
-        public static final double maxSpeed = 4.5; // TODO: for testing
+        public static final double maxSpeed = 4.9; // TODO: for testing
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
         public static final double moduleXoffset = 0.267;
         public static final double moduleYoffset = 0.267;
-        public static final double maxTurnSpeed = 10;//12// Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI *
+        public static final double maxTurnSpeed = 10;// 12// Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed /
+                                                     // (Math.PI *
                                                      // 2); // rps
 
         static {
@@ -205,10 +207,10 @@ public final class Constants {
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 1.035;
 
             defaultModuleConfig2024.driveGearboxRatio = 6.181;
-            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;   
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
             defaultModuleConfig2024.drivePidValues = new PidValues(0.1, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0.0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.19, 0.18, 0.05);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
@@ -245,7 +247,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.083;
+            configs[LOC_FR].absEncoderOffset = 0.082;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
@@ -253,7 +255,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.443;
+            configs[LOC_RL].absEncoderOffset = 0.446;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
@@ -261,7 +263,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.698;
+            configs[LOC_RR].absEncoderOffset = 0.699;
         }
     }
 }
