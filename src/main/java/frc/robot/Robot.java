@@ -75,8 +75,9 @@ public class Robot extends TimedRobot {
                         null);
             }
         });
+        robotContainer.coralDispenser.resetPitchEncoder();
 
-        RobotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
+        //RobotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
     }
 
     /**
@@ -116,13 +117,11 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        robotContainer.coralDispenser.resetPitchEncoder();
         autoCommand = robotContainer.getAutoCommand();
 
         if (autoCommand != null) {
             autoCommand.schedule();
         }
-
 
     }
 
@@ -134,11 +133,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        
+
         if (autoCommand != null) {
             autoCommand.cancel();
         }
-        
+
         robotContainer.drive.stopMotors();
         robotContainer.drive.resetModulesToAbsolute();
         robotContainer.gyro.setYaw(robotContainer.drive.getPose().getRotation().getDegrees());
@@ -147,25 +146,25 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        //robotContainer.drive.addVisionToOdometry();
+        // robotContainer.drive.addVisionToOdometry();
     }
 
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
 
-       
-
-        /* 
-        robotContainer.liftingTower.setHeight(5);
-        robotContainer.liftingTower.setDefaultCommand(new RunCommand(() -> robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));*/
+        /*
+         * robotContainer.liftingTower.setHeight(5);
+         * robotContainer.liftingTower.setDefaultCommand(new RunCommand(() ->
+         * robotContainer.liftingTower.runAutomatic(), robotContainer.liftingTower));
+         */
 
     }
 
     /** This function is called periodically during test mode. */
     @Override
     public void testPeriodic() {
-         
+
     }
 
     /** This function is called once when the robot is first started up. */
