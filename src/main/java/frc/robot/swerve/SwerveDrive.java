@@ -203,7 +203,7 @@ public class SwerveDrive extends SubsystemBase {
             return;
 
         // TODO: tune these values
-        final double farDist = 0.3;
+        final double farDist = 0.55;
         final double maxRotationSpeed = 350;
 
         final boolean isRobotSpinningFast = Math

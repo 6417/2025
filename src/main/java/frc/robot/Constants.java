@@ -174,7 +174,7 @@ public final class Constants {
         public static double kMaxVelocityIn = 6000;
 
         public static double positionFront = 235;
-        public static double positionBack = 80; // Adjusted to prevent robot to tip over wegen des Schwerpunkts -
+        public static double positionBack = 70; // Adjusted to prevent robot to tip over wegen des Schwerpunkts -
                                                 // Wiedercalibration wird angefordert
         public static double positionSteady = 180;
     }
@@ -214,8 +214,9 @@ public final class Constants {
             defaultModuleConfig2024.driveGearboxRatio = 6.181;
             defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.0, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.184, 0.12, 0.0);
+            defaultModuleConfig2024.drivePidValues = new PidValues(1.1926E-05, 0.00, 0);
+            //defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.13271 / 12, 2.1395 / 12, 0.15313 / 12);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
