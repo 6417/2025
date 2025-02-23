@@ -144,7 +144,7 @@ public final class Constants {
         parameters[CoralDispenser.l1State].pitchAngle = 60;
         parameters[CoralDispenser.l2State].pitchAngle = 50;
         parameters[CoralDispenser.l3State].pitchAngle = 50;
-        parameters[CoralDispenser.l4State].pitchAngle = 57;
+        parameters[CoralDispenser.l4State].pitchAngle = 60;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
         parameters[CoralDispenser.steadyState].pitchAngle = 20;
@@ -153,7 +153,7 @@ public final class Constants {
         parameters[CoralDispenser.l1State].height = 3;
         parameters[CoralDispenser.l2State].height = 3.5;
         parameters[CoralDispenser.l3State].height = 27;
-        parameters[CoralDispenser.l4State].height = 72;
+        parameters[CoralDispenser.l4State].height = 72.5;
         parameters[CoralDispenser.algae1State].height = 3;
         parameters[CoralDispenser.algae2State].height = 27;
         parameters[CoralDispenser.steadyState].height = 3;
@@ -167,8 +167,8 @@ public final class Constants {
         public static PidValues PidValuesInClimberSubsystem = new PidValues(0.05, 0, 0.2, 0);
 
         public static double kAllowedClosedLoopErrorOut = 0.5;
-        public static double kMaxAccelerationOut = 60000;
-        public static double kMaxVelocityOut = 6000; // in rpm
+        public static double kMaxAccelerationOut = 45000;
+        public static double kMaxVelocityOut = 4500; // in rpm
         // TODO: Remove two different PID because we dont need it
         public static double kAllowedClosedLoopErrorIn = 0.5;
         public static double kMaxAccelerationIn = 60000;

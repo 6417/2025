@@ -129,9 +129,12 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     public void runAutomatic(){ 
         double elapsedTime = timer.get();
         if (motionProfile.isFinished(elapsedTime)) {
-            double desiredVel = (demandedHeight - motorMaster.getEncoderTicks()) * 4;
+            double desiredVel = (demandedHeight - motorMaster.getEncoderTicks()) * 2;
             if (desiredVel < -constraints.maxVelocity) desiredVel = -constraints.maxVelocity;
             if (desiredVel > constraints.maxVelocity) desiredVel = constraints.maxVelocity;
+
+            if (Math.abs(desiredVel) < 0.05 * constraints.maxVelocity) desiredVel = 0;
+
             desiredState = new TrapezoidProfile.State(demandedHeight, desiredVel);
         } else {
             desiredState = motionProfile.calculate(elapsedTime, startState, endState);
@@ -167,5 +170,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         builder.addDoubleProperty("Total Time", () -> motionProfile.totalTime(), null);
         builder.addBooleanProperty("masterRevSwitch", this::isBottomSwitchPressed, null);
         builder.addBooleanProperty("isAtGoal", this::isAtDesiredHeight, null);
+        builder.addBooleanProperty("MotionMagicIsProfileFinished", () -> motionProfile.isFinished(timer.get()), null);
     }
 }
