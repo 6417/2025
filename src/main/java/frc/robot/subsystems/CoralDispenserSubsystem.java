@@ -91,7 +91,11 @@ public class CoralDispenserSubsystem extends SubsystemBase {
     }
 
     public double getAbsoluteRotation(){
-        return coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition() - Constants.CoralDispenser.angularOffset;
+        double absEncoder = coralMotorChangePitch.asSparkMax().getAbsoluteEncoder().getPosition();
+
+        if (absEncoder > 0.5)
+            absEncoder -= 1;
+        return absEncoder - Constants.CoralDispenser.angularOffset;  
     }
 
     public boolean isForwardLimitSwitchPressedMotorTop() {

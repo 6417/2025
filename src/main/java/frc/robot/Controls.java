@@ -134,7 +134,7 @@ public class Controls implements Sendable {
     public Map<DriveSpeed, Double> speedFactors = Map.of(
             DriveSpeed.DEFAULT_SPEED, 1.0,
             DriveSpeed.FAST, 0.9,
-            DriveSpeed.SLOW, 0.3);
+            DriveSpeed.SLOW, 0.2);
     private DriveSpeed activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;
     private double accelerationSensitivity = speedFactors.get(activeSpeedFactor);
 
@@ -168,38 +168,43 @@ public class Controls implements Sendable {
                 Constants.OffsetsToAprilTags.offsetToAprilTagRight));
         lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeft));
-        //pov0Drive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
-        //        Constants.OffsetsToAprilTags.offsetToAprilTagCenter));
+        pov0Drive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
+                Constants.OffsetsToAprilTags.offsetToAprilTagLoadingStation));
 
         burgerButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.gyro.reset()));
 
-        /* climber: Tested on Friday!*/
-        xButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionFront, Climberstate.kForward));
-        bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack, Climberstate.kBack));
-        aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady, Climberstate.kSteady));
+        /* climber: Tested on Friday! */
+        xButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionFront,
+                Climberstate.kForward));
+        bButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionBack,
+                Climberstate.kBack));
+        aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady,
+                Climberstate.kSteady));
         yButtonDrive.onTrue(new ClimberEncoderZeroGroup());
 
-
-        // liftingtower 
+        // liftingtower
         pov2Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE2)));
         pov6Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE1)));
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
         pov4Operator.toggleOnTrue(new IntakeGroup());
 
-         
         yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));
         bButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTWO)));
         aButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTHREE)));
         xButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LFOUR)));
 
-        // lbButtonOperator.whileTrue(new TowerManualControl(RobotContainer.liftingTower));
+        // lbButtonOperator.whileTrue(new
+        // TowerManualControl(RobotContainer.liftingTower));
 
         burgerButtonOperator.toggleOnTrue(new StopAllMotors());
 
         rtButtonDrive.whileTrue(Commands.startEnd(
-            () -> {activeSpeedFactor = DriveSpeed.SLOW;},
-            () -> {activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;}
-        ));
+                () -> {
+                    activeSpeedFactor = DriveSpeed.SLOW;
+                },
+                () -> {
+                    activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;
+                }));
 
         Shuffleboard.getTab("Drive").add("Controls", this);
     }

@@ -20,6 +20,7 @@ import frc.robot.commands.FeedForwardCharacterization;
 import frc.robot.commands.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.robot.commands.CoralAlgae.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralAlgae.CoralIntake;
+import frc.robot.commands.CoralAlgae.IntakeGroup;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -56,7 +57,7 @@ public class RobotContainer {
 
         namedCommands.put("AutoScoreL4", new AutoScore(controls.liftingTowerStateInt(HubturmState.LFOUR)));
         namedCommands.put("StationLevel", new CoralHeightPitchCommandGroup(controls.liftingTowerStateInt(HubturmState.STATION)));
-        namedCommands.put("CoralInput", new CoralIntake(coralDispenser));
+        namedCommands.put("CoralInput", new IntakeGroup());
         namedCommands.put("LiftingTowerL4", new CoralHeightPitchCommandGroup(controls.liftingTowerStateInt(HubturmState.LFOUR)));
         namedCommands.put("CoralOutput", new CoralAlgaeOutCommandGroup());
 
@@ -64,7 +65,8 @@ public class RobotContainer {
                 Constants.OffsetsToAprilTags.offsetToAprilTagRight));
         namedCommands.put("LeftChaseTag", new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeft));
-        
+        namedCommands.put("LoadChaseTag", new ChaseTagCommand(RobotContainer.drive,
+                Constants.OffsetsToAprilTags.offsetToAprilTagLoadingStation));
 
         pathplanner.registerCommand(namedCommands);
 

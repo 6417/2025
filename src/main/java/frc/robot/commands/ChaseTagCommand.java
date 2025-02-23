@@ -65,7 +65,7 @@ public class ChaseTagCommand extends Command {
 
             // This is new target data, so recalculate the goal
             lastTarget = target;
-
+            
             double xDistance = -robotPoseInTargetSpace.getZ() - offset[0];
             double yDistance = robotPoseInTargetSpace.getX() - offset[1];
             double rRotation = robotPoseInTargetSpace.getRotation().getY() - offset[2];

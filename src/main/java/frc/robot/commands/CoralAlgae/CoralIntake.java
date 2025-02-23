@@ -22,6 +22,7 @@ public class CoralIntake extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("IntakeGroup created");
         RobotContainer.controls.activeIntakeState = IntakeState.INTAKE;
     }
 

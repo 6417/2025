@@ -69,9 +69,9 @@ public final class Constants {
     public static final class OffsetsToAprilTags {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
+        public static final double[] offsetToAprilTagLoadingStation = { 0.45, 0.0 + 0, 0.0 };
         public static final double[] offsetToAprilTagRight = { 0.55, 0.2 + 0.05, 0 };
         public static final double[] offsetToAprilTagLeft = { 0.55, -0.2 + 0.13, 0 };
-        public static final double[] offsetToAprilTagCenter = { 0.55, 0.0 + 0.15, 0 };
     }
 
     public static final class CoralDispenser {
