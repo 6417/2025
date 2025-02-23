@@ -167,8 +167,8 @@ public final class Constants {
         public static PidValues PidValuesInClimberSubsystem = new PidValues(0.05, 0, 0.2, 0);
 
         public static double kAllowedClosedLoopErrorOut = 0.5;
-        public static double kMaxAccelerationOut = 45000;
-        public static double kMaxVelocityOut = 4500; // in rpm
+        public static double kMaxAccelerationOut = 30000;
+        public static double kMaxVelocityOut = 3000; // in rpm
         // TODO: Remove two different PID because we dont need it
         public static double kAllowedClosedLoopErrorIn = 0.5;
         public static double kMaxAccelerationIn = 60000;
