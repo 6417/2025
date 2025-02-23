@@ -8,6 +8,7 @@ import frc.fridowpi.motors.utils.FeedForwardValues;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -190,9 +191,12 @@ public final class Constants {
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(2, 0, 0.0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(2, 0.0, 0.0, 0); // TODO: test all values
 
-        public static final double softLimitTopPos = 72.0;
+        static {
+            pidValues.iZone = Optional.of(4.0);
+        }
+        public static final double softLimitTopPos = 72.5;
     }
 
     public static final class SwerveDrive {

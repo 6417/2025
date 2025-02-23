@@ -57,7 +57,6 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
         pidValues.iZone.ifPresent(iZone -> motorConfig.closedLoop.iZone(iZone));
 
-
         motorMaster.asSparkMax().configure(motorConfig, ResetMode.kNoResetSafeParameters,
                 PersistMode.kPersistParameters);
 
@@ -137,7 +136,12 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     
         double ff = feedforward.calculate(desiredState.velocity);
 
-        motorMaster.setPositionWithFeedforward(desiredState.position, ff);
+        if (Math.abs(demandedHeight - desiredState.position) > 1.5)
+            motorMaster.setPositionWithFeedforward(desiredState.position, ff);
+        else if (motorMaster.getPidTarget() != demandedHeight){
+            ff = feedforward.calculate(0.0);
+            motorMaster.setPositionWithFeedforward(demandedHeight, ff);
+        }
     }
 
     public void stopMotors() {
