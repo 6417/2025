@@ -69,9 +69,9 @@ public final class Constants {
     public static final class OffsetsToAprilTags {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
-        public static final double[] offsetToAprilTagRight = { 0.6, 0.2 + 0.05, 0 };
-        public static final double[] offsetToAprilTagLeft = { 0.6, -0.2 + 0.10, 0 };
-        public static final double[] offsetToAprilTagCenter = { 0.6, 0.0 + 0.15, 0 };
+        public static final double[] offsetToAprilTagRight = { 0.55, 0.2 + 0.05, 0 };
+        public static final double[] offsetToAprilTagLeft = { 0.55, -0.2 + 0.13, 0 };
+        public static final double[] offsetToAprilTagCenter = { 0.55, 0.0 + 0.15, 0 };
     }
 
     public static final class CoralDispenser {
@@ -191,12 +191,13 @@ public final class Constants {
         public static final double kMaxVelocity = 3000;
         public static final double kMaxAcceleration = 8000;
         public static final double kAllowedClosedLoopError = 0.01;
-        public static final PidValues pidValues = new PidValues(2, 0.0, 0.0, 0); // TODO: test all values
+        public static final PidValues pidValues = new PidValues(2.0, 0.0, 0.0, 0); // TODO: test all values
 
         static {
             pidValues.iZone = Optional.of(4.0);
         }
         public static final double softLimitTopPos = 72.5;
+        public static final double softLimitBottomPos = 2.0;
     }
 
     public static final class SwerveDrive {

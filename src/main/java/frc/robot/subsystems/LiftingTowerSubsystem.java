@@ -67,7 +67,9 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         SparkMaxConfig limitConfig = new SparkMaxConfig();
         limitConfig.softLimit
         .forwardSoftLimit(Constants.LiftingTower.softLimitTopPos).forwardSoftLimitEnabled(true);
-
+        limitConfig.softLimit
+        .reverseSoftLimit(Constants.LiftingTower.softLimitBottomPos).reverseSoftLimitEnabled(true);
+    
         motorSlave.follow(motorMaster, DirectionType.invertMaster);
 
         motorMaster.asSparkMax().configure(limitConfig, ResetMode.kNoResetSafeParameters,
@@ -127,21 +129,21 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     public void runAutomatic(){ 
         double elapsedTime = timer.get();
         if (motionProfile.isFinished(elapsedTime)) {
-          desiredState = new TrapezoidProfile.State(demandedHeight, 0.0);
+            double desiredVel = (demandedHeight - motorMaster.getEncoderTicks()) * 4;
+            if (desiredVel < -constraints.maxVelocity) desiredVel = -constraints.maxVelocity;
+            if (desiredVel > constraints.maxVelocity) desiredVel = constraints.maxVelocity;
+            desiredState = new TrapezoidProfile.State(demandedHeight, desiredVel);
         } else {
-          desiredState = motionProfile.calculate(elapsedTime, startState, endState);
+            desiredState = motionProfile.calculate(elapsedTime, startState, endState);
         }
 
         SmartDashboard.putNumber("Targetstate Velocity", desiredState.velocity);
     
         double ff = feedforward.calculate(desiredState.velocity);
+        desiredState.position = Math.max(Constants.LiftingTower.softLimitBottomPos, desiredState.position);
+        desiredState.position = Math.min(Constants.LiftingTower.softLimitTopPos, desiredState.position);
 
-        if (Math.abs(demandedHeight - desiredState.position) > 1.5)
-            motorMaster.setPositionWithFeedforward(desiredState.position, ff);
-        else if (motorMaster.getPidTarget() != demandedHeight){
-            ff = feedforward.calculate(0.0);
-            motorMaster.setPositionWithFeedforward(demandedHeight, ff);
-        }
+        motorMaster.setPositionWithFeedforward(desiredState.position, ff);
     }
 
     public void stopMotors() {

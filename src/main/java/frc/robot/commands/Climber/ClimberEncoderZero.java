@@ -25,7 +25,7 @@ public class ClimberEncoderZero extends Command {
 
     @Override
     public void execute() {
-        if (timer.get() > 0.5 && climber.getAmperage() > 0.025) {
+        if (timer.get() > 0.5 && climber.getAmperage() > 0.045) {
             mIsFinished = true;
           }
     }

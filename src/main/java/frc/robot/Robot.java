@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
         });
         robotContainer.coralDispenser.resetPitchEncoder();
 
-        //RobotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
+        RobotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
     }
 
     /**
