@@ -8,12 +8,13 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.fridowpi.sensors.AnalogEncoder;
 import frc.robot.Utils;
+import frc.fridowpi.motors.FridoFalcon500v6;
 import frc.fridowpi.motors.FridolinsMotor;
 import frc.fridowpi.motors.FridolinsMotor.IdleMode;
 
 public class SwerveModule implements Sendable {
     private String moduleName;
-    private FridolinsMotor driveMotor;
+    private FridoFalcon500v6 driveMotor;
     private FridolinsMotor angleMotor;
     private AnalogEncoder absoluteEncoder;
 
@@ -83,6 +84,10 @@ public class SwerveModule implements Sendable {
 
     public double getVelocityRPS() {
         return driveMotor.getEncoderVelocity() / config.encoderVelocityToRPSFalcon / config.driveGearboxRatio;
+    }
+
+    public double appliedVoltage(){
+        return driveMotor.getAppliedVoltage();
     }
 
     public String getName() {

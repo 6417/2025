@@ -78,17 +78,17 @@ public class ModuleConfig implements Cloneable {
         encoderVelocityToRPSNEO = 0.0;
     }
 
-    public FridolinsMotor makeDriveMotor() {
+    public FridoFalcon500v6 makeDriveMotor() {
         FridoFalcon500v6 driveMotor = new FridoFalcon500v6(driveMotorID);
         driveMotor.factoryDefault();
         driveMotor.asTalonFX().getConfigurator().apply(new Slot0Configs().withKP(drivePidValues.kP)
-                .withKS(driveFFValues.kS).withKV(driveFFValues.kV));
+                .withKS(driveFFValues.kS).withKV(driveFFValues.kV).withKA(driveFFValues.kA));
         driveMotor.asTalonFX().getConfigurator()
                 .apply(new CurrentLimitsConfigs().withStatorCurrentLimit(driveMotorFreeCurrentLimit)
                         .withSupplyCurrentLimit(driveMotorStallCurrentLimit));
         driveMotor.configEncoder(FridoFeedBackDevice.kBuildin, (int) encoderThicksToRotationFalcon);
         driveMotor.setInverted(driveMotorInverted);
-        driveMotor.setPID(drivePidValues, driveFFValues);
+        //driveMotor.setPID(drivePidValues, driveFFValues);
         driveMotor.setIdleMode(IdleMode.kBrake);
         return driveMotor;
     }

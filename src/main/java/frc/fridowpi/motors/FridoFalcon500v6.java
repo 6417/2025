@@ -152,6 +152,10 @@ public class FridoFalcon500v6 implements FridolinsMotor {
 		config.MotionMagic.MotionMagicAcceleration = maxAccelerationRotationsPerSecond;
 	}
 
+	public double getAppliedVoltage(){
+		return motorProxy.getMotorVoltage().getValueAsDouble();
+	}
+
 	@Override
 	public void setPidTarget(double value, PidType type) {
 		switch (type) {

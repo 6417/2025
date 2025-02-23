@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Volt;
@@ -56,29 +57,12 @@ public class SwerveDrive extends SubsystemBase {
 
     private final SysIdRoutine m_sysIdRoutine =
       new SysIdRoutine(
-          // Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
           new SysIdRoutine.Config(),
           new SysIdRoutine.Mechanism(
-              // Tell SysId how to plumb the driving voltage to the motors.
-              voltage -> {
-                m_appliedVoltage.mut_replace(voltage.in(Volts), Volts);
-                voltageDrive(voltage.in(Volts));
-              },
-              // Tell SysId how to record a frame of data for each motor on the mechanism being
-              // characterized.
-              log -> {
-                // Record a frame for the left motors.  Since these share an encoder, we consider
-                // the entire group to be one motor.
-                log.motor("drive")
-                    .voltage(
-                        m_appliedVoltage)
-                    .linearPosition(m_distance.mut_replace(getPose().getMeasureX().in(Meters), Meters))
-                    .linearVelocity(
-                        m_velocity.mut_replace(getChassisSpeeds().vxMetersPerSecond, MetersPerSecond));
-              },
-              // Tell SysId to make generated commands require this subsystem, suffix test state in
-              // WPILog with this subsystem's name ("drive")
-              this));
+            (voltage) -> voltageDrive(voltage.in(Volts))
+              ,(log) -> log.motor("Average").voltage(m_appliedVoltage.mut_replace(getcharecterizedVoltage(), Volts))
+              .linearPosition(m_distance.mut_replace(getcharecterizedDistance(), Meters))
+              .linearVelocity(m_velocity.mut_replace(getcharecterizedVelocity(), MetersPerSecond)), this));
 
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutine.quasistatic(direction);
@@ -139,7 +123,7 @@ public class SwerveDrive extends SubsystemBase {
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.SwerveDrive.maxSpeed);
+        //SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.SwerveDrive.maxSpeed);
 
         for (int i = 0; i < 4; i++) {
             modules[i].setDesiredState(moduleStates[i]);
@@ -159,9 +143,25 @@ public class SwerveDrive extends SubsystemBase {
     public double getcharecterizedVelocity(){
         double avareagevelocity = 0;
         for (int i = 0; i < 4; i++) {
-           avareagevelocity+= modules[i].getVelocityMPS();
+           avareagevelocity+= modules[i].getState().speedMetersPerSecond;
         }
         return avareagevelocity/4;
+    }
+
+    public double getcharecterizedDistance(){
+        double avareageDistance = 0;
+        for (int i = 0; i < 4; i++) {
+            avareageDistance+= modules[i].getPosition().distanceMeters;
+        }
+        return avareageDistance/4;
+    }
+
+    public double getcharecterizedVoltage(){
+        double avareageVoltage = 0;
+        for (int i = 0; i < 4; i++) {
+            avareageVoltage+= modules[i].appliedVoltage();
+        }
+        return avareageVoltage/4;
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -203,7 +203,7 @@ public class SwerveDrive extends SubsystemBase {
             return;
 
         // TODO: tune these values
-        final double farDist = 2;
+        final double farDist = 0.3;
         final double maxRotationSpeed = 350;
 
         final boolean isRobotSpinningFast = Math
