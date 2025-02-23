@@ -80,7 +80,7 @@ public final class Constants {
         public static final LimitSwitchPolarity fwdPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final LimitSwitchPolarity fwdMotorTopPolarity = LimitSwitchPolarity.kNormallyOpen;
         public static final double pitchMotorForwardLimit = 68;
-        public static final double pitchMotorReverseLimit = 5;
+        public static final double pitchMotorReverseLimit = 10;
         public static final double zeroingSpeed = 0.1;
         public static final double kArmGearRatio = 50 * (37 / 9);
         public static final double angularOffset = 0; // It is setted on REVClient
@@ -102,7 +102,7 @@ public final class Constants {
         public static final int steadyState = 7;
 
 
-        public static final double pitchUp = 5;
+        public static final double pitchUp = 10;
         public static final double pitchDown = 70;
 
         public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
@@ -141,7 +141,7 @@ public final class Constants {
 
         parameters[CoralDispenser.stationState].pitchAngle = 36;
         parameters[CoralDispenser.l1State].pitchAngle = 60;
-        parameters[CoralDispenser.l2State].pitchAngle = 42;
+        parameters[CoralDispenser.l2State].pitchAngle = 50;
         parameters[CoralDispenser.l3State].pitchAngle = 50;
         parameters[CoralDispenser.l4State].pitchAngle = 57;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
@@ -150,9 +150,9 @@ public final class Constants {
 
         parameters[CoralDispenser.stationState].height = 3;
         parameters[CoralDispenser.l1State].height = 3;
-        parameters[CoralDispenser.l2State].height = 3;
+        parameters[CoralDispenser.l2State].height = 3.5;
         parameters[CoralDispenser.l3State].height = 27;
-        parameters[CoralDispenser.l4State].height = 71;
+        parameters[CoralDispenser.l4State].height = 72;
         parameters[CoralDispenser.algae1State].height = 3;
         parameters[CoralDispenser.algae2State].height = 27;
         parameters[CoralDispenser.steadyState].height = 3;

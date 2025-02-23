@@ -17,7 +17,7 @@ public class CoralIntake extends Command {
         this.coralDispenserSubsystem = subsystem;
         if (coralDispenserSubsystem != null)
             addRequirements(coralDispenserSubsystem);
-        debouncer = new Debouncer(0.15, DebounceType.kBoth);
+        debouncer = new Debouncer(0.08, DebounceType.kBoth);
     }
 
     @Override
