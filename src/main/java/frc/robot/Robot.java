@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.fridowpi.utils.CSVLogger;
 
 
 /**
@@ -26,9 +28,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    private Command autoCommand;
-    private RobotContainer robotContainer;
-    //private PowerDistribution pdh;
+    private final RobotContainer robotContainer;
+    private Command autonomousCommand;
+    private final CSVLogger logger = new CSVLogger("/tmp/log.csv", 10000);
+    private long time;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -40,43 +43,9 @@ public class Robot extends TimedRobot {
         FollowPathCommand.warmupCommand().schedule();
 
         robotContainer = new RobotContainer();
-        //pdh = new PowerDistribution();
-
-        autoCommand = robotContainer.getAutoCommand();
-        robotContainer.gyro.reset();
-        robotContainer.drive.resetModulesToAbsolute();
-        robotContainer.coralDispenser.resetPitchEncoder();
-
-        Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
-        //SmartDashboard.putData(pdh);
-        Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-
-                builder.addDoubleProperty("distanceX",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX(),
-                        null);
-                builder.addDoubleProperty("distanceY",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getY(),
-                        null);
-                builder.addDoubleProperty("distanceZ",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ(),
-                        null);
-
-                builder.addDoubleProperty("RotationX (Roll)",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getX(),
-                        null);
-                builder.addDoubleProperty("RotationY (Pitch)",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY(),
-                        null);
-                builder.addDoubleProperty("RotationZ (Yaw)",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getZ(),
-                        null);
-            }
-        });
-        robotContainer.coralDispenser.resetPitchEncoder();
-
-        robotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
+        time = System.currentTimeMillis();
+        Shuffleboard.getTab("Drive").add(robotContainer.drive);
+        FollowPathCommand.warmupCommand().schedule();
     }
 
     /**
@@ -128,7 +97,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        robotContainer.drive.addVisionToOdometry();
+        //robotContainer.drive.addVisionToOdometry();
         LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }
 
