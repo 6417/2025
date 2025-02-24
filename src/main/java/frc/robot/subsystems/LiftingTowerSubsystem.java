@@ -158,7 +158,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     }
 
     public boolean isAtDesiredHeight(){
-        return Math.abs(demandedHeight - motorMaster.getEncoderTicks()) <= 1.5;//Tolerance is for now 0.5 thicks later can be changed
+        return Math.abs(demandedHeight - motorMaster.getEncoderTicks()) <= 1.5;
     }
 
     @Override

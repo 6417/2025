@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "RightChaseTag"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RightChaseTag"
+                }
+              }
+            ]
           }
         },
         {
@@ -25,13 +38,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left ChaseTag reload"
+            "waitTime": 0.2
           }
         },
         {
@@ -39,9 +46,9 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "LoadChaseTag"
+                  "pathName": "Left ChaseTag reload"
                 }
               },
               {
@@ -51,12 +58,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "CoralInput"
           }
         }
       ]

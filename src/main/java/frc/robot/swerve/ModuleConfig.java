@@ -88,7 +88,7 @@ public class ModuleConfig implements Cloneable {
                         .withSupplyCurrentLimit(driveMotorStallCurrentLimit));
         driveMotor.configEncoder(FridoFeedBackDevice.kBuildin, (int) encoderThicksToRotationFalcon);
         driveMotor.setInverted(driveMotorInverted);
-        //driveMotor.setPID(drivePidValues, driveFFValues);
+        driveMotor.setPID(drivePidValues, driveFFValues);
         driveMotor.setIdleMode(IdleMode.kBrake);
         return driveMotor;
     }

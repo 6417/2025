@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Volt;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -12,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -51,28 +53,6 @@ public class SwerveDrive extends SubsystemBase {
     public static final int LOC_RR = 3;
 
     Thread odometryThread;
-    private final MutVoltage m_appliedVoltage = Volts.mutable(0);
-    private final MutDistance m_distance = Meters.mutable(0);
-    private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
-
-    private final SysIdRoutine m_sysIdRoutine =
-      new SysIdRoutine(
-          new SysIdRoutine.Config(),
-          new SysIdRoutine.Mechanism(
-            (voltage) -> voltageDrive(voltage.in(Volts))
-              ,(log) -> log.motor("Average").voltage(m_appliedVoltage.mut_replace(getcharecterizedVoltage(), Volts))
-              .linearPosition(m_distance.mut_replace(getcharecterizedDistance(), Meters))
-              .linearVelocity(m_velocity.mut_replace(getcharecterizedVelocity(), MetersPerSecond)), this));
-
-    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        return m_sysIdRoutine.quasistatic(direction);
-    }
-
-    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return m_sysIdRoutine.dynamic(direction);
-    }
-
-    Thread posEstimatorThread;
 
     public SwerveDrive(ModuleConfig[] configs) {
         String[] moduleNames = new String[4];
@@ -106,10 +86,22 @@ public class SwerveDrive extends SubsystemBase {
         //posEstimatorThread.start();
 
         setDefaultCommand(new DriveCommand(this));
+
+        /*odometryThread = new Thread(this::updateOdometryThread);
+        odometryThread.start();*/
     }
 
-    ChassisSpeeds lastMeasuredSpeeds = new ChassisSpeeds();
-    long lastSetpointTime = -1;
+    public synchronized void updateOdometryThread() {
+        while (true) {
+            updateOdometry();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
         //speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
@@ -170,7 +162,10 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void periodic() {
+        System.out.println(getPose().toString());
         updateOdometry();
+        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
+                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
     }
 
     public Pose2d getPose() {
@@ -189,11 +184,12 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void addVisionToOdometry() {
-        LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
-                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        //MOVED TO PERIODIC
+        /*LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID, 
+                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);*/
 
         LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
-                .getBotPoseEstimate_wpiBlue(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems
+                .getBotPoseEstimate_wpiBlue_MegaTag2(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems
         addLimeLightMeasurementToPoseEstimation(lime1);
 
     }
@@ -203,16 +199,17 @@ public class SwerveDrive extends SubsystemBase {
             return;
 
         // TODO: tune these values
-        final double farDist = 0.55;
-        final double maxRotationSpeed = 350;
+        final double farDist = 0.8;
+        final double maxRotationSpeed = 450;
+        final double narrowAngleThreshold = Units.degreesToRadians(5);
 
         final boolean isRobotSpinningFast = Math
                 .abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > maxRotationSpeed;
-        final boolean isTagInNarrowAngle = true;/*
-                                                 * Math
-                                                 * .abs(RobotContainer.getGyroRotation2d().getDegrees() -
-                                                 * lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;
-                                                 */
+        final boolean isTagInNarrowAngle = 
+                                             Math
+                                             .abs(getPose().getRotation().getDegrees() - lime.pose.getRotation().getDegrees()) 
+                                             <= narrowAngleThreshold;
+                                            
         if (isRobotSpinningFast || !isTagInNarrowAngle) {
             // if our angular velocity is greater than 720 degrees
             // per second, ignore vision updates
@@ -242,7 +239,6 @@ public class SwerveDrive extends SubsystemBase {
         for (var module : modules) {
             module.stopMotors();
         }
-
     }
 
     public void resetModulesToAbsolute() {

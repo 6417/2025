@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,7 +15,6 @@ import frc.robot.commands.ChaseTagCommand;
 import frc.robot.commands.StopAllMotors;
 import frc.robot.commands.Climber.ClimberCommand;
 import frc.robot.commands.Climber.ClimberEncoderZeroGroup;
-import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
 import frc.robot.commands.CoralAlgae.IntakeGroup;
@@ -84,7 +82,7 @@ public class Controls implements Sendable {
         OUTTAKE;
     }
 
-    private HubturmState liftingTowerState = HubturmState.STATION; // default state
+    private static HubturmState liftingTowerState = HubturmState.STATION; // default state
 
     public HubturmState getActiveLiftingTowerState() {
         return liftingTowerState;
@@ -92,7 +90,7 @@ public class Controls implements Sendable {
 
     public IntakeState activeIntakeState = IntakeState.OUTTAKE; // default state
 
-    public int liftingTowerStateInt(HubturmState state) {
+    public static int liftingTowerStateInt(HubturmState state) {
         switch (state) {
             case LONE:
                 liftingTowerState = HubturmState.LONE;

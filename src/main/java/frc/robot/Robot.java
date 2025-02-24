@@ -4,20 +4,21 @@
 
 package frc.robot;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.logging.log4j.core.layout.CsvLogEventLayout;
+
 import com.pathplanner.lib.commands.FollowPathCommand;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PowerDistribution;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.CoralDispenser;
-import frc.robot.commands.LiftingTower.TowerManualControl;
+import frc.fridowpi.utils.CSVLogger;
+
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -27,9 +28,10 @@ import frc.robot.commands.LiftingTower.TowerManualControl;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    private Command autoCommand;
-    private RobotContainer robotContainer;
-    private PowerDistribution pdh;
+    private final RobotContainer robotContainer;
+    private Command autonomousCommand;
+    private final CSVLogger logger = new CSVLogger("/tmp/log.csv", 10000);
+    private long time;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -41,43 +43,9 @@ public class Robot extends TimedRobot {
         FollowPathCommand.warmupCommand().schedule();
 
         robotContainer = new RobotContainer();
-        pdh = new PowerDistribution();
-
-        autoCommand = robotContainer.getAutoCommand();
-        robotContainer.gyro.reset();
-        robotContainer.drive.resetModulesToAbsolute();
-        robotContainer.coralDispenser.resetPitchEncoder();
-
-        Shuffleboard.getTab("CommandScheduler").add(CommandScheduler.getInstance());
-        //SmartDashboard.putData(pdh);
-        Shuffleboard.getTab("Vision").add("XYZ Distance", new Sendable() {
-            @Override
-            public void initSendable(SendableBuilder builder) {
-
-                builder.addDoubleProperty("distanceX",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getX(),
-                        null);
-                builder.addDoubleProperty("distanceY",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getY(),
-                        null);
-                builder.addDoubleProperty("distanceZ",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getZ(),
-                        null);
-
-                builder.addDoubleProperty("RotationX (Roll)",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getX(),
-                        null);
-                builder.addDoubleProperty("RotationY (Pitch)",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getY(),
-                        null);
-                builder.addDoubleProperty("RotationZ (Yaw)",
-                        () -> LimelightHelpers.getTargetPose3d_RobotSpace(Constants.Limelight.limelightID).getRotation().getZ(),
-                        null);
-            }
-        });
-        robotContainer.coralDispenser.resetPitchEncoder();
-
-        RobotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
+        time = System.currentTimeMillis();
+        Shuffleboard.getTab("Drive").add(robotContainer.drive);
+        FollowPathCommand.warmupCommand().schedule();
     }
 
     /**
@@ -109,6 +77,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 0);
     }
 
     /**
@@ -117,36 +86,37 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        autoCommand = robotContainer.getAutoCommand();
-
-        if (autoCommand != null) {
-            autoCommand.schedule();
+        autonomousCommand = robotContainer.getAutonomousCommand();
+        //robotContainer.drive.resetOdoemetry(new Pose2d(2,7, new Rotation2d()));
+        // schedule the autonomous command (example)
+        if (autonomousCommand != null) {
+          autonomousCommand.schedule();
         }
-
     }
 
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        robotContainer.drive.addVisionToOdometry();
+        //robotContainer.drive.addVisionToOdometry();
+        LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }
 
     @Override
     public void teleopInit() {
-
-        if (autoCommand != null) {
-            autoCommand.cancel();
-        }
+        // robotContainer.pathplanner.getAutoCommandGroup("Auto").cancel();
 
         robotContainer.drive.stopMotors();
         robotContainer.drive.resetModulesToAbsolute();
         robotContainer.gyro.setYaw(robotContainer.drive.getPose().getRotation().getDegrees());
+        
     }
 
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
         // robotContainer.drive.addVisionToOdometry();
+        
+        LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }
 
     @Override

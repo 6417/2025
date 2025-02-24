@@ -18,10 +18,6 @@ public class FridoPathplanner {
     public FridoPathplanner(SwerveDrive drive) {
         this.drive = drive;
 
-        configure();
-    }
-
-    private void configure() {
         // configuration
         RobotConfig config;
         try {
@@ -37,8 +33,8 @@ public class FridoPathplanner {
                 drive::getChassisSpeeds,
                 drive::setChassisSpeeds,
                 new PPHolonomicDriveController(
-                        new PIDConstants(5, 0.0, 0.0),
-                        new PIDConstants(5, 0.0, 0.0)),
+                        new PIDConstants(0.75,0, 0.15),
+                        new PIDConstants(1, 0.0, 0.1)),
                 config,
                 () -> {
 
@@ -62,16 +58,15 @@ public class FridoPathplanner {
 
     public Command getAutoCommandGroup(String fileName) {
         try {
-            return new PathPlannerAuto(fileName);
-            
+           return new PathPlannerAuto(fileName);
+
         } catch (Exception e) {
             DriverStation.reportError("PathPlanner failed: " + e.getMessage(), e.getStackTrace());
             return Commands.none();
         }
     }
     
-    // only to test; don't use
-    public Command getFollowPathCommand(String fileName) {
+    public Command getAutonomousCommand(String fileName) {
 
         // return new PathPlannerAuto("Example Auto");
         try {

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.4304303278688515,
-        "y": 5.33765368852459
+        "x": 5.027721088435374,
+        "y": 5.460544217687075
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.759118852459016,
-        "y": 6.41654713114754
+        "x": 3.9178004746259036,
+        "y": 5.920173316012494
       },
       "isLocked": false,
       "linkedName": "Deposited preloaded Coral Left"
     },
     {
       "anchor": {
-        "x": 3.080840163934426,
-        "y": 4.870133196721311
+        "x": 1.0521045918367349,
+        "y": 6.797034438775509
       },
       "prevControl": {
-        "x": 2.9130122950819675,
-        "y": 5.409579918032786
+        "x": 0.7980368953585835,
+        "y": 6.8758016682587755
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 129.33271432176085
+    "rotation": 126.0
   },
   "reversed": false,
   "folder": "ChaseTag Auto Left",

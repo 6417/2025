@@ -2,13 +2,13 @@ package frc.robot;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.CoralDispenserSubsystem;
 import frc.robot.subsystems.LiftingTowerSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -16,8 +16,6 @@ import frc.robot.swerve.FridoPathplanner;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.Controls.HubturmState;
 import frc.robot.commands.ChaseTagCommand;
-import frc.robot.commands.FeedForwardCharacterization;
-import frc.robot.commands.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.robot.commands.CoralAlgae.CoralAlgaeOutCommandGroup;
 import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.CoralAlgae.IntakeGroup;
@@ -43,6 +41,7 @@ public class RobotContainer {
     private static final Map<String, Command> namedCommands;
     
     static {
+
         gyro = new Pigeon2(Constants.Gyro.gyroId);
         // gyroNavx = new AHRS(Port.kMXP); /* old */
         drive = new SwerveDrive(Constants.SwerveDrive.configs);
@@ -51,14 +50,14 @@ public class RobotContainer {
         climber = new ClimberSubsystem();
         coralDispenser = new CoralDispenserSubsystem();
         liftingTower = new LiftingTowerSubsystem();
-        controls = new Controls();
 
+        
         namedCommands = new HashMap<String, Command>();
 
-        namedCommands.put("AutoScoreL4", new AutoScore(controls.liftingTowerStateInt(HubturmState.LFOUR)));
-        namedCommands.put("StationLevel", new CoralHeightPitchCommandGroup(controls.liftingTowerStateInt(HubturmState.STATION)));
+        namedCommands.put("AutoScoreL4", new AutoScore(Controls.liftingTowerStateInt(HubturmState.LFOUR)));
+        namedCommands.put("StationLevel", new CoralHeightPitchCommandGroup(Controls.liftingTowerStateInt(HubturmState.STATION)));
         namedCommands.put("CoralInput", new IntakeGroup());
-        namedCommands.put("LiftingTowerL4", new CoralHeightPitchCommandGroup(controls.liftingTowerStateInt(HubturmState.LFOUR)));
+        namedCommands.put("LiftingTowerL4", new CoralHeightPitchCommandGroup(Controls.liftingTowerStateInt(HubturmState.LFOUR)));
         namedCommands.put("CoralOutput", new CoralAlgaeOutCommandGroup());
 
         namedCommands.put("RightChaseTag", new ChaseTagCommand(RobotContainer.drive,
@@ -68,22 +67,26 @@ public class RobotContainer {
         namedCommands.put("LoadChaseTag", new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLoadingStation));
 
-        pathplanner.registerCommand(namedCommands);
+        NamedCommands.registerCommands(namedCommands);
+
+
+        controls = new Controls();
 
         autoChooser = AutoBuilder.buildAutoChooser();
+        
         SmartDashboard.putData("Auto", autoChooser);
         SmartDashboard.putData(liftingTower);
         SmartDashboard.putData(coralDispenser);
         SmartDashboard.putBoolean("Is AutoBuilder Configured", AutoBuilder.isConfigured());
     }
 
-    public static Rotation2d getGyroRotation2d() {
+    public static synchronized Rotation2d getGyroRotation2d() {
         double inverted = Constants.SwerveDrive.isGyroInverted ? -1 : 1;
         double angle = Math.IEEEremainder(inverted * gyro.getYaw().getValueAsDouble(), 360);
         return Rotation2d.fromDegrees(angle);
     }
-    
-    public static Command getAutoCommand(){
-        return autoChooser.getSelected();//new FeedForwardCharacterization(drive, true, new FeedForwardCharacterizationData("drive"), drive::voltageDrive, drive::getcharecterizedVelocity);
+
+    public Command getAutonomousCommand(){
+        return pathplanner.getAutoCommandGroup("Auto");
     }
 }
