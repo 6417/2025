@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.238137755102041,
-        "y": 5.356919642857142
+        "x": 5.027721088435374,
+        "y": 5.460544217687075
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.566826279692206,
-        "y": 6.435813085480093
+        "x": 4.356409613025539,
+        "y": 6.539437660310026
       },
       "isLocked": false,
       "linkedName": "Deposited preloaded Coral Left"

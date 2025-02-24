@@ -104,6 +104,7 @@ public final class Constants {
 
 
         public static final double pitchUp = 10;
+        public static final double steadyStateSetpoint = 20;
         public static final double pitchDown = 70;
 
         public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
