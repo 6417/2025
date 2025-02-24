@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 
         robotContainer = new RobotContainer();
         time = System.currentTimeMillis();
-        Shuffleboard.getTab("Drive").add(robotContainer.drive);
+        //Shuffleboard.getTab("Drive").add(robotContainer.drive);
         FollowPathCommand.warmupCommand().schedule();
     }
 
