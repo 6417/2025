@@ -128,7 +128,7 @@ public class LiftingTowerSubsystem extends SubsystemBase {
 
     public void runAutomatic(){ 
         double elapsedTime = timer.get();
-        if (motionProfile.isFinished(elapsedTime)) {
+        if (motionProfile.isFinished(elapsedTime) || isAtDesiredHeight()) {
             desiredState = new TrapezoidProfile.State(demandedHeight, 0.0);
         } else {
             desiredState = motionProfile.calculate(elapsedTime, startState, endState);
