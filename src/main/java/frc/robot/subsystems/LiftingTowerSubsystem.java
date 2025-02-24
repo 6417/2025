@@ -126,21 +126,28 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         desiredState = motionProfile.calculate(timer.get(), startState, endState);
     }
 
+    static double clamp(double val, double min, double max)
+    {
+        if (val < min)
+            val = min;
+        if (val > max)
+            val = max;
+        return val;
+    }
+
+
     public void runAutomatic(){ 
         double elapsedTime = timer.get();
         if (motionProfile.isFinished(elapsedTime) || isAtDesiredHeight()) {
-            desiredState = new TrapezoidProfile.State(demandedHeight, 0.0);
+            double vel = (demandedHeight - getHeight()) * 2;
+            desiredState = new TrapezoidProfile.State(demandedHeight, vel);
         } else {
             desiredState = motionProfile.calculate(elapsedTime, startState, endState);
         }
-        desiredState.position = Math.max(Constants.LiftingTower.softLimitBottomPos, desiredState.position);
-        desiredState.position = Math.min(Constants.LiftingTower.softLimitTopPos, desiredState.position);
-
-        desiredState.velocity = Math.max(-constraints.maxVelocity, desiredState.velocity);
-        desiredState.velocity = Math.min(constraints.maxVelocity, desiredState.velocity);
+        desiredState.position = clamp(desiredState.position, Constants.LiftingTower.softLimitBottomPos, Constants.LiftingTower.softLimitTopPos);
+        desiredState.velocity = clamp(desiredState.velocity, -constraints.maxVelocity, constraints.maxVelocity);
 
         double ff = feedforward.calculate(desiredState.velocity);
-
         motorMaster.setPositionWithFeedforward(desiredState.position, ff);
     }
 
