@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left ChaseTag Start"
+            "pathName": "Chase Tag Start 2"
           }
         },
         {
@@ -33,31 +33,6 @@
           "type": "named",
           "data": {
             "name": "AutoScoreL4"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left ChaseTag reload"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StationLevel"
-                }
-              }
-            ]
           }
         }
       ]

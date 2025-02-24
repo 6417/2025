@@ -42,13 +42,19 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Left ChaseTag reload"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Left ChaseTag reload"
+                  "name": "LoadChaseTag"
                 }
               },
               {
@@ -58,6 +64,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralInput"
           }
         }
       ]
