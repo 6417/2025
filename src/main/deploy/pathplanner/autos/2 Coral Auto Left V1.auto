@@ -33,6 +33,12 @@
           "data": {
             "pathName": "Left Deposit 2nd Loaded Coral"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightChaseTag"
+          }
         }
       ]
     }

@@ -138,7 +138,7 @@ public final class Constants {
         parameters[CoralDispenser.l2State].name = "l2";
         parameters[CoralDispenser.l3State].name = "l3";
         parameters[CoralDispenser.l4State].name = "l4";
-        parameters[CoralDispenser.steadyState].name = "SS";
+        parameters[CoralDispenser.steadyState].name = "Steady State";
 
         parameters[CoralDispenser.stationState].pitchAngle = 36;
         parameters[CoralDispenser.l1State].pitchAngle = 60;
@@ -221,7 +221,7 @@ public final class Constants {
             defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
             defaultModuleConfig2024.drivePidValues = new PidValues(1.1926E-05, 0.00, 0);
             //defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.13271 / 12, 2.1395 / 12, 0.15313 / 12);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0.05);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
@@ -250,7 +250,7 @@ public final class Constants {
             configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
-            configs[LOC_FL].absEncoderOffset = 0.764;
+            configs[LOC_FL].absEncoderOffset = 0.763;
 
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
@@ -258,7 +258,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.082;
+            configs[LOC_FR].absEncoderOffset = 0.0857;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;

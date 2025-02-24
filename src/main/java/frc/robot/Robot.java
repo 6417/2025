@@ -10,14 +10,9 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.CoralDispenser;
-import frc.robot.commands.LiftingTower.TowerManualControl;
+
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -29,7 +24,7 @@ import frc.robot.commands.LiftingTower.TowerManualControl;
 public class Robot extends TimedRobot {
     private Command autoCommand;
     private RobotContainer robotContainer;
-    private PowerDistribution pdh;
+    //private PowerDistribution pdh;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -41,7 +36,7 @@ public class Robot extends TimedRobot {
         FollowPathCommand.warmupCommand().schedule();
 
         robotContainer = new RobotContainer();
-        pdh = new PowerDistribution();
+        //pdh = new PowerDistribution();
 
         autoCommand = robotContainer.getAutoCommand();
         robotContainer.gyro.reset();
@@ -77,7 +72,7 @@ public class Robot extends TimedRobot {
         });
         robotContainer.coralDispenser.resetPitchEncoder();
 
-        RobotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
+        robotContainer.coralDispenser.setPitch(Constants.CoralDispenser.pitchUp);
     }
 
     /**
@@ -109,6 +104,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 0);
     }
 
     /**
@@ -129,6 +125,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         robotContainer.drive.addVisionToOdometry();
+        LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }
 
     @Override
@@ -147,6 +144,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         // robotContainer.drive.addVisionToOdometry();
+        
+        LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }
 
     @Override
