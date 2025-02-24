@@ -129,22 +129,17 @@ public class LiftingTowerSubsystem extends SubsystemBase {
     public void runAutomatic(){ 
         double elapsedTime = timer.get();
         if (motionProfile.isFinished(elapsedTime)) {
-            double desiredVel = (demandedHeight - motorMaster.getEncoderTicks()) * 2;
-            if (desiredVel < -constraints.maxVelocity) desiredVel = -constraints.maxVelocity;
-            if (desiredVel > constraints.maxVelocity) desiredVel = constraints.maxVelocity;
-
-            if (Math.abs(desiredVel) < 0.05 * constraints.maxVelocity) desiredVel = 0;
-
-            desiredState = new TrapezoidProfile.State(demandedHeight, desiredVel);
+            desiredState = new TrapezoidProfile.State(demandedHeight, 0.0);
         } else {
             desiredState = motionProfile.calculate(elapsedTime, startState, endState);
         }
-
-        SmartDashboard.putNumber("Targetstate Velocity", desiredState.velocity);
-    
-        double ff = feedforward.calculate(desiredState.velocity);
         desiredState.position = Math.max(Constants.LiftingTower.softLimitBottomPos, desiredState.position);
         desiredState.position = Math.min(Constants.LiftingTower.softLimitTopPos, desiredState.position);
+
+        desiredState.velocity = Math.max(-constraints.maxVelocity, desiredState.velocity);
+        desiredState.velocity = Math.min(constraints.maxVelocity, desiredState.velocity);
+
+        double ff = feedforward.calculate(desiredState.velocity);
 
         motorMaster.setPositionWithFeedforward(desiredState.position, ff);
     }
