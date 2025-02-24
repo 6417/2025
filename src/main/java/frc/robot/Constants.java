@@ -141,7 +141,7 @@ public final class Constants {
         parameters[CoralDispenser.l4State].name = "l4";
         parameters[CoralDispenser.steadyState].name = "Steady State";
 
-        parameters[CoralDispenser.stationState].pitchAngle = 36;
+        parameters[CoralDispenser.stationState].pitchAngle = 27;
         parameters[CoralDispenser.l1State].pitchAngle = 60;
         parameters[CoralDispenser.l2State].pitchAngle = 50;
         parameters[CoralDispenser.l3State].pitchAngle = 50;
@@ -150,7 +150,7 @@ public final class Constants {
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
         parameters[CoralDispenser.steadyState].pitchAngle = 20;
 
-        parameters[CoralDispenser.stationState].height = 3;
+        parameters[CoralDispenser.stationState].height = 2;
         parameters[CoralDispenser.l1State].height = 3;
         parameters[CoralDispenser.l2State].height = 3.5;
         parameters[CoralDispenser.l3State].height = 27;
