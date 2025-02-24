@@ -218,11 +218,12 @@ public final class Constants {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 0.977 * 1.058376;
 
-            defaultModuleConfig2024.driveGearboxRatio = 5.192;
-            defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
-            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.15, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.18, 0.22, 0.0);
+            defaultModuleConfig2024.driveGearboxRatio = 6.181;
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
+            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
+            defaultModuleConfig2024.drivePidValues = new PidValues(1.1926E-05, 0.00, 0);
+            //defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.13271 / 12, 2.1395 / 12, 0.15313 / 12);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0.05);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;

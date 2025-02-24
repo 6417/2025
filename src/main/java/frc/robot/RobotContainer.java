@@ -17,7 +17,6 @@ import frc.robot.swerve.SwerveDrive;
 import frc.robot.Controls.HubturmState;
 import frc.robot.commands.ChaseTagCommand;
 import frc.robot.commands.CoralAlgae.CoralAlgaeOutCommandGroup;
-import frc.robot.commands.CoralAlgae.CoralIntake;
 import frc.robot.commands.CoralAlgae.IntakeGroup;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
