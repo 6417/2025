@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Path4m noDel"
+            "pathName": null
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Feed Forward Testing",
+  "folder": null,
   "choreoAuto": false
 }

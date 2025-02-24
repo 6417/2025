@@ -45,7 +45,7 @@
     "rotation": 126.0
   },
   "reversed": false,
-  "folder": "ChaseTag Auto Left",
+  "folder": "ChaseTag Left",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -119.99999999999999
