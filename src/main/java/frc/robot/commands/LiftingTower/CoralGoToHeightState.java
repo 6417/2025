@@ -33,6 +33,6 @@ public class CoralGoToHeightState extends Command {
 
     @Override
     public boolean isFinished() {
-        return liftingTowerSubsystem.isAtDesiredHeight();
+        return liftingTowerSubsystem.isAtDesiredHeight() || liftingTowerSubsystem.isAtDesiredHeight();
     }
 }
