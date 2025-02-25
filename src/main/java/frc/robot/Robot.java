@@ -44,9 +44,12 @@ public class Robot extends TimedRobot {
 
         robotContainer = new RobotContainer();
         time = System.currentTimeMillis();
-        //Shuffleboard.getTab("Drive").add(robotContainer.drive);
+        // Shuffleboard.getTab("Drive").add(robotContainer.drive);
         FollowPathCommand.warmupCommand().schedule();
+        robotContainer.drive.resetModulesToAbsolute();
+        robotContainer.coralDispenser.resetPitchEncoder();
     }
+
 
     /**
      * This function is called every 20 ms, no matter the mode. Use this for items

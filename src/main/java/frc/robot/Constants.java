@@ -151,10 +151,12 @@ public final class Constants {
         parameters[CoralDispenser.steadyState].pitchAngle = 20;
 
         parameters[CoralDispenser.stationState].height = 2;
-        parameters[CoralDispenser.l1State].height = Constants.LiftingTower.liftingTowerL1;
-        parameters[CoralDispenser.l2State].height = Constants.LiftingTower.liftingTowerL2;
-        parameters[CoralDispenser.l3State].height = Constants.LiftingTower.liftingTowerL3;
-        parameters[CoralDispenser.l4State].height = Constants.LiftingTower.liftingTowerL4;
+        parameters[CoralDispenser.l1State].height = 3;
+        parameters[CoralDispenser.l2State].height = 3.5;
+        parameters[CoralDispenser.l3State].height = 27;
+        parameters[CoralDispenser.l4State].height = 72.5;
+        parameters[CoralDispenser.algae1State].height = 3;
+        parameters[CoralDispenser.algae2State].height = 27;
         parameters[CoralDispenser.steadyState].height = 3;
     }
 
@@ -183,11 +185,6 @@ public final class Constants {
         public static final int liftingTowerLeftId = 30;
         public static final int liftingTowerRightId = 31;
 
-        public static final double liftingTowerL1 = 3;
-        public static final double liftingTowerL2 = 3.5;
-        public static final double liftingTowerL3 = 27;
-        public static final double liftingTowerL4 = 72.5;
-
         public static final double zeroingSpeed = -0.1;
         public static final double resetEncoderPosition = 0;
         public static final LimitSwitchPolarity towerBottomSwitchPolarity = LimitSwitchPolarity.kNormallyClosed;
@@ -210,25 +207,28 @@ public final class Constants {
 
         public static final double maxSpeed = 4.9; // TODO: for testing
         public static ModuleConfig defaultModuleConfig2024 = new ModuleConfig();
-        public static final double moduleXoffset = 0.275;
-        public static final double moduleYoffset = 0.275;
-        public static final double maxTurnSpeed = 15;//Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed / (Math.PI * 2); // rps
+        public static final double moduleXoffset = 0.267;
+        public static final double moduleYoffset = 0.267;
+        public static final double maxTurnSpeed = 10;// 12// Math.hypot(moduleXoffset, moduleYoffset) * maxSpeed /
+                                                     // (Math.PI *
+                                                     // 2); // rps
 
         static {
             defaultModuleConfig2024.maxSpeed = maxSpeed;
             defaultModuleConfig2024.wheelCircumference = Units.inchesToMeters(4) * Math.PI * 0.977 * 1.058376;
 
-            defaultModuleConfig2024.driveGearboxRatio = 5.192;
-            defaultModuleConfig2024.driveMotorStallCurrentLimit = 55;
-            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 30;
-            defaultModuleConfig2024.drivePidValues = new PidValues(0.15, 0.00, 0);
-            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.18, 0.22, 0.0);
+            defaultModuleConfig2024.driveGearboxRatio = 6.181;
+            defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
+            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
+            defaultModuleConfig2024.drivePidValues = new PidValues(1.1926E-05, 0.00, 0);
+            //defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.13271 / 12, 2.1395 / 12, 0.15313 / 12);
+            defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0.05);
 
             defaultModuleConfig2024.angleGearboxRatio = 7.44;
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
             defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
-            defaultModuleConfig2024.angleMotorIzone = 1.5;
-            defaultModuleConfig2024.anglePidValues = new PidValues(0.75, 0.0, 0.03);
+            defaultModuleConfig2024.angleMotorIzone = 0.1;
+            defaultModuleConfig2024.anglePidValues = new PidValues(0.4, 0.0, 0.05);
 
             defaultModuleConfig2024.encoderThicksToRotationFalcon = 1;
             defaultModuleConfig2024.encoderVelocityToRPSFalcon = 1;

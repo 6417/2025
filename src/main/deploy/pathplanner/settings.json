@@ -2,7 +2,14 @@
   "robotWidth": 0.884,
   "robotLength": 0.884,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "ChaseTag Left",
+    "Else",
+    "Feed Forward",
+    "Left Stuff",
+    "ChaseTag Right",
+    "Right Stuff"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 2.5,
   "defaultMaxAccel": 2.5,

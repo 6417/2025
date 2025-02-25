@@ -126,26 +126,30 @@ public class LiftingTowerSubsystem extends SubsystemBase {
         desiredState = motionProfile.calculate(timer.get(), startState, endState);
     }
 
+    static double clamp(double val, double min, double max)
+    {
+        if (val < min)
+            val = min;
+        if (val > max)
+            val = max;
+        return val;
+    }
+
+
     public void runAutomatic(){ 
         double elapsedTime = timer.get();
-        if (motionProfile.isFinished(elapsedTime)) {
-            double desiredVel = (demandedHeight - motorMaster.getEncoderTicks()) * 2;
-            if (desiredVel < -constraints.maxVelocity) desiredVel = -constraints.maxVelocity;
-            if (desiredVel > constraints.maxVelocity) desiredVel = constraints.maxVelocity;
-
-            if (Math.abs(desiredVel) < 0.05 * constraints.maxVelocity) desiredVel = 0;
-
-            desiredState = new TrapezoidProfile.State(demandedHeight, desiredVel);
+        if (isAtDesiredHeight()){
+            desiredState = new TrapezoidProfile.State(demandedHeight, 0.0);
+        } else if (motionProfile.isFinished(elapsedTime)) {
+            double vel = (demandedHeight - getHeight()) * 2;
+            desiredState = new TrapezoidProfile.State(demandedHeight, vel);
         } else {
             desiredState = motionProfile.calculate(elapsedTime, startState, endState);
         }
+        desiredState.position = clamp(desiredState.position, Constants.LiftingTower.softLimitBottomPos, Constants.LiftingTower.softLimitTopPos);
+        desiredState.velocity = clamp(desiredState.velocity, -constraints.maxVelocity, constraints.maxVelocity);
 
-        SmartDashboard.putNumber("Targetstate Velocity", desiredState.velocity);
-    
         double ff = feedforward.calculate(desiredState.velocity);
-        desiredState.position = Math.max(Constants.LiftingTower.softLimitBottomPos, desiredState.position);
-        desiredState.position = Math.min(Constants.LiftingTower.softLimitTopPos, desiredState.position);
-
         motorMaster.setPositionWithFeedforward(desiredState.position, ff);
     }
 
