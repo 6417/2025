@@ -28,9 +28,10 @@ public class CoralGoToPitchState extends Command{
     @Override
     public void initialize() {
 
-        newPitchOffset -= RobotContainer.controls.dispenserOffset;
-
-        coralDispenserSubsystem.setPitch(angle+newPitchOffset);
+        newPitchOffset = RobotContainer.controls.dispenserOffset;
+        double adjustedAngle = angle;
+        if(angle != Constants.parameters[Constants.CoralDispenser.stationState].pitchAngle) adjustedAngle = angle + newPitchOffset;
+        coralDispenserSubsystem.setPitch(adjustedAngle);
     }
 
     @Override

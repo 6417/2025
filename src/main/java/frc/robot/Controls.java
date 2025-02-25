@@ -17,6 +17,7 @@ import frc.robot.commands.Climber.ClimberCommand;
 import frc.robot.commands.Climber.ClimberEncoderZeroGroup;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
+import frc.robot.commands.LiftingTower.ZeroLiftingTower;
 import frc.robot.commands.CoralAlgae.AlgaeOuttakeCommandGroup;
 import frc.robot.commands.CoralAlgae.CoralAlgaeOuttake;
 import frc.robot.commands.CoralAlgae.IntakeGroup;
@@ -181,13 +182,16 @@ public class Controls implements Sendable {
         aButtonDrive.onTrue(new ClimberCommand(RobotContainer.climber, Constants.ClimberSubsystem.positionSteady,
                 Climberstate.kSteady));
         yButtonDrive.onTrue(new ClimberEncoderZeroGroup());
+      
+        ltButtonOperator.onTrue(new ZeroLiftingTower(RobotContainer.liftingTower));
 
         // liftingtower
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
-            pov2Operator.toggleOnTrue(new IntakeGroup());
-        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State)).or(pov4Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser)));
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State)).or(pov0Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser)));
+        pov2Operator.toggleOnTrue(new IntakeGroup());
+        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State)).or(pov4Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser).withTimeout(0.3)));
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State)).or(pov0Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser).withTimeout(0.3)));
 
+ //       pov4Operator.onTrue(Commands.startEnd(() -> new CoralHeightPitchCommandGroup(CoralDispenser.algae1State), () -> new CoralAlgaeOuttake(RobotContainer.coralDispenser).withTimeout(0.3), null))
 
         yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));
         bButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTWO)));

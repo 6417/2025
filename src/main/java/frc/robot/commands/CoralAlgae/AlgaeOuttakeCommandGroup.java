@@ -12,7 +12,6 @@ import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
 public class AlgaeOuttakeCommandGroup extends SequentialCommandGroup {
     public AlgaeOuttakeCommandGroup(int state) {
         addCommands(
-                new CoralHeightPitchCommandGroup(state),
                 new CoralAlgaeOuttake(RobotContainer.coralDispenser),
                 new WaitCommand(Constants.CoralDispenser.waitAfterOuttake),
                 new InstantCommand(() -> {

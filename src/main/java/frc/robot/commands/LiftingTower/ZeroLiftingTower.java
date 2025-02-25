@@ -7,7 +7,7 @@ import frc.robot.subsystems.LiftingTowerSubsystem;
 public class ZeroLiftingTower extends Command {
     private final LiftingTowerSubsystem liftingTowerSubsystem;
 
-    private ZeroLiftingTower(LiftingTowerSubsystem liftingTowerSubsystem){
+    public ZeroLiftingTower(LiftingTowerSubsystem liftingTowerSubsystem){
         this.liftingTowerSubsystem = liftingTowerSubsystem;
         addRequirements(liftingTowerSubsystem);
     }
