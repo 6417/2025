@@ -17,6 +17,8 @@ import frc.robot.commands.Climber.ClimberCommand;
 import frc.robot.commands.Climber.ClimberEncoderZeroGroup;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
+import frc.robot.commands.CoralAlgae.AlgaeOuttakeCommandGroup;
+import frc.robot.commands.CoralAlgae.CoralAlgaeOuttake;
 import frc.robot.commands.CoralAlgae.IntakeGroup;
 
 /**
@@ -183,8 +185,8 @@ public class Controls implements Sendable {
         // liftingtower
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
             pov2Operator.toggleOnTrue(new IntakeGroup());
-        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State));
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State));
+        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State)).or(pov4Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser)));
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State)).or(pov0Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser)));
 
 
         yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));
