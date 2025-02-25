@@ -85,7 +85,6 @@ public class ChaseTagCommand extends Command {
             omegaController.setGoal(goalPose.getRotation().getRadians());
 
 
-            //System.out.println("OmegaGoal" + omegaController.getGoal().toString());
 
         }
 

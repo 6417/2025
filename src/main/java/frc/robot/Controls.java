@@ -145,6 +145,8 @@ public class Controls implements Sendable {
 
     public double turnSensitivity = 0.08;
 
+    public double dispenserOffset = 0.0;
+
     public DriveOrientation driveOrientation = DriveOrientation.FieldOriented;
     public ControlMode controlMode = ControlMode.CONVENTIONAL;
 
@@ -166,8 +168,6 @@ public class Controls implements Sendable {
                 Constants.OffsetsToAprilTags.offsetToAprilTagRight));
         lbButtonDrive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
                 Constants.OffsetsToAprilTags.offsetToAprilTagLeft));
-        pov0Drive.whileTrue(new ChaseTagCommand(RobotContainer.drive,
-                Constants.OffsetsToAprilTags.offsetToAprilTagLoadingStation));
 
         burgerButtonDrive.onTrue(new InstantCommand(() -> RobotContainer.gyro.reset()));
 
@@ -181,8 +181,6 @@ public class Controls implements Sendable {
         yButtonDrive.onTrue(new ClimberEncoderZeroGroup());
 
         // liftingtower
-        pov2Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE2)));
-        pov6Operator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.ALGAE1)));
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
         pov4Operator.toggleOnTrue(new IntakeGroup());
 
@@ -221,6 +219,8 @@ public class Controls implements Sendable {
         builder.addDoubleProperty("fastSpeedFactor", () -> speedFactors.get(DriveSpeed.FAST),
                 val -> speedFactors.put(DriveSpeed.FAST, val));
         builder.addDoubleProperty("Current Speed Factor", () -> accelerationSensitivity, null);
+
+        builder.addDoubleProperty("CroralDispenserPitchOffset", ()-> dispenserOffset, (newDispOffset)-> dispenserOffset = newDispOffset);
 
         builder.addBooleanProperty("SlewRateLimiter", () -> slewRateLimited,
                 val -> slewRateLimited = val);

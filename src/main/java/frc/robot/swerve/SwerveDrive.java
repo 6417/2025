@@ -82,13 +82,15 @@ public class SwerveDrive extends SubsystemBase {
                 VecBuilder.fill(0.02, 0.02, 0.01),
                 VecBuilder.fill(0.1, 0.1, 0.01));
 
-        //posEstimatorThread = new Thread(this::updateOdometry);
-        //posEstimatorThread.start();
+        // posEstimatorThread = new Thread(this::updateOdometry);
+        // posEstimatorThread.start();
 
         setDefaultCommand(new DriveCommand(this));
 
-        /*odometryThread = new Thread(this::updateOdometryThread);
-        odometryThread.start();*/
+        /*
+         * odometryThread = new Thread(this::updateOdometryThread);
+         * odometryThread.start();
+         */
     }
 
     public synchronized void updateOdometryThread() {
@@ -104,56 +106,58 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void setChassisSpeeds(ChassisSpeeds speeds) {
-        //speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
-        
-        /* 
-        long timeNow = System.currentTimeMillis();
-        if (lastSetpointTime > 0) {
-            speeds = accelLimiter.constrain(lastMeasuredSpeeds, speeds,
-                        ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
-        }*/
+        // speeds = ChassisSpeeds.discretize(speeds, 0.02); // remove the skew
+
+        /*
+         * long timeNow = System.currentTimeMillis();
+         * if (lastSetpointTime > 0) {
+         * speeds = accelLimiter.constrain(lastMeasuredSpeeds, speeds,
+         * ((double) (timeNow - lastSetpointTime)) / (double) 1000.0);
+         * }
+         */
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 
-        //SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.SwerveDrive.maxSpeed);
+        // SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates,
+        // Constants.SwerveDrive.maxSpeed);
 
         for (int i = 0; i < 4; i++) {
             modules[i].setDesiredState(moduleStates[i]);
         }
-        
-        //lastSpeeds = speeds;
-        //lastSetpointTime = timeNow;
-        //lastMeasuredSpeeds = getChassisSpeeds();
+
+        // lastSpeeds = speeds;
+        // lastSetpointTime = timeNow;
+        // lastMeasuredSpeeds = getChassisSpeeds();
     }
 
-    public void voltageDrive(double voltage){
+    public void voltageDrive(double voltage) {
         for (int i = 0; i < 4; i++) {
             modules[i].setDesiredState(voltage);
         }
     }
 
-    public double getcharecterizedVelocity(){
+    public double getcharecterizedVelocity() {
         double avareagevelocity = 0;
         for (int i = 0; i < 4; i++) {
-           avareagevelocity+= modules[i].getState().speedMetersPerSecond;
+            avareagevelocity += modules[i].getState().speedMetersPerSecond;
         }
-        return avareagevelocity/4;
+        return avareagevelocity / 4;
     }
 
-    public double getcharecterizedDistance(){
+    public double getcharecterizedDistance() {
         double avareageDistance = 0;
         for (int i = 0; i < 4; i++) {
-            avareageDistance+= modules[i].getPosition().distanceMeters;
+            avareageDistance += modules[i].getPosition().distanceMeters;
         }
-        return avareageDistance/4;
+        return avareageDistance / 4;
     }
 
-    public double getcharecterizedVoltage(){
+    public double getcharecterizedVoltage() {
         double avareageVoltage = 0;
         for (int i = 0; i < 4; i++) {
-            avareageVoltage+= modules[i].appliedVoltage();
+            avareageVoltage += modules[i].appliedVoltage();
         }
-        return avareageVoltage/4;
+        return avareageVoltage / 4;
     }
 
     public ChassisSpeeds getChassisSpeeds() {
@@ -162,7 +166,6 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void periodic() {
-        System.out.println(getPose().toString());
         updateOdometry();
         LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
                 poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
@@ -174,22 +177,26 @@ public class SwerveDrive extends SubsystemBase {
 
     public synchronized void updateOdometry() {
         poseEstimator.update(
-            RobotContainer.getGyroRotation2d(),
-            new SwerveModulePosition[] {
-                    modules[LOC_FL].getPosition(),
-                    modules[LOC_FR].getPosition(),
-                    modules[LOC_RL].getPosition(),
-                    modules[LOC_RR].getPosition()
-            });
+                RobotContainer.getGyroRotation2d(),
+                new SwerveModulePosition[] {
+                        modules[LOC_FL].getPosition(),
+                        modules[LOC_FR].getPosition(),
+                        modules[LOC_RL].getPosition(),
+                        modules[LOC_RR].getPosition()
+                });
     }
 
     public void addVisionToOdometry() {
-        //MOVED TO PERIODIC
-        /*LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID, 
-                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);*/
+        // MOVED TO PERIODIC
+        /*
+         * LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
+         * poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0,
+         * 0);
+         */
 
         LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
-                .getBotPoseEstimate_wpiBlue_MegaTag2(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has problems
+                .getBotPoseEstimate_wpiBlue_MegaTag2(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has
+                                                                                       // problems
         addLimeLightMeasurementToPoseEstimation(lime1);
 
     }
@@ -205,11 +212,10 @@ public class SwerveDrive extends SubsystemBase {
 
         final boolean isRobotSpinningFast = Math
                 .abs(RobotContainer.gyro.getAngularVelocityZWorld().getValueAsDouble()) > maxRotationSpeed;
-        final boolean isTagInNarrowAngle = 
-                                             Math
-                                             .abs(getPose().getRotation().getDegrees() - lime.pose.getRotation().getDegrees()) 
-                                             <= narrowAngleThreshold;
-                                            
+        final boolean isTagInNarrowAngle = Math
+                .abs(getPose().getRotation().getDegrees()
+                        - lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;
+
         if (isRobotSpinningFast || !isTagInNarrowAngle) {
             // if our angular velocity is greater than 720 degrees
             // per second, ignore vision updates
