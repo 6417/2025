@@ -140,24 +140,26 @@ public final class Constants {
         parameters[CoralDispenser.l3State].name = "l3";
         parameters[CoralDispenser.l4State].name = "l4";
         parameters[CoralDispenser.steadyState].name = "Steady State";
+        parameters[CoralDispenser.algae1State].name = "Algae1";
+        parameters[CoralDispenser.algae2State].name = "Algae2";
 
         parameters[CoralDispenser.stationState].pitchAngle = 27;
         parameters[CoralDispenser.l1State].pitchAngle = 60;
         parameters[CoralDispenser.l2State].pitchAngle = 50;
         parameters[CoralDispenser.l3State].pitchAngle = 50;
         parameters[CoralDispenser.l4State].pitchAngle = 60;
+        parameters[CoralDispenser.steadyState].pitchAngle = 20;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
-        parameters[CoralDispenser.steadyState].pitchAngle = 20;
 
         parameters[CoralDispenser.stationState].height = 1;
         parameters[CoralDispenser.l1State].height = 3;
         parameters[CoralDispenser.l2State].height = 3.5;
         parameters[CoralDispenser.l3State].height = 29;
         parameters[CoralDispenser.l4State].height = 72.5;
+        parameters[CoralDispenser.steadyState].height = 3;
         parameters[CoralDispenser.algae1State].height = 3;
         parameters[CoralDispenser.algae2State].height = 27;
-        parameters[CoralDispenser.steadyState].height = 3;
     }
 
     public static final class ClimberSubsystem {

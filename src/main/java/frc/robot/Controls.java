@@ -181,8 +181,11 @@ public class Controls implements Sendable {
         yButtonDrive.onTrue(new ClimberEncoderZeroGroup());
 
         // liftingtower
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
-        pov4Operator.toggleOnTrue(new IntakeGroup());
+        pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
+            pov2Operator.toggleOnTrue(new IntakeGroup());
+        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State));
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State));
+
 
         yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));
         bButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTWO)));
