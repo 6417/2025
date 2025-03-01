@@ -188,12 +188,10 @@ public class Controls implements Sendable {
         // liftingtower
         pov6Operator.onTrue(new CoralHeightPitchCommandGroup(liftingTowerStateInt(HubturmState.STATION)));
         pov2Operator.toggleOnTrue(new IntakeGroup());
-        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State)).or(pov4Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser).withTimeout(0.3)));
-        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State)).or(pov0Operator.onFalse(new CoralAlgaeOuttake(RobotContainer.coralDispenser).withTimeout(0.3)));
+        pov4Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae1State));
+        pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State));
 
- //       pov4Operator.onTrue(Commands.startEnd(() -> new CoralHeightPitchCommandGroup(CoralDispenser.algae1State), () -> new CoralAlgaeOuttake(RobotContainer.coralDispenser).withTimeout(0.3), null))
-
-        yButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LONE)));
+        yButtonOperator.toggleOnTrue(new CoralAlgaeOuttake(RobotContainer.coralDispenser));
         bButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTWO)));
         aButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTHREE)));
         xButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LFOUR)));
