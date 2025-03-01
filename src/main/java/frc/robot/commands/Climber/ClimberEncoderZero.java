@@ -2,6 +2,7 @@ package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimberEncoderZero extends Command {
@@ -35,6 +36,7 @@ public class ClimberEncoderZero extends Command {
         System.out.println("ClimberEncoderZero ended");
         timer.stop();
         climber.resetEncoder();
+        climber.setPositionForward(Constants.ClimberSubsystem.positionSteady);
     }
 
     @Override
