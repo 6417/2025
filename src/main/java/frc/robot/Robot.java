@@ -48,6 +48,12 @@ public class Robot extends TimedRobot {
         FollowPathCommand.warmupCommand().schedule();
         robotContainer.drive.resetModulesToAbsolute();
         robotContainer.coralDispenser.resetPitchEncoder();
+
+        Shuffleboard.getTab("Climber").add(robotContainer.climber);
+        Shuffleboard.getTab("CoralHandler").add(robotContainer.coralDispenser);
+        Shuffleboard.getTab("LiftingTower").add(robotContainer.liftingTower);
+
+        robotContainer.leds.normalLeds();
     }
 
 

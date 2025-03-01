@@ -42,7 +42,7 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    private static RGB coral = new RGB(255, 242, 199);
+    private static RGB coral = new RGB(0, 0, 255);
     private static RGB climb = new RGB(255, 0, 0);
     private static RGB noLight = new RGB(0);
 
@@ -54,6 +54,7 @@ public class LEDSubsystem extends SubsystemBase {
         ledsBuffer = new AddressableLEDBuffer(Constants.LEDs.ledBufferLength);
 
         ledsRight.start();
+        ledsLeft.start();
 
         normalLeds();
         setData();
@@ -82,6 +83,13 @@ public class LEDSubsystem extends SubsystemBase {
         setData();
     }
 
+    private void setLEDsVertical(RGB ledColorBottom, RGB ledColorTop){
+        ledsBuffer.setRGB(0, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
+        ledsBuffer.setRGB(1, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
+        ledsBuffer.setRGB(2, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
+        ledsBuffer.setRGB(3, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
+    }
+
     private void setAllLEDs(RGB color) {
         for (int i = 0; i < Constants.LEDs.ledBufferLength; i++) {
             ledsBuffer.setRGB(i, color.red, color.green, color.blue);
@@ -90,12 +98,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void coralIntakeLEDs() {
-        setLEDsInBlocks(3, 0, coral, 3, noLight);
-        setData();
-    }
-
-    public void coralL1OuttakeLEDs() {
-        setLEDsInBlocks(Constants.LEDs.ledBufferLength, 0, coral, Constants.LEDs.ledBufferLength / 4, noLight);
+        setLEDsInBlocks(4, 0, coral, 1, noLight);
         setData();
     }
 
@@ -142,9 +145,6 @@ public class LEDSubsystem extends SubsystemBase {
             coralIntakeLEDs();
         } else {
             switch (hubturmState) {
-                case LONE:
-                    coralL1OuttakeLEDs();
-                    break;
                 case LTWO:
                     coralL2OuttakeLEDs();
                     break;
