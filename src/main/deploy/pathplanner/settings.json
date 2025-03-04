@@ -10,7 +10,12 @@
     "ChaseTag Right",
     "Right Stuff"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "3Coral autos",
+    "Chasetag autos",
+    "FeedForward Tuning",
+    "2 Coral Autos"
+  ],
   "defaultMaxVel": 2.5,
   "defaultMaxAccel": 2.5,
   "defaultMaxAngVel": 650.0,

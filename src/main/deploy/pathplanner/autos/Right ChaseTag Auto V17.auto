@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Chase Tag Start 3"
+            "pathName": "Chase Tag Start 2"
           }
         },
         {
@@ -39,6 +39,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Chasetag autos",
   "choreoAuto": false
 }

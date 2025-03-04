@@ -70,8 +70,8 @@ public final class Constants {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
         public static final double[] offsetToAprilTagLoadingStation = { 0.45, 0.0 + 0, 0.0 };
-        public static final double[] offsetToAprilTagRight = { 0.55, 0.2 + 0.05, 0 };
-        public static final double[] offsetToAprilTagLeft = { 0.55, -0.2 + 0.13, 0 };
+        public static final double[] offsetToAprilTagRight = { 0.50, 0.3, 0 };
+        public static final double[] offsetToAprilTagLeft = { 0.50, -0.2 + 0.13, 0 };
     }
 
     public static final class CoralDispenser {
@@ -143,11 +143,11 @@ public final class Constants {
         parameters[CoralDispenser.algae1State].name = "Algae1";
         parameters[CoralDispenser.algae2State].name = "Algae2";
 
-        parameters[CoralDispenser.stationState].pitchAngle = 27;
+        parameters[CoralDispenser.stationState].pitchAngle = 30; // TODO: test 
         parameters[CoralDispenser.l1State].pitchAngle = 60;
         parameters[CoralDispenser.l2State].pitchAngle = 50;
         parameters[CoralDispenser.l3State].pitchAngle = 47;
-        parameters[CoralDispenser.l4State].pitchAngle = 60;
+        parameters[CoralDispenser.l4State].pitchAngle = 57;
         parameters[CoralDispenser.steadyState].pitchAngle = 20;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;
         parameters[CoralDispenser.algae2State].pitchAngle = 43;
@@ -156,9 +156,9 @@ public final class Constants {
         parameters[CoralDispenser.l1State].height = 3;
         parameters[CoralDispenser.l2State].height = 8;
         parameters[CoralDispenser.l3State].height = 29;
-        parameters[CoralDispenser.l4State].height = 72.5;
+        parameters[CoralDispenser.l4State].height = 73;
         parameters[CoralDispenser.steadyState].height = 3;
-        parameters[CoralDispenser.algae1State].height = 5;
+        parameters[CoralDispenser.algae1State].height = 3;
         parameters[CoralDispenser.algae2State].height = 27;
     }
 
@@ -178,7 +178,7 @@ public final class Constants {
         public static double kMaxVelocityIn = 6000;
 
         public static double positionFront = 224;
-        public static double positionBack = 70; // Adjusted to prevent robot to tip over wegen des Schwerpunkts -
+        public static double positionBack = 80; // Adjusted to prevent robot to tip over wegen des Schwerpunkts -
                                                 // Wiedercalibration wird angefordert
         public static double positionSteady = 180;
     }
@@ -199,7 +199,7 @@ public final class Constants {
         static {
             pidValues.iZone = Optional.of(4.0);
         }
-        public static final double softLimitTopPos = 72.5;
+        public static final double softLimitTopPos = 73;
         public static final double softLimitBottomPos = 1.0;
     }
 
@@ -221,7 +221,7 @@ public final class Constants {
 
             defaultModuleConfig2024.driveGearboxRatio = 6.181;
             defaultModuleConfig2024.driveMotorStallCurrentLimit = 70;
-            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 25;
+            defaultModuleConfig2024.driveMotorFreeCurrentLimit = 40;
             defaultModuleConfig2024.drivePidValues = new PidValues(1.1926E-05, 0.00, 0);
             //defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.13271 / 12, 2.1395 / 12, 0.15313 / 12);
             defaultModuleConfig2024.driveFFValues = new FeedForwardValues(0.057, 0.1177, 0.05);

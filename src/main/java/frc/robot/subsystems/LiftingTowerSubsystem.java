@@ -21,7 +21,7 @@ import frc.robot.Constants;
 
 public class LiftingTowerSubsystem extends SubsystemBase {
     private final PidValues pidValues = Constants.LiftingTower.pidValues; // p, i, d, f
-    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0.12, 0.25, 0.128, 0.05);
+    private final ElevatorFeedforward feedforward = new ElevatorFeedforward(0.12, 0.25, 0.128, 0.02);
     private final TrapezoidProfile.Constraints constraints =  new TrapezoidProfile.Constraints(90, 200);
 
     private Debouncer debouncer;

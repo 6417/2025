@@ -199,7 +199,7 @@ public class Controls implements Sendable {
         // lbButtonOperator.whileTrue(new
         // TowerManualControl(RobotContainer.liftingTower));
 
-        burgerButtonOperator.toggleOnTrue(new StopAllMotors());
+        burgerButtonOperator.onTrue(new ZeroLiftingTower(RobotContainer.liftingTower));
 
         rtButtonDrive.whileTrue(Commands.startEnd(
                 () -> {

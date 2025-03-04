@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Chase Tag Start 2"
+            "pathName": "Left ChaseTag Start"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.5
+                  "waitTime": 5.0
                 }
               },
               {
@@ -39,6 +39,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Chasetag autos",
   "choreoAuto": false
 }

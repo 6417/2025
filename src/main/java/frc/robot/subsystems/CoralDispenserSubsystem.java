@@ -38,7 +38,7 @@ public class CoralDispenserSubsystem extends SubsystemBase {
         
         coralMotorChangePitch = new FridoSparkMax(Constants.CoralDispenser.coralPitchMotorID);
 
-        coralMotorChangePitch.setIdleMode(IdleMode.kBrake);;
+        coralMotorChangePitch.setIdleMode(IdleMode.kBrake);
 
         SparkMaxConfig limitConfig = new SparkMaxConfig(); //TODO Calibrate the limits after setting absolute encoder Offsets
         limitConfig.softLimit
