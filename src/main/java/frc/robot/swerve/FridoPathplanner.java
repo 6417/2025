@@ -40,7 +40,7 @@ public class FridoPathplanner {
 
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
+                        return false;
                     }
                     return false;
                 },

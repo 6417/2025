@@ -4,14 +4,11 @@
 
 package frc.robot;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.logging.log4j.core.layout.CsvLogEventLayout;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,12 +39,23 @@ public class Robot extends TimedRobot {
         
         FollowPathCommand.warmupCommand().schedule();
 
+        UsbCamera camera = new UsbCamera("USB Camera 0", 0);
+
+        CameraServer.addCamera(camera);
+        CameraServer.putVideo("Climber Camera", 640, 480);
+
         robotContainer = new RobotContainer();
         time = System.currentTimeMillis();
-        // Shuffleboard.getTab("Drive").add(robotContainer.drive);
+
         FollowPathCommand.warmupCommand().schedule();
         robotContainer.drive.resetModulesToAbsolute();
         robotContainer.coralDispenser.resetPitchEncoder();
+
+        Shuffleboard.getTab("Climber").add(robotContainer.climber);
+        Shuffleboard.getTab("CoralHandler").add(robotContainer.coralDispenser);
+        Shuffleboard.getTab("LiftingTower").add(robotContainer.liftingTower);
+
+        //robotContainer.leds.normalLeds();
     }
 
 

@@ -45,8 +45,8 @@ public final class Constants {
     }
 
     public static final class LEDs {
-        public static final int ledPortLeft = 42;
-        public static final int ledPortRight = 42;
+        public static final int ledPortLeft = 0;
+        public static final int ledPortRight = 1;
         public static final int ledBufferLength = 60;
     }
 

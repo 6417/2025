@@ -136,8 +136,6 @@ public class LEDSubsystem extends SubsystemBase {
         HubturmState hubturmState = RobotContainer.controls.getActiveLiftingTowerState();
         IntakeState intakeState = RobotContainer.controls.activeIntakeState;
 
-        
-
         if (intakeState == IntakeState.INTAKE) {
             coralIntakeLEDs();
         } else {
