@@ -48,12 +48,9 @@ public class LEDSubsystem extends SubsystemBase {
 
     public LEDSubsystem() {
         ledsLeft = new AddressableLED(Constants.LEDs.ledPortLeft);
-        ledsRight = new AddressableLED(Constants.LEDs.ledPortRight);
-        ledsRight.setLength(Constants.LEDs.ledBufferLength);
+        ledsLeft.setLength(Constants.LEDs.ledBufferLength);
 
         ledsBuffer = new AddressableLEDBuffer(Constants.LEDs.ledBufferLength);
-
-        ledsRight.start();
         ledsLeft.start();
 
         normalLeds();
@@ -61,7 +58,6 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     private void setData() {
-        ledsRight.setData(ledsBuffer);
         ledsLeft.setData(ledsBuffer);
     }
 
@@ -88,6 +84,10 @@ public class LEDSubsystem extends SubsystemBase {
         ledsBuffer.setRGB(1, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
         ledsBuffer.setRGB(2, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
         ledsBuffer.setRGB(3, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
+        ledsBuffer.setRGB(4, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
+        ledsBuffer.setRGB(5, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
+        ledsBuffer.setRGB(6, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
+        ledsBuffer.setRGB(7, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
     }
 
     private void setAllLEDs(RGB color) {
@@ -131,7 +131,7 @@ public class LEDSubsystem extends SubsystemBase {
         rainbowAnimationLEDs();
     }
     public void normalLeds() {
-        setAllLEDs(climb);
+        setAllLEDs(coral);
     }
 
     //TODO: Implement this method
