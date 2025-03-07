@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
         Shuffleboard.getTab("CoralHandler").add(robotContainer.coralDispenser);
         Shuffleboard.getTab("LiftingTower").add(robotContainer.liftingTower);
 
-        //robotContainer.leds.normalLeds();
+        RobotContainer.leds.coralL2OuttakeLEDs();
     }
 
 

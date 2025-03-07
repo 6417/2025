@@ -20,7 +20,7 @@ public class ClimberCommand extends Command {
 
     @Override
     public void initialize() {
-        // RobotContainer.leds.climbLEDs();
+        RobotContainer.leds.climbLEDs();
         switch (state) {
             case kForward:
                 climber.setPositionForward(position);                
