@@ -17,10 +17,12 @@ import frc.robot.commands.Climber.ClimberCommand;
 import frc.robot.commands.Climber.ClimberEncoderZeroGroup;
 import frc.robot.commands.LiftingTower.AutoScore;
 import frc.robot.commands.LiftingTower.CoralHeightPitchCommandGroup;
+import frc.robot.commands.LiftingTower.FinishCommand;
 import frc.robot.commands.LiftingTower.ZeroLiftingTower;
 import frc.robot.commands.CoralAlgae.AlgaeOuttakeCommandGroup;
 import frc.robot.commands.CoralAlgae.CoralAlgaeOuttake;
 import frc.robot.commands.CoralAlgae.IntakeGroup;
+import frc.robot.commands.LiftingTower.ScoreCommand;
 
 /**
  * Holds the data concerning input, which should be available
@@ -135,7 +137,7 @@ public class Controls implements Sendable {
     public Map<DriveSpeed, Double> speedFactors = Map.of(
             DriveSpeed.DEFAULT_SPEED, 1.0,
             DriveSpeed.FAST, 0.9,
-            DriveSpeed.SLOW, 0.2);
+            DriveSpeed.SLOW, 0.1);
     private DriveSpeed activeSpeedFactor = DriveSpeed.DEFAULT_SPEED;
     private double accelerationSensitivity = speedFactors.get(activeSpeedFactor);
 
@@ -192,9 +194,15 @@ public class Controls implements Sendable {
         pov0Operator.onTrue(new CoralHeightPitchCommandGroup(CoralDispenser.algae2State));
 
         yButtonOperator.toggleOnTrue(new CoralAlgaeOuttake(RobotContainer.coralDispenser));
-        bButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTWO)));
-        aButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LTHREE)));
-        xButtonOperator.onTrue(new AutoScore(liftingTowerStateInt(HubturmState.LFOUR)));
+        bButtonOperator.onTrue(new ScoreCommand(liftingTowerStateInt(HubturmState.LTWO)));
+        aButtonOperator.onTrue(new ScoreCommand(liftingTowerStateInt(HubturmState.LTHREE)));
+        xButtonOperator.onTrue(new ScoreCommand(liftingTowerStateInt(HubturmState.LFOUR)));
+
+        rtButtonOperator.onTrue(new FinishCommand());
+
+        lbButtonOperator.onTrue(new InstantCommand(() -> {
+            RobotContainer.coralDispenser.resetPitchEncoder();
+        }));
 
         // lbButtonOperator.whileTrue(new
         // TowerManualControl(RobotContainer.liftingTower));
