@@ -69,8 +69,8 @@ public final class Constants {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
         public static final double[] offsetToAprilTagLoadingStation = { 0.45, 0.0 + 0, 0.0 };
-        public static final double[] offsetToAprilTagRight = { 0.50, 0.3, 0 };
-        public static final double[] offsetToAprilTagLeft = { 0.50, -0.2 + 0.13, 0 };
+        public static final double[] offsetToAprilTagRight = { 0.45, 0.3, 0 };
+        public static final double[] offsetToAprilTagLeft = { 0.45, -0.2 + 0.13, 0 };
     }
 
     public static final class CoralDispenser {
@@ -108,10 +108,11 @@ public final class Constants {
 
         public static final PidValues PidValuesPitch = new PidValues(0.005, 0, 0.005, 0);
         public static final double intakeSpeed = -0.8;
-        public static final double outtakeSpeed = 0.6;
+        public static final double outtakeSpeed = 0.5
+        ;
 
-        public static final double waitAfterOuttake = 0.3;
-        public static final double waitAfterAlgaeIntake = 0.3;
+        public static final double waitAfterOuttake = 0.5;
+        public static final double waitAfterAlgaeIntake = 0.5;
     }
 
     public static final class LevelParameters implements Sendable {
@@ -145,7 +146,7 @@ public final class Constants {
         parameters[CoralDispenser.stationState].pitchAngle = 30; // TODO: test 
         parameters[CoralDispenser.l1State].pitchAngle = 60;
         parameters[CoralDispenser.l2State].pitchAngle = 50;
-        parameters[CoralDispenser.l3State].pitchAngle = 47;
+        parameters[CoralDispenser.l3State].pitchAngle = 50;
         parameters[CoralDispenser.l4State].pitchAngle = 57;
         parameters[CoralDispenser.steadyState].pitchAngle = 20;
         parameters[CoralDispenser.algae1State].pitchAngle = 43;

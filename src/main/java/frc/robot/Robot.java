@@ -42,23 +42,6 @@ public class Robot extends TimedRobot {
         
         FollowPathCommand.warmupCommand().schedule();
 
-        // UsbCamera camera = new UsbCamera("USB Camera 0", 0);
-
-        // MjpegServer mjpegServer1 =  new MjpegServer("serve_USB Camera 0", 1181);
-        // mjpegServer1.setSource(camera);
-
-        // CvSink cvSink = new CvSink("opencv_USB Camera 0");
-        // cvSink.setSource(camera);
-
-        // CvSource outputStream = new CvSource("Blur", PixelFormat.kMJPEG, 640, 480, 30);
-        // MjpegServer mjpegServer2 = new MjpegServer("serve_Blur", 1182);
-        // mjpegServer2.setSource(outputStream);
-
-        // CameraServer.addCamera(camera);
-        // CameraServer.putVideo("Climber Camera", 640, 480);
-
-        // Shuffleboard.getTab("Climber").add(CameraServer.getVideo("Climber Camera").getSource());
-
         robotContainer = new RobotContainer();
         time = System.currentTimeMillis();
 

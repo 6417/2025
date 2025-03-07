@@ -79,6 +79,10 @@ public class CoralDispenserSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Is at goal Encoder Thicks", isAtDesiredPitch());
         SmartDashboard.putBoolean("LimitSwitch", isForwardLimitSwitchPressedMotorTop());
         //stopMotorPitch();
+
+        /*if (coralMotorChangePitch.getEncoderVelocity() < 100 && isAtDesiredPitch()) {
+            resetPitchEncoder();
+        }*/
     }
 
 
