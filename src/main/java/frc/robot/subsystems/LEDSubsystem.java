@@ -11,7 +11,6 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -19,7 +18,6 @@ import frc.robot.Controls.HubturmState;
 import frc.robot.Controls.IntakeState;
 
 public class LEDSubsystem extends SubsystemBase {
-    private AddressableLED ledsRight;
     private AddressableLED leds;
 
     private AddressableLEDBuffer ledsBuffer;
@@ -36,8 +34,8 @@ public class LEDSubsystem extends SubsystemBase {
         }
 
         public RGB(int red, int green, int blue) {
-            this.red = red;
-            this.green = green;
+            this.red = green;
+            this.green = red;
             this.blue = blue;
         }
     }
@@ -47,7 +45,7 @@ public class LEDSubsystem extends SubsystemBase {
     private static RGB noLight = new RGB(0);
 
     public LEDSubsystem() {
-        leds = new AddressableLED(Constants.LEDs.ledPortLeft);
+        leds = new AddressableLED(Constants.LEDs.ledPort);
         leds.setLength(Constants.LEDs.ledBufferLength);
 
         ledsBuffer = new AddressableLEDBuffer(Constants.LEDs.ledBufferLength);
@@ -80,7 +78,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     private void setLEDsVertical(RGB ledColorBottom, RGB ledColorTop) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 4; i++) {
             if (i % 2 == 0) {
                 ledsBuffer.setRGB(i, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
             } else {
@@ -103,7 +101,7 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void coralL2OuttakeLEDs() {
-        setLEDsVertical(coral, new RGB(220, 50, 220));
+        setLEDsVertical(coral, new RGB(0, 220, 0));
         setData();
     }
 
@@ -117,21 +115,21 @@ public class LEDSubsystem extends SubsystemBase {
         setData();
     }
 
-    public void rainbowAnimationLEDs() {
-        LEDPattern rainbowPattern = LEDPattern.rainbow(255, 255);
-        Distance kLedSpacing = Distance.ofBaseUnits(1 / 10, Meters);
-        LEDPattern m_scrollingRainbow = rainbowPattern
-                .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
-        m_scrollingRainbow.applyTo(ledsBuffer);
-        setData();
-    }
+    // public void rainbowAnimationLEDs() {
+    //     LEDPattern rainbowPattern = LEDPattern.rainbow(255, 255);
+    //     Distance kLedSpacing = Distance.ofBaseUnits(1 / 10, Meters);
+    //     LEDPattern m_scrollingRainbow = rainbowPattern
+    //             .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
+    //     m_scrollingRainbow.applyTo(ledsBuffer);
+    //     setData();
+    // }
 
     public void climbLEDs() {
-        rainbowAnimationLEDs();
+        setAllLEDs(climb);
     }
 
     public void normalLeds() {
-        setAllLEDs(coral);
+        setAllLEDs(climb);
     }
 
     // TODO: Implement this method
