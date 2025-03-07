@@ -20,7 +20,7 @@ import frc.robot.Controls.IntakeState;
 
 public class LEDSubsystem extends SubsystemBase {
     private AddressableLED ledsRight;
-    private AddressableLED ledsLeft;
+    private AddressableLED leds;
 
     private AddressableLEDBuffer ledsBuffer;
 
@@ -42,23 +42,23 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    private static RGB coral = new RGB(0, 0, 255);
+    private static RGB coral = new RGB(255, 255, 255);
     private static RGB climb = new RGB(255, 0, 0);
     private static RGB noLight = new RGB(0);
 
     public LEDSubsystem() {
-        ledsLeft = new AddressableLED(Constants.LEDs.ledPortLeft);
-        ledsLeft.setLength(Constants.LEDs.ledBufferLength);
+        leds = new AddressableLED(Constants.LEDs.ledPortLeft);
+        leds.setLength(Constants.LEDs.ledBufferLength);
 
         ledsBuffer = new AddressableLEDBuffer(Constants.LEDs.ledBufferLength);
-        ledsLeft.start();
+        leds.start();
 
         normalLeds();
         setData();
     }
 
     private void setData() {
-        ledsLeft.setData(ledsBuffer);
+        leds.setData(ledsBuffer);
     }
 
     @Override
@@ -79,15 +79,15 @@ public class LEDSubsystem extends SubsystemBase {
         setData();
     }
 
-    private void setLEDsVertical(RGB ledColorBottom, RGB ledColorTop){
-        ledsBuffer.setRGB(0, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
-        ledsBuffer.setRGB(1, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
-        ledsBuffer.setRGB(2, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
-        ledsBuffer.setRGB(3, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
-        ledsBuffer.setRGB(4, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
-        ledsBuffer.setRGB(5, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
-        ledsBuffer.setRGB(6, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
-        ledsBuffer.setRGB(7, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
+    private void setLEDsVertical(RGB ledColorBottom, RGB ledColorTop) {
+        for (int i = 0; i < 8; i++) {
+            if (i % 2 == 0) {
+                ledsBuffer.setRGB(i, ledColorBottom.red, ledColorBottom.green, ledColorBottom.blue);
+            } else {
+
+                ledsBuffer.setRGB(i, ledColorTop.red, ledColorTop.green, ledColorTop.blue);
+            }
+        }
     }
 
     private void setAllLEDs(RGB color) {
@@ -98,17 +98,17 @@ public class LEDSubsystem extends SubsystemBase {
     }
 
     public void coralIntakeLEDs() {
-        setLEDsInBlocks(4, 0, coral, 1, noLight);
+        setLEDsVertical(coral, new RGB(255, 0, 0));
         setData();
     }
 
     public void coralL2OuttakeLEDs() {
-        setLEDsInBlocks(Constants.LEDs.ledBufferLength, 0, coral, 2 * Constants.LEDs.ledBufferLength / 4, noLight);
+        setLEDsVertical(coral, new RGB(220, 50, 220));
         setData();
     }
 
     public void coralL3OuttakeLEDs() {
-        setLEDsInBlocks(Constants.LEDs.ledBufferLength, 0, coral, 3 * Constants.LEDs.ledBufferLength / 4, noLight);
+        setLEDsVertical(new RGB(220, 50, 220), coral);
         setData();
     }
 
@@ -117,29 +117,27 @@ public class LEDSubsystem extends SubsystemBase {
         setData();
     }
 
-    
     public void rainbowAnimationLEDs() {
         LEDPattern rainbowPattern = LEDPattern.rainbow(255, 255);
-        Distance kLedSpacing = Distance.ofBaseUnits(1 / 120, Meters);
+        Distance kLedSpacing = Distance.ofBaseUnits(1 / 10, Meters);
         LEDPattern m_scrollingRainbow = rainbowPattern
-        .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
+                .scrollAtAbsoluteSpeed(LinearVelocity.ofBaseUnits(1, MetersPerSecond), kLedSpacing);
         m_scrollingRainbow.applyTo(ledsBuffer);
         setData();
     }
-    
+
     public void climbLEDs() {
         rainbowAnimationLEDs();
     }
+
     public void normalLeds() {
         setAllLEDs(coral);
     }
 
-    //TODO: Implement this method
+    // TODO: Implement this method
     public void synchronizeLEDsWithStates() {
         HubturmState hubturmState = RobotContainer.controls.getActiveLiftingTowerState();
         IntakeState intakeState = RobotContainer.controls.activeIntakeState;
-
-        
 
         if (intakeState == IntakeState.INTAKE) {
             coralIntakeLEDs();
