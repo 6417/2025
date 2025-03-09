@@ -42,6 +42,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     private static RGB coral = new RGB(255, 255, 255);
     private static RGB climb = new RGB(255, 0, 0);
+    private static RGB coralIn = new RGB(0, 255, 0);
     private static RGB noLight = new RGB(0);
 
     public LEDSubsystem() {
@@ -130,6 +131,10 @@ public class LEDSubsystem extends SubsystemBase {
 
     public void normalLeds() {
         setAllLEDs(climb);
+    }
+
+    public void coralLEDs() {
+        setAllLEDs(coralIn);
     }
 
     // TODO: Implement this method

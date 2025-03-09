@@ -36,7 +36,7 @@ public class ClimberEncoderZero extends Command {
         System.out.println("ClimberEncoderZero ended");
         timer.stop();
         climber.resetEncoder();
-        climber.setPositionForward(Constants.ClimberSubsystem.positionSteady);
+        //climber.setPositionForward(Constants.ClimberSubsystem.positionSteady);
     }
 
     @Override

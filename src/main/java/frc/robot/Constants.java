@@ -68,9 +68,9 @@ public final class Constants {
     public static final class OffsetsToAprilTags {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
-        public static final double[] offsetToAprilTagLoadingStation = { 0.45, 0.0 + 0, 0.0 };
-        public static final double[] offsetToAprilTagRight = { 0.45, 0.3, 0 };
-        public static final double[] offsetToAprilTagLeft = { 0.45, -0.2 + 0.13, 0 };
+        public static final double[] offsetToAprilTagLoadingStation = { 0.50, 0.0 + 0, 0.0 };
+        public static final double[] offsetToAprilTagRight = { 0.50, 0.27, 0 }; // TODO: 0.3?
+        public static final double[] offsetToAprilTagLeft = { 0.50, -0.2 + 0.13, 0 };
     }
 
     public static final class CoralDispenser {
@@ -155,7 +155,7 @@ public final class Constants {
         parameters[CoralDispenser.stationState].height = 1;
         parameters[CoralDispenser.l1State].height = 3;
         parameters[CoralDispenser.l2State].height = 8;
-        parameters[CoralDispenser.l3State].height = 29;
+        parameters[CoralDispenser.l3State].height = 30;
         parameters[CoralDispenser.l4State].height = 73;
         parameters[CoralDispenser.steadyState].height = 3;
         parameters[CoralDispenser.algae1State].height = 3;
