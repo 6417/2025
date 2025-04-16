@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Left ChaseTag Start"
+            "pathName": "Left ChaseTag Start"
           }
         },
         {
@@ -19,20 +19,8 @@
                 "data": {
                   "waitTime": 3.0
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "LeftChaseTag"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoScoreL4"
           }
         }
       ]

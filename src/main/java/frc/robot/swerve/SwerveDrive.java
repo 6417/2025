@@ -22,6 +22,7 @@ import edu.wpi.first.units.measure.MutLinearVelocity;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,8 @@ import frc.fridowpi.utils.AccelerationLimiter;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
+
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 
 public class SwerveDrive extends SubsystemBase {
     public SwerveModule[] modules;
@@ -135,6 +138,12 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setDesiredState(voltage);
         }
     }
+    public void voltageDrive(Voltage voltage) {
+        for (int i = 0; i < 4; i++) {
+            
+            modules[i].setDesiredState(voltage.baseUnitMagnitude());
+        }
+    }
 
     public double getcharecterizedVelocity() {
         double avareagevelocity = 0;
@@ -168,7 +177,7 @@ public class SwerveDrive extends SubsystemBase {
     public void periodic() {
         updateOdometry();
         LimelightHelpers.SetRobotOrientation(Constants.Limelight.limelightID,
-                poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+                RobotContainer.gyro.getYaw().getValueAsDouble(), 0, 0, 0, 0, 0);
     }
 
     public Pose2d getPose() {
@@ -194,16 +203,34 @@ public class SwerveDrive extends SubsystemBase {
          * 0);
          */
 
-        LimelightHelpers.PoseEstimate lime1 = LimelightHelpers
-                .getBotPoseEstimate_wpiBlue_MegaTag2(Constants.Limelight.limelightID); // We use MegaTag 1 because 2 has
-                                                                                       // problems
-        addLimeLightMeasurementToPoseEstimation(lime1);
+        LimelightHelpers.PoseEstimate lime1; // We use MegaTag 1 because 2 has
+        
+        var alliance = DriverStation.getAlliance();
+        
+        switch(alliance.toString())
+        {
+            case "Optional[Red]":
+                lime1 = LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(Constants.Limelight.limelightID);
+                break;
+            
+            case "Optional[Blue]":
+                lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.Limelight.limelightID);
+                break;
 
+            default:
+                System.out.println("Couldn't initialize limelight -> Alliance color is null");
+                return;
+        }
+      
+        addLimeLightMeasurementToPoseEstimation(lime1);
     }
 
     private void addLimeLightMeasurementToPoseEstimation(LimelightHelpers.PoseEstimate lime) {
         if (lime == null)
+        {
+            System.out.println("Limelight is null.");
             return;
+        }
 
         // TODO: tune these values
         final double farDist = 0.8;
@@ -216,17 +243,25 @@ public class SwerveDrive extends SubsystemBase {
                 .abs(getPose().getRotation().getDegrees()
                         - lime.pose.getRotation().getDegrees()) <= narrowAngleThreshold;
 
-        if (isRobotSpinningFast || !isTagInNarrowAngle) {
+        if (isRobotSpinningFast) {
             // if our angular velocity is greater than 720 degrees
             // per second, ignore vision updates
+            if (isRobotSpinningFast)
+                System.out.println("spinnign fast");
+
+           
             return;
         }
 
         if (lime.tagCount == 0)
+        {
             return;
+        }
 
         if (lime.avgTagDist > farDist || lime.avgTagDist < 0.0)
+        {
             return;
+        }
 
         poseEstimator.setVisionMeasurementStdDevs(
                 VecBuilder.fill(0.7 * (1.0 - lime.avgTagDist / farDist),

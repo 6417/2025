@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.fridowpi.utils.CSVLogger;
 
 
@@ -54,6 +55,8 @@ public class Robot extends TimedRobot {
         Shuffleboard.getTab("LiftingTower").add(robotContainer.liftingTower);
 
         RobotContainer.leds.coralL2OuttakeLEDs();
+
+        // Creates a SysIdRoutine
     }
 
 
@@ -106,7 +109,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        //robotContainer.drive.addVisionToOdometry();
+        robotContainer.drive.addVisionToOdometry();
         LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }
 
@@ -123,7 +126,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        // robotContainer.drive.addVisionToOdometry();
+        robotContainer.drive.addVisionToOdometry();
         
         LimelightHelpers.SetIMUMode(Constants.Limelight.limelightID, 2);
     }

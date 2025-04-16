@@ -68,9 +68,9 @@ public final class Constants {
     public static final class OffsetsToAprilTags {
         // This values must be calibrated to value that we can both score and see the
         // april tag.(And obviously when we are in allience zone)
-        public static final double[] offsetToAprilTagLoadingStation = { 0.50, 0.0 + 0, 0.0 };
+        public static final double[] offsetToAprilTagLoadingStation = { 0.45, 0.0 + 0, 0.0 };
         public static final double[] offsetToAprilTagRight = { 0.50, 0.27, 0 }; // TODO: 0.3?
-        public static final double[] offsetToAprilTagLeft = { 0.50, -0.2 + 0.13, 0 };
+        public static final double[] offsetToAprilTagLeft = { 0.50, -0.2 + 0.15, 0 };
     }
 
     public static final class CoralDispenser {
@@ -230,7 +230,7 @@ public final class Constants {
             defaultModuleConfig2024.angleMotorStallCurrentLimit = 35;
             defaultModuleConfig2024.angleMotorFreeCurrentLimit = 20;
             defaultModuleConfig2024.angleMotorIzone = 0.1;
-            defaultModuleConfig2024.anglePidValues = new PidValues(0.4, 0.0, 0.05);
+            defaultModuleConfig2024.anglePidValues = new PidValues(1, 0.0, 0.05);
 
             defaultModuleConfig2024.encoderThicksToRotationFalcon = 1;
             defaultModuleConfig2024.encoderVelocityToRPSFalcon = 1;
@@ -253,7 +253,7 @@ public final class Constants {
             configs[LOC_FL].angleMotorInverted = true;
             configs[LOC_FL].moduleOffset = new Translation2d(moduleXoffset, moduleYoffset);
             configs[LOC_FL].encoderChannel = 0;
-            configs[LOC_FL].absEncoderOffset = 0.791;
+            configs[LOC_FL].absEncoderOffset = 0.952;
 
             configs[LOC_FR].driveMotorID = 2;
             configs[LOC_FR].angleMotorID = 12;
@@ -261,7 +261,7 @@ public final class Constants {
             configs[LOC_FR].angleMotorInverted = true;
             configs[LOC_FR].moduleOffset = new Translation2d(moduleXoffset, -moduleYoffset);
             configs[LOC_FR].encoderChannel = 1;
-            configs[LOC_FR].absEncoderOffset = 0.004;
+            configs[LOC_FR].absEncoderOffset = 0.490;
 
             configs[LOC_RL].driveMotorID = 3;
             configs[LOC_RL].angleMotorID = 13;
@@ -269,7 +269,7 @@ public final class Constants {
             configs[LOC_RL].angleMotorInverted = true;
             configs[LOC_RL].moduleOffset = new Translation2d(-moduleXoffset, moduleYoffset);
             configs[LOC_RL].encoderChannel = 2;
-            configs[LOC_RL].absEncoderOffset = 0.646;
+            configs[LOC_RL].absEncoderOffset = 0.853;
 
             configs[LOC_RR].driveMotorID = 4;
             configs[LOC_RR].angleMotorID = 14;
@@ -277,7 +277,7 @@ public final class Constants {
             configs[LOC_RR].angleMotorInverted = true;
             configs[LOC_RR].moduleOffset = new Translation2d(-moduleXoffset, -moduleYoffset);
             configs[LOC_RR].encoderChannel = 3;
-            configs[LOC_RR].absEncoderOffset = 0.568;
+            configs[LOC_RR].absEncoderOffset = 0.199;
         }
     }
 }
