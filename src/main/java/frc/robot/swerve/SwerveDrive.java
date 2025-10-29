@@ -96,6 +96,75 @@ public class SwerveDrive extends SubsystemBase {
          */
     }
 
+    // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+    private final MutVoltage m_appliedVoltage = Volts.mutable(0);
+    // Mutable holder for unit-safe linear distance values, persisted to avoid
+    // reallocation.
+    private final MutDistance m_distance = Meters.mutable(0);
+    // Mutable holder for unit-safe linear velocity values, persisted to avoid
+    // reallocation.
+    private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
+
+    private final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+            // Empty config defaults to 1 volt/second ramp rate and 7 volt step voltage.
+            new SysIdRoutine.Config(),
+            new SysIdRoutine.Mechanism(
+                    (voltage) -> {
+                        modules[LOC_FL].setDesiredState(voltage.abs(Volts));
+                        modules[LOC_FR].setDesiredState(voltage.abs(Volts));
+                        modules[LOC_RL].setDesiredState(voltage.abs(Volts));
+                        modules[LOC_RR].setDesiredState(voltage.abs(Volts));
+                    },
+                    (log) -> {
+                        log.motor(modules[LOC_FL].getName())
+                                .voltage(m_appliedVoltage.mut_replace(
+                                        modules[LOC_FL].appliedVoltage(), Volts))
+                                .linearPosition(m_distance.mut_replace(
+                                        modules[LOC_FL].getPosition().distanceMeters, Meters))
+                                .linearVelocity(m_velocity.mut_replace(
+                                        modules[LOC_FL].getState().speedMetersPerSecond, MetersPerSecond));
+                        log.motor(modules[LOC_FR].getName())
+                                .voltage(m_appliedVoltage.mut_replace(
+                                        modules[LOC_FR].appliedVoltage(), Volts))
+                                .linearPosition(m_distance.mut_replace(
+                                        modules[LOC_FR].getPosition().distanceMeters, Meters))
+                                .linearVelocity(m_velocity.mut_replace(
+                                        modules[LOC_FR].getState().speedMetersPerSecond, MetersPerSecond));
+                        log.motor(modules[LOC_RL].getName())
+                                .voltage(m_appliedVoltage.mut_replace(
+                                        modules[LOC_RL].appliedVoltage(), Volts))
+                                .linearPosition(m_distance.mut_replace(
+                                        modules[LOC_RL].getPosition().distanceMeters, Meters))
+                                .linearVelocity(m_velocity.mut_replace(
+                                        modules[LOC_RL].getState().speedMetersPerSecond, MetersPerSecond));
+                        log.motor(modules[LOC_RR].getName())
+                                .voltage(m_appliedVoltage.mut_replace(
+                                        modules[LOC_RR].appliedVoltage(), Volts))
+                                .linearPosition(m_distance.mut_replace(
+                                        modules[LOC_RR].getPosition().distanceMeters, Meters))
+                                .linearVelocity(m_velocity.mut_replace(
+                                        modules[LOC_RR].getState().speedMetersPerSecond, MetersPerSecond));
+                    }, this));
+
+    /**
+     * Returns a command that will execute a quasistatic test in the given
+     * direction.
+     *
+     * @param direction The direction (forward or reverse) to run the test in
+     */
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutine.quasistatic(direction);
+    }
+
+    /**
+     * Returns a command that will execute a dynamic test in the given direction.
+     *
+     * @param direction The direction (forward or reverse) to run the test in
+     */
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return m_sysIdRoutine.dynamic(direction);
+    }
+
     public synchronized void updateOdometryThread() {
         while (true) {
             updateOdometry();
@@ -138,9 +207,10 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setDesiredState(voltage);
         }
     }
+
     public void voltageDrive(Voltage voltage) {
         for (int i = 0; i < 4; i++) {
-            
+
             modules[i].setDesiredState(voltage.baseUnitMagnitude());
         }
     }
@@ -204,15 +274,14 @@ public class SwerveDrive extends SubsystemBase {
          */
 
         LimelightHelpers.PoseEstimate lime1; // We use MegaTag 1 because 2 has
-        
+
         var alliance = DriverStation.getAlliance();
-        
-        switch(alliance.toString())
-        {
+
+        switch (alliance.toString()) {
             case "Optional[Red]":
                 lime1 = LimelightHelpers.getBotPoseEstimate_wpiRed_MegaTag2(Constants.Limelight.limelightID);
                 break;
-            
+
             case "Optional[Blue]":
                 lime1 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(Constants.Limelight.limelightID);
                 break;
@@ -221,13 +290,12 @@ public class SwerveDrive extends SubsystemBase {
                 System.out.println("Couldn't initialize limelight -> Alliance color is null");
                 return;
         }
-      
+
         addLimeLightMeasurementToPoseEstimation(lime1);
     }
 
     private void addLimeLightMeasurementToPoseEstimation(LimelightHelpers.PoseEstimate lime) {
-        if (lime == null)
-        {
+        if (lime == null) {
             System.out.println("Limelight is null.");
             return;
         }
@@ -249,17 +317,14 @@ public class SwerveDrive extends SubsystemBase {
             if (isRobotSpinningFast)
                 System.out.println("spinnign fast");
 
-           
             return;
         }
 
-        if (lime.tagCount == 0)
-        {
+        if (lime.tagCount == 0) {
             return;
         }
 
-        if (lime.avgTagDist > farDist || lime.avgTagDist < 0.0)
-        {
+        if (lime.avgTagDist > farDist || lime.avgTagDist < 0.0) {
             return;
         }
 
